@@ -1,0 +1,55 @@
+@import "../template/mixins";
+@import "../template/settings";
+
+// Corporate colors
+$red-light: #CC0000;
+$red: #A30000;
+$red-dark: #820000;
+$black: #000000;
+$white: #FFFFFF;
+
+// Secondary colors
+$blue-dark: #004153;
+$blue-light: #A3EBE8;
+$gray-dark: #4C4C4C;
+$gray-light: #DCDCDC;
+
+// Accent colors (to be used sparingly: no more than one)
+$violet: #3B0083;
+$yellow: #F0AB00;
+$cadetblue: #007A87;
+$deepskyblue: #00B9E4;
+$lawngreen: #92D400;
+
+// Main text
+$mainFont: Overpass, Helvetica, 'sans-serif';
+$mainFontSize: 34px;
+$mainColor: $white;
+
+// Headings
+$headingFont: Overpass, Helvetica, 'sans-serif';
+$headingColor: $white;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: uppercase;
+$headingFontWeight: 600;
+
+$heading1Size: 1.5em;
+$heading2Size: 1.4em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+// Links
+$linkColor: $blue-light;
+$linkColorHover: $cadetblue;
+
+// Background
+$backgroundColor: $red;
+$selectionBackgroundColor: $red-light;
+
+@mixin bodyBackground() {
+        background-color: $backgroundColor;
+	background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
+}
+
+@import "../template/theme";
