@@ -1,0 +1,17 @@
+.reveal section {
+	@mixin logo {
+		display: inline-block;
+		vertical-align: middle;
+		border: none;
+		background: none;
+		box-shadow: none;
+	}
+	img.redhat-logo {
+		height: 200px;
+		@include logo;
+	}
+	img.hibernate-logo {
+		height: 100px;
+		@include logo;
+	}
+}
