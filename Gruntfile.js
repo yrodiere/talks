@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 				files: root.map(path => path + '/*.html')
 			},
 			markdown: {
-				files: root.map(path => path + '/*.md')
+				files: root.map(path => path + '/markdown/*.md')
 			},
 			options: {
 				livereload: true
@@ -83,6 +83,9 @@ module.exports = function(grunt) {
 
 	// Default task
 	grunt.registerTask( 'default', [ 'css' ] );
+
+	// Markdown
+	grunt.registerTask( 'markdown', [ 'html' ] );
 
 	// CSS
 	grunt.registerTask( 'css-themes', [ 'sass:themes' ] );
