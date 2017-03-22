@@ -1,0 +1,31 @@
+{
+  "name": "my-presentation",
+  "version": "1.0.0",
+  "description": "A reveal.js presentation",
+  "homepage": "https://github.com/yrodiere/presentation",
+  "scripts": {
+    "start": "grunt serve"
+  },
+  "author": {
+    "name": "Yoann Rodiere",
+    "email": "yoann@hibernate.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yrodiere/presentation.git"
+  },
+  "dependencies": {
+    "reveal.js": "~3.4.1"
+  },
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-autoprefixer": "~3.0.3",
+    "grunt-contrib-connect": "~0.11.2",
+    "grunt-contrib-cssmin": "~0.14.0",
+    "grunt-contrib-watch": "~1.0.0",
+    "grunt-sass": "~1.2.0",
+    "node-sass": "~3.13.0"
+  },
+  "license": "CC-BY-SA-4.0"
+}
+

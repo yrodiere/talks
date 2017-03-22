@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Presentation</title>
+
+		<link rel="stylesheet" href="node_modules/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="node_modules/reveal.js/css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="node_modules/reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var dist_reveal = 'node_modules/reveal.js/';
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? dist_reveal + 'css/print/pdf.css' : dist_reveal + 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<section>
+<h1>TITLE HERE</h1>
+<p>Yoann Rodière
+</section>
+
+<section>
+<h2>Thank you!</h2>
+<p>Some references:</p>
+<ul>
+	<li><a href="http://hibernate.org/search/">Hibernate Search website</a></li>
+	<li>Our team's blog <a href="http://in.relation.to/">in.relation.to</a></li>
+	<li><a href="?print-pdf">Export these slides to PDF</a><small>(requires Chrome)</small></li>
+</ul>
+</section>
+
+			</div>
+		</div>
+
+		<script src="node_modules/reveal.js/lib/js/head.min.js"></script>
+		<script src="node_modules/reveal.js/js/reveal.js"></script>
+
+		<script>
+			var dist_reveal = 'node_modules/reveal.js/';
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: dist_reveal + 'plugin/markdown/marked.js' },
+					{ src: dist_reveal + 'plugin/markdown/markdown.js' },
+					{ src: dist_reveal + 'plugin/notes/notes.js', async: true },
+					{ src: dist_reveal + 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
+
