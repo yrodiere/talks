@@ -14,4 +14,11 @@
 		height: 100px;
 		@include logo;
 	}
+	mark {
+		// Disable syntax highlighting in child elements
+		&, & * {
+			background-color: yellow;
+			color: black;
+		}
+	}
 }

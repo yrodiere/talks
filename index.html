@@ -58,7 +58,15 @@
 					{ src: dist_reveal + 'plugin/markdown/marked.js' },
 					{ src: dist_reveal + 'plugin/markdown/markdown.js' },
 					{ src: dist_reveal + 'plugin/notes/notes.js', async: true },
-					{ src: dist_reveal + 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: dist_reveal + 'plugin/highlight/highlight.js', async: true,
+						callback: function() {
+							hljs.configure({
+								// Disable language auto-detection (it detects Java properties as "stylus"...)
+								languages: [] 
+							})
+							hljs.initHighlightingOnLoad();
+						}
+					}
 				]
 			});
 		</script>
