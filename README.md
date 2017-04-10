@@ -19,3 +19,8 @@
 
 4. Open <http://localhost:8000> to view your presentation.
 
+The presentations can be published to the `gh-pages` branch with the following command:
+```sh
+$ grunt publish
+```
+
