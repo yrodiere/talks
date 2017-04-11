@@ -1,0 +1,21 @@
+@import url(reveal.css);
+@import url(zenburn.css);
+.reveal section img.redhat-logo {
+  height: 200px;
+  display: inline-block;
+  vertical-align: middle;
+  border: none;
+  background: none;
+  box-shadow: none; }
+
+.reveal section img.hibernate-logo {
+  height: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  border: none;
+  background: none;
+  box-shadow: none; }
+
+.reveal section mark, .reveal section mark * {
+  background-color: yellow;
+  color: black; }
