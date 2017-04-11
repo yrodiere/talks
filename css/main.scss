@@ -2,21 +2,21 @@
 @import "zenburn.css";
 
 .reveal section {
-	@mixin logo {
+	img.logo {
 		display: inline-block;
 		vertical-align: middle;
 		border: none;
 		background: none;
 		box-shadow: none;
+
+		&.redhat {
+			height: 200px;
+		}
+		&.hibernate {
+			height: 100px;
+		}
 	}
-	img.redhat-logo {
-		height: 200px;
-		@include logo;
-	}
-	img.hibernate-logo {
-		height: 100px;
-		@include logo;
-	}
+
 	mark {
 		// Disable syntax highlighting in child elements
 		&, & * {
