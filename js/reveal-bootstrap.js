@@ -1,4 +1,4 @@
-/* globals head,hljs,Reveal */
+/* globals head,hljs,Reveal,mermaid */
 
 // Handle print feature
 var link = document.createElement( 'link' );
@@ -23,6 +23,11 @@ head.ready(document, function() {
 						languages: [] 
 					});
 					hljs.initHighlightingOnLoad();
+				}
+			},
+			{ src: '../js/mermaid.min.js', async: true,
+				callback: function() {
+					mermaid.initialize({startOnLoad:true});
 				}
 			}
 		]

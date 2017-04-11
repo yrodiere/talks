@@ -1,6 +1,12 @@
 ## Slide 1
 
-TODO
+<div class="mermaid">
+graph LR;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+</div>
 
 -
 

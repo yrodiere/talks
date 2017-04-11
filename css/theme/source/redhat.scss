@@ -60,3 +60,6 @@ $selectionBackgroundColor: $blue-light;
 
 @import "../template/theme";
 
+// Mermaid styling (uses less instead of sass, unfortunately)
+@import "mermaid/redhat.css";
+
