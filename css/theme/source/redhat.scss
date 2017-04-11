@@ -44,12 +44,19 @@ $linkColor: $blue-light;
 $linkColorHover: $cadetblue;
 
 // Background
-$backgroundColor: $red;
-$selectionBackgroundColor: $red-light;
+$backgroundColor: $blue-dark;
+$selectionBackgroundColor: $blue-light;
 
 @mixin bodyBackground() {
         background-color: $backgroundColor;
-	background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
+	background-image: url("../../image/background/redhat_overlay.svg");
+	background-size: cover;
+
+	html.focus & {
+		background-color: $red;
+		background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
+	}
 }
 
 @import "../template/theme";
+

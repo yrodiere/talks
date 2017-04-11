@@ -1,3 +1,4 @@
+<!-- .slide: data-state="focus" -->
 ## Thank you!
 
 Some references:
