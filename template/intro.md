@@ -1,8 +1,9 @@
+<!-- .slide: data-state="focus" -->
 # TITLE HERE
 Yoann Rodiere
 
-<img data-src="../images/logos/redhat_rgb_reverse.svg" class="redhat-logo" />
-<img data-src="../images/logos/hibernate_large.png" class="hibernate-logo" />
+<img data-src="../image/logo/redhat_rgb_reverse.svg" class="logo redhat" />
+<img data-src="../image/logo/hibernate_large.png" class="logo hibernate" />
 
 ---
 

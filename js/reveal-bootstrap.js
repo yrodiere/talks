@@ -4969,7 +4969,7 @@
 
 }));
 
-/* globals head,hljs,Reveal */
+/* globals head,hljs,Reveal,Viz */
 
 // Handle print feature
 var link = document.createElement( 'link' );
@@ -4994,6 +4994,13 @@ head.ready(document, function() {
 						languages: [] 
 					});
 					hljs.initHighlightingOnLoad();
+				}
+			},
+			{ src: '../js/viz.js', async: true,
+				callback: function() {
+					document.querySelectorAll(".viz").forEach(function(element) {
+						element.innerHTML = Viz.call(this, element.textContent);
+					});
 				}
 			}
 		]

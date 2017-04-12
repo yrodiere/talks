@@ -2,9 +2,13 @@
  * GLOBAL STYLES
  *********************************************/
 body {
-  background-color: #A30000;
-  background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
-  background-color: #A30000; }
+  background-color: #004153;
+  background-image: url("../../image/background/redhat_overlay.svg");
+  background-size: cover;
+  background-color: #004153; }
+  html.focus body {
+    background-color: #A30000;
+    background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%); }
 
 .reveal {
   font-family: Overpass, Helvetica, "sans-serif";
@@ -14,12 +18,12 @@ body {
 
 ::selection {
   color: #fff;
-  background: #CC0000;
+  background: #A3EBE8;
   text-shadow: none; }
 
 ::-moz-selection {
   color: #fff;
-  background: #CC0000;
+  background: #A3EBE8;
   text-shadow: none; }
 
 .reveal .slides > section,
@@ -282,3 +286,27 @@ body {
   -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+.viz .graph > polygon {
+  fill: transparent; }
+
+.viz .node > ellipse {
+  fill: #004153;
+  stroke: #FFFFFF; }
+
+.viz .node > text {
+  font-size: 0.5em; }
+
+.viz .edge > path {
+  stroke: #FFFFFF; }
+
+.viz .edge > polygon {
+  fill: #FFFFFF;
+  stroke: #FFFFFF; }
+
+.viz .edge > text {
+  font-size: 0.3em; }
+
+.viz text {
+  font-family: Overpass, Helvetica, "sans-serif";
+  fill: #FFFFFF; }

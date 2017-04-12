@@ -1,20 +1,19 @@
 @import url(reveal.css);
 @import url(zenburn.css);
-.reveal section img.redhat-logo {
-  height: 200px;
+.reveal section img.logo {
   display: inline-block;
   vertical-align: middle;
   border: none;
   background: none;
   box-shadow: none; }
-
-.reveal section img.hibernate-logo {
-  height: 100px;
-  display: inline-block;
-  vertical-align: middle;
-  border: none;
-  background: none;
-  box-shadow: none; }
+  .reveal section img.logo.redhat {
+    height: 200px; }
+  .reveal section img.logo.hibernate {
+    height: 100px; }
+  .reveal section img.logo.lucene {
+    height: 80px; }
+  .reveal section img.logo.elasticsearch {
+    height: 100px; }
 
 .reveal section mark, .reveal section mark * {
   background-color: yellow;
