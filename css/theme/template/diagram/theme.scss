@@ -1,0 +1,33 @@
+.viz {
+	.graph > polygon {
+		fill: $graphFillColor;
+	}
+
+	.node {
+		& > ellipse {
+			fill: $nodeFillColor;
+			stroke: $nodeStrokeColor;
+		}
+		& > text {
+			font-size: $nodeFontSize;
+		}
+	}
+
+	.edge {
+		& > path {
+			stroke: $edgeStrokeColor;
+		}
+		& > polygon {
+			fill: $edgeFillColor;
+			stroke: $edgeStrokeColor;
+		}
+		& > text {
+			font-size: $edgeFontSize;
+		}
+	}
+
+	text {
+		font-family: $graphTextFontFamily;
+		fill: $graphTextFillColor;
+	}
+}

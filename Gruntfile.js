@@ -39,20 +39,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		less: {
-			mermaid: {
-				files: [
-					{
-						expand: true,
-						cwd: 'css/theme/mermaid/source',
-						src: ['*.less'],
-						dest: 'dist/css/theme/mermaid',
-						ext: '.css'
-					}
-				]
-			}
-		},
-
 		autoprefixer: {
 			dist: {
 				src: 'dist/css/main.css'
@@ -63,7 +49,7 @@ module.exports = function(grunt) {
 			js: {
 				files: [
 					{ expand: true, dest: 'dist/js/plugin/', cwd: 'node_modules/reveal.js/plugin/', src: '**' },
-					{ expand: true, dest: 'dist/js/', cwd: 'node_modules/mermaid/dist/', src: '**/mermaid.min.js' }
+					{ expand: true, dest: 'dist/js/', cwd: 'node_modules/viz.js/', src: '**/viz.js' }
 				],
 			},
 			css: {
@@ -143,7 +129,7 @@ module.exports = function(grunt) {
 				tasks: 'js'
 			},
 			theme: {
-				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss', 'css/theme/mermaid/source/*.less', 'css/theme/mermaid/template/*.less' ],
+				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss', 'css/theme/template/diagram/*.scss' ],
 				tasks: 'css-themes'
 			},
 			css: {
@@ -169,7 +155,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-sass' );
-	grunt.loadNpmTasks( 'grunt-contrib-less' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-autoprefixer' );
 	grunt.loadNpmTasks( 'grunt-gh-pages' );
@@ -185,9 +170,9 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'content', [ 'copy:content', 'exec:generate_index' ] );
 
 	// CSS
-	grunt.registerTask( 'css-themes', [ 'sass:themes', 'less:mermaid' ] );
+	grunt.registerTask( 'css-themes', [ 'sass:themes' ] );
 	grunt.registerTask( 'css-core', [ 'sass:core', 'copy:css', 'autoprefixer', 'cssmin' ] );
-	grunt.registerTask( 'css', [ 'sass', 'less', 'copy:css', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'css', [ 'sass', 'copy:css', 'autoprefixer', 'cssmin' ] );
 
 
 	// Serve presentation locally

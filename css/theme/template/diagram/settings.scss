@@ -1,0 +1,14 @@
+$defaultGraphLineColor: #000;
+
+$graphFillColor: transparent;
+
+$graphTextFontFamily: 'sans-serif';
+$graphTextFillColor: $defaultGraphLineColor;
+
+$nodeFillColor: none;
+$nodeStrokeColor: $defaultGraphLineColor;
+$nodeFontSize: 0.5em;
+
+$edgeFillColor: $defaultGraphLineColor;
+$edgeStrokeColor: $defaultGraphLineColor;
+$edgeFontSize: 0.3em;

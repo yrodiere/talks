@@ -1,4 +1,4 @@
-/* globals head,hljs,Reveal,mermaid */
+/* globals head,hljs,Reveal,Viz */
 
 // Handle print feature
 var link = document.createElement( 'link' );
@@ -25,9 +25,11 @@ head.ready(document, function() {
 					hljs.initHighlightingOnLoad();
 				}
 			},
-			{ src: '../js/mermaid.min.js', async: true,
+			{ src: '../js/viz.js', async: true,
 				callback: function() {
-					mermaid.initialize({startOnLoad:true});
+					document.querySelectorAll(".viz").forEach(function(element) {
+						element.innerHTML = Viz.call(this, element.textContent);
+					});
 				}
 			}
 		]

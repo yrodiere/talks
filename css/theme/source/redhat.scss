@@ -1,5 +1,7 @@
 @import "../template/mixins";
+@import "../template/diagram/mixins";
 @import "../template/settings";
+@import "../template/diagram/settings";
 
 // Corporate colors
 $red-light: #CC0000;
@@ -58,8 +60,19 @@ $selectionBackgroundColor: $blue-light;
 	}
 }
 
-@import "../template/theme";
+// Diagrams
 
-// Mermaid styling (uses less instead of sass, unfortunately)
-@import "mermaid/redhat.css";
+$graphTextFontFamily: Overpass, Helvetica, 'sans-serif';
+$graphTextFillColor: $white;
+
+$nodeStrokeColor: $white;
+$nodeFillColor: $blue-dark;
+$nodeFontSize: 0.5em;
+
+$edgeStrokeColor: $white;
+$edgeFillColor: $white;
+$edgeFontSize: 0.3em;
+
+@import "../template/theme";
+@import "../template/diagram/theme";
 
