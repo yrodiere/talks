@@ -4,7 +4,10 @@
 	}
 
 	.node {
-		& > ellipse {
+		& > polyline {
+			stroke: $nodeStrokeColor;
+		}
+		& > ellipse, & > polygon, & > path {
 			fill: $nodeFillColor;
 			stroke: $nodeStrokeColor;
 		}
@@ -14,10 +17,10 @@
 	}
 
 	.edge {
-		& > path {
+		& > polyline, & > path {
 			stroke: $edgeStrokeColor;
 		}
-		& > polygon {
+		& > ellipse, & > polygon {
 			fill: $edgeFillColor;
 			stroke: $edgeStrokeColor;
 		}
