@@ -30,4 +30,9 @@
 			color: black;
 		}
 	}
+
+	code {
+		// Do not uppercase inline code in headers, for instance
+		text-transform: none;
+	}
 }
