@@ -35,4 +35,26 @@
 		// Do not uppercase inline code in headers, for instance
 		text-transform: none;
 	}
+
+	&.grid {
+		display: flex !important;
+		flex-wrap: wrap;
+		align-items: center;
+		& > .column {
+			display: flex;
+			flex-direction: column;
+		}
+		& > pre, & > .column pre {
+		//	font-size: 0.45em;
+		}
+
+		// Set widths so that everything flexes as expected
+		& > h1, & > h2, & > h3, & > h4, & > h5, & > h6 {
+			width: 100%;
+		}
+		pre {
+			width: auto;
+		}
+
+	}
 }
