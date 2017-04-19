@@ -36,6 +36,15 @@
 		text-transform: none;
 	}
 
+	// Make text smaller in inline code too
+	code {
+		font-size: 0.8em;
+	}
+	// But do not change the behavior in <pre> (which also reset line height)
+	pre code {
+		font-size: inherit;
+	}
+
 	&.grid {
 		display: flex !important;
 		flex-wrap: wrap;
@@ -43,9 +52,6 @@
 		& > .column {
 			display: flex;
 			flex-direction: column;
-		}
-		& > pre, & > .column pre {
-		//	font-size: 0.45em;
 		}
 
 		// Set widths so that everything flexes as expected
