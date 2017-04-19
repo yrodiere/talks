@@ -45,6 +45,12 @@
 		font-size: inherit;
 	}
 
+	// Make <pre> take the full width in lists
+	li pre {
+		width: 100%;
+		margin: 20px 0px;
+	}
+
 	&.grid {
 		display: flex !important;
 		flex-wrap: wrap;
