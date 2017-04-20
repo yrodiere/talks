@@ -60,6 +60,14 @@ $selectionBackgroundColor: $blue-light;
 	}
 }
 
+html.focus .reveal {
+	a, a:hover {
+		color: white;
+		text-decoration: underline;
+		font-weight: 300;
+	}
+}
+
 // Diagrams
 
 $graphTextFontFamily: Overpass, Helvetica, 'sans-serif';
