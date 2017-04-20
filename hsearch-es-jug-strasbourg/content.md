@@ -18,8 +18,6 @@ WHERE entity.textcontent ILIKE '%car%';
 
 Recherche full-text naïve
 
-TODO lien github
-
 @Notes:
 * http://localhost:8080/page/search?q=car
 * Plusieurs secondes !
@@ -598,8 +596,6 @@ return query.getResultList();
 
 Hibernate Search + Lucene
 
-TODO lien github
-
 @Notes:
 
 * http://localhost:8080/page/search?q=car
@@ -839,16 +835,13 @@ hibernate.search.default.elasticsearch.discovery.enabled true
 
 Hibernate Search + Elasticsearch
 
-TODO lien github
-
 @Notes:
 
-* TODO prévoir de lancer plusieurs applis (démontrer passage à l'échelle horizontal)
 * Montrer code
 * Montrer que les index sont créés auto. (mappings + settings)
 * Montrer que les index sont remplis auto.
 * Montrer les résultats de recherches
-* TODO prévoir un ajout de page
+* Lancer une deuxième instance ES et montrer qu'elle est détectée par le client
 
 ---
 
