@@ -12,7 +12,7 @@ body {
 
 .reveal {
   font-family: Overpass, Helvetica, "sans-serif";
-  font-size: 34px;
+  font-size: 32px;
   font-weight: normal;
   color: #FFFFFF; }
 
@@ -290,17 +290,20 @@ body {
 .viz .graph > polygon {
   fill: transparent; }
 
-.viz .node > ellipse {
+.viz .node > polyline {
+  stroke: #FFFFFF; }
+
+.viz .node > ellipse, .viz .node > polygon, .viz .node > path {
   fill: #004153;
   stroke: #FFFFFF; }
 
 .viz .node > text {
   font-size: 0.5em; }
 
-.viz .edge > path {
+.viz .edge > polyline, .viz .edge > path {
   stroke: #FFFFFF; }
 
-.viz .edge > polygon {
+.viz .edge > ellipse, .viz .edge > polygon {
   fill: #FFFFFF;
   stroke: #FFFFFF; }
 

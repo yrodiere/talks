@@ -11,10 +11,45 @@
   .reveal section img.logo.hibernate {
     height: 100px; }
   .reveal section img.logo.lucene {
-    height: 80px; }
+    height: 60px; }
   .reveal section img.logo.elasticsearch {
     height: 100px; }
 
 .reveal section mark, .reveal section mark * {
   background-color: yellow;
   color: black; }
+
+.reveal section code {
+  text-transform: none; }
+
+.reveal section code {
+  font-size: 0.8em; }
+
+.reveal section pre code {
+  font-size: inherit; }
+
+.reveal section li pre {
+  width: 100%;
+  margin: 20px 0px; }
+
+.reveal section.grid {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .reveal section.grid > .column {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+  .reveal section.grid > h1, .reveal section.grid > h2, .reveal section.grid > h3, .reveal section.grid > h4, .reveal section.grid > h5, .reveal section.grid > h6 {
+    width: 100%; }
+  .reveal section.grid pre {
+    width: auto; }
