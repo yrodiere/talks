@@ -30,7 +30,7 @@ Recherche full-text naïve
 
 * Faux positifs
 * Pas de tri par pertinence
-* En fait, ça manque de finessse
+* En fait, ça manque de finesse
 
 ---
 
@@ -91,7 +91,7 @@ digraph {
 
 -
 
-### Index inversé
+### Inverted index
 
 Token | Emplacement
 :---|:---
@@ -215,7 +215,7 @@ Et caetera, et caetera. <!-- .element: class="fragment" -->
 ## Intégration à un ORM : problématiques
 
 @Notes:
-* Full-text via Lucene, mais données gérées par Hibernate ORM!
+* Full-text via Lucene, mais données gérées par Hibernate ORM !
 
 -
 
@@ -353,7 +353,7 @@ Maven :
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-search-orm</artifactId>
-	<version>5.7.0.Final</version> <!-- Hibernate ORM 5.2.3+ seulement ! -->
+	<version>5.8.0.Beta1</version> <!-- Hibernate ORM 5.2.3+ seulement ! -->
 </dependency>
 ```
 
@@ -391,7 +391,7 @@ entityManager.remove( page ); // Supprimera le document indexé
 
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
-<mark>@Indexed(index = "page")</mark>
+<mark>@Indexed</mark>
 public class Page {
 
 	@Id
@@ -407,7 +407,7 @@ public class Page {
 </code></pre>
 
 ```
-# Document de l'index "page"
+# Document de l'index "Page"
 id: <contenu de "id">
 title: <contenu de "title">
 ...
@@ -452,7 +452,7 @@ foo: <résultat tiré de getFoo()>
 
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
-@Indexed(name = "pageIndex")
+@Indexed
 public class Page {
 	// ...
 	@Basic
@@ -482,7 +482,7 @@ public class Section {
 </code></pre>
 
 ```
-# Document de l'index "pageIndex"
+# Document de l'index "Page"
 ...
 title: <titre de la page>
 sctn.name: <nom section 1>
@@ -670,12 +670,12 @@ Maven :
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-search-orm</artifactId>
-	<version>5.7.0.Final</version> <!-- Hibernate ORM 5.2.3+ seulement ! -->
+	<version>5.8.0.Beta1</version> <!-- Hibernate ORM 5.2.3+ seulement ! -->
 </dependency>
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-search-elasticsearch</artifactId>
-	<version>5.7.0.Final</version> <!-- Même version -->
+	<version>5.8.0.Beta1</version> <!-- Même version -->
 </dependency>
 ```
 
@@ -749,9 +749,9 @@ public class Page {
 hibernate.search.default.elasticsearch.index_schema_management_strategy
 ```
 
-* `CREATE` (défaut)
-* `VALIDATE`
-* `NONE`
+* `create` (défaut)
+* `validate`
+* `none`
 * ...
 
 @Notes:
@@ -760,7 +760,7 @@ hibernate.search.default.elasticsearch.index_schema_management_strategy
 
 -
 
-### Définition des analysers
+### Définition des analyzers
 
 * Définitions « Lucene » traduites automatiquement
 * Mais définitions natives disponibles :
@@ -796,7 +796,7 @@ hibernate.search.default.elasticsearch.index_schema_management_strategy
 
 * Toujours transparente (au `persist()`, etc.)
 * Groupage automatique des appels (Bulk API)
-* Forcer le rafraîchissement immédiat (**déconseillé**) :
+* Forcer le rafraîchissement immédiat (**impacte les perf.**) :
 ```
 hibernate.search.default.elasticsearch.refresh_after_write true
 ```
@@ -805,19 +805,23 @@ hibernate.search.default.elasticsearch.refresh_after_write true
 
 ### Recherche
 
-* Requêtes « Lucene » traduites automatiquement
-* Mais requêtes natives possibles :
-
+* <!-- .element: class="fragment" --> Le DSL est aussi compatible avec Elasticsearch !
+```
+queryBuilder.keyword()
+		.onField( "title" ).boostedTo( 2.0f )
+		.andField( "content" )
+		.matching( term )
+		.createQuery();
+```
+* <!-- .element: class="fragment" --> Mais requêtes natives possibles :
 ```java
 QueryDescriptor esQuery = ElasticsearchQueries.fromJson(
 		"{ 'query': { 'match' : { 'title' : 'car' } } }"
 		);
-
 FullTextQuery query =
 		fullTextEm.createFullTextQuery( esQuery, Page.class )
 		.setFirstResult( offset ).setMaxResults( limit )
 		.setSort( sort );
-
 List<Page> results = query.getResultList();
 ```
 
@@ -961,5 +965,7 @@ public class MyCustomTypeBridge implements StringBridge {
 * 6.0 :
  * APIs plus indépendantes de Lucene
  * Hibernate ORM 6
- * Lucene 6 (ou 7)
+ * Lucene 7
  * ...
+
+Et toujours intégré à Hibernate OGM !
