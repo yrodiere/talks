@@ -336,7 +336,7 @@ digraph {
 * <!-- .element: class="fragment" --> Avantage : synchronisation des index facilitée (triggers)
 * <!-- .element: class="fragment" --> Mais...
  * <!-- .element: class="fragment" --> Couplage fort avec un SGBD précis
- * <!-- .element: class="fragment" --> Recherche: requêtes SQL natives  
+ * <!-- .element: class="fragment" --> Recherche : requêtes SQL natives  
   (ou ajouts à la syntaxe HQL/JPQL)
  * <!-- .element: class="fragment" --> Mapping **table** &rarr; document : admin. BDD
  * <!-- .element: class="fragment" --> Technologies parfois moins matures que Lucene
