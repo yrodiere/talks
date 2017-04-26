@@ -434,7 +434,7 @@ title: <contenu de "title">
 
 <!-- .element: class="grid" -->
 
-### Mapping Entité &rarr; Document : `@Field`
+### Mapping Entité &harr; Document : `@Field`
 
 <pre><code class="lang-java" data-trim data-noescape>
 @Basic
@@ -465,7 +465,7 @@ foo: <résultat tiré de getFoo()>
 
 <!-- .element: class="grid" -->
 
-### Mapping Entité &rarr; Document : `@IndexedEmbedded`
+### Mapping Entité &harr; Document : `@IndexedEmbedded`
 
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
@@ -716,7 +716,7 @@ hibernate.search.default.elasticsearch.host http://127.0.0.1:9200
 
 <!-- .element: class="grid" -->
 
-### Mapping Entité &rarr; Document
+### Mapping Entité &harr; Document
 
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
