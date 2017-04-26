@@ -43,6 +43,7 @@ Recherche full-text naïve
 * Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
 * Lucene: Fondation Apache
 * Elasticsearch utilise Lucene en interne, donc même combat
+* D'autres implémentations de moteurs full-text existent, vocabulaire différent
 
 -
 
@@ -327,6 +328,22 @@ digraph {
 }
 </div>
 -->
+
+---
+
+## Le full-text dans la base de données ?
+
+* <!-- .element: class="fragment" --> Avantage : synchronisation des index facilitée (triggers)
+* <!-- .element: class="fragment" --> Mais...
+ * <!-- .element: class="fragment" --> Couplage fort avec un SGBD précis
+ * <!-- .element: class="fragment" --> Recherche: requêtes SQL natives  
+  (ou ajouts à la syntaxe HQL/JPQL)
+ * <!-- .element: class="fragment" --> Mapping **table** &rarr; document : admin. BDD
+ * <!-- .element: class="fragment" --> Technologies parfois moins matures que Lucene
+
+@Notes:
+
+ * Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
 
 ---
 
