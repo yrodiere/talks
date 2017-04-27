@@ -5,7 +5,7 @@
 
 -
 
-### Solution naïve: ILIKE
+### Solution naïve : ILIKE
 
 ```sql
 SELECT * FROM entity
