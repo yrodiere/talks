@@ -1,3 +1,5 @@
+const sass = require('node-sass');
+
 module.exports = function(grunt) {
 	var port = grunt.option('port') || 8000;
 
@@ -21,6 +23,10 @@ module.exports = function(grunt) {
 		},
 
 		sass: {
+			options: {
+				implementation: sass,
+				sourceMap: true
+			},
 			core: {
 				files: {
 					'dist/css/main.css': 'css/main.scss'
