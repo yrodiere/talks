@@ -25,8 +25,9 @@
 
 	mark {
 		// Disable syntax highlighting in child elements
+		// Also, switch to a less aggressive yellow background
 		&, & * {
-			background-color: yellow;
+			background-color: #cccc00;
 			color: black;
 		}
 	}
