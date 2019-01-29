@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 			js: {
 				files: [
 					{ expand: true, dest: 'dist/js/plugin/', cwd: 'node_modules/reveal.js/plugin/', src: '**' },
-					{ expand: true, dest: 'dist/js/', cwd: 'node_modules/viz.js/', src: '**/viz.js' }
+					{ expand: true, dest: 'dist/js/viz', cwd: 'node_modules/viz.js/', src: ['**/viz.js', '**/full.render.js'] }
 				],
 			},
 			css: {
