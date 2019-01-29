@@ -59,9 +59,14 @@
 		& > .column {
 			display: flex;
 			flex-direction: column;
+			position: relative;
 		}
 
 		// Set widths so that everything flexes as expected
+		& > * {
+			flex-grow: 1;
+			margin-left: 10px;
+		}
 		& > h1, & > h2, & > h3, & > h4, & > h5, & > h6 {
 			width: 100%;
 		}
