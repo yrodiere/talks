@@ -24,7 +24,8 @@ head.ready(document, function() {
 			.then(() => {
 					var viz = new Viz();
 					document.querySelectorAll(".viz").forEach(vizElement => {
-						viz.renderSVGElement(vizElement.textContent)
+						var engine = vizElement.dataset.vizEngine || 'dot';
+						viz.renderSVGElement(vizElement.textContent, {engine: engine})
 								.then(svgElement => {
 									vizElement.innerHTML = '';
 									vizElement.appendChild(svgElement);
