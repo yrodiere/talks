@@ -15,7 +15,7 @@
     "url": "git://github.com/yrodiere/presentation.git"
   },
   "dependencies": {
-    "reveal.js": "~3.4.1",
+    "reveal.js": "~3.7.0",
     "viz.js": "~1.7.1"
   },
   "devDependencies": {
