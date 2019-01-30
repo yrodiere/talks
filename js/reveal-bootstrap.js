@@ -11,6 +11,22 @@ head.ready(document, function() {
 	var vizJsLoadedCallback;
 	var vizFullRenderJsLoadedCallback;
 
+	function toCamelCase(string) {
+		return string.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+	}
+
+	function convertDataCssClassesToDataAttributes(prefix, element) {
+		element.classList.forEach(cssClass => {
+			if (cssClass.startsWith(prefix)) {
+				var split = cssClass.substring(prefix.length).split('_');
+				var dataKey = toCamelCase(split[0]);
+				var dataValue = split[1];
+				console.debug("Setting %s=%s on %O", dataKey, dataValue, element);
+				element.dataset[dataKey] = dataValue;
+			}
+		} );
+	}
+
 	/*
 	 * We have to load two JS files before we can initialize viz.js,
 	 * and reveal.js does not have a built-in feature to call a callback after two files were loaded
@@ -27,6 +43,8 @@ head.ready(document, function() {
 						var engine = vizElement.dataset.vizEngine || 'dot';
 						viz.renderSVGElement(vizElement.textContent, {engine: engine})
 								.then(svgElement => {
+									svgElement.querySelectorAll("[class^='data-'], [class*=' data-']")
+											.forEach(element => convertDataCssClassesToDataAttributes('data-', element));
 									vizElement.innerHTML = '';
 									vizElement.appendChild(svgElement);
 								})
