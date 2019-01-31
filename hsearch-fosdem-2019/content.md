@@ -264,6 +264,8 @@ digraph {
 1. Then HSearch sends the indexing requests to Elasticsearch
 1. Indexing on commit means we don't introduce errors in the index on rollbacks
 
+-
+
 ### Automatic bulking
 <div class="viz">
 digraph {
