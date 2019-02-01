@@ -5,7 +5,7 @@ Some references:
 
 * Hibernate Search Website: <http://hibernate.org/search/>
 * Our team's blog: <http://in.relation.to>
-* Hibernate Search 6.0.0.Alpha1 release announcement: <http://in.relation.to/2018/11/29/hibernate-search-6-0-0-Alpha1/>
+* Hibernate Search 6.0.0.Alpha2 release announcement: <http://in.relation.to/2019/02/01/hibernate-search-6-0-0-Alpha2-and-5-11-1-Final/>
 * Documentation: <http://hibernate.org/search/documentation/>
 * This presentation: <https://yrodiere.github.io/presentation/hsearch-fosdem-2019/>
 * <a href="?print-pdf">Export these slides to PDF</a> <small>(requires Chrome)</small>
