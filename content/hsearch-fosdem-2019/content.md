@@ -494,12 +494,17 @@ digraph {
 ### Projection and sort
 
 <pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
-@KeywordField(
-	normalizer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
-	projectable = Projectable.YES,
-	sortable = Sortable.YES</span>
+@FullTextField(
+	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
+	projectable = Projectable.YES</span>
 )
 private String title;
+
+@KeywordField(
+	normalizer = "cleaned_keyword"<span class="fragment" data-fragment-index="1">,
+	sortable = Sortable.YES</span>
+)
+private String category;
 </code></pre>
 
 <pre><code class="lang-java" data-trim data-noescape>
@@ -520,7 +525,7 @@ private String title;
 		)
 		.build();</span>
 
-<span class="fragment">List&lt;String&gt;&gt; results = query.getResultList();</span></span>
+<span class="fragment">List&lt;String&gt; results = query.getResultList();</span></span>
 </code></pre>
 
 @Notes:
