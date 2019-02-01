@@ -75,6 +75,16 @@ Our approach:
 
 ---
 
+## Hibernate Search
+
+@Notes:
+
+1. Java library
+1. Integrates into Hibernate ORM
+1. Solves the problems mentioned before
+
+-
+
 ### `pom.xml`
 
 ```xml
@@ -212,7 +222,7 @@ public class MyAnalysisConfigurer implements ElasticsearchAnalysisConfigurer {
 
 ---
 
-### Persisting *and* indexing
+## Persisting *and* indexing
 
 <pre><code class="lang-java" data-trim data-noescape>
 EntityManager entityManager = ...;
@@ -233,7 +243,7 @@ tx.commit();<span class="fragment" data-fragment-index="1"> // Also triggers ind
 
 -
 
-## Automatic indexing
+### Automatic indexing
 
 <div class="viz" data-viz-engine="neato">
 digraph {
@@ -481,12 +491,13 @@ digraph {
 
 <!-- .element: class="grid" -->
 
-### Projection
+### Projection and sort
 
 <pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
-@FullTextField(
-	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
-	projectable = Projectable.YES</span>
+@KeywordField(
+	normalizer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
+	projectable = Projectable.YES,
+	sortable = Sortable.YES</span>
 )
 private String title;
 </code></pre>
@@ -502,6 +513,10 @@ private String title;
 			f.match().onField("title")
 			.matching(userInput)
 			.toPredicate()
+		)</span>
+		<span class="fragment">.sort(f ->
+			f.byField("category")
+			.then().byScore()
 		)
 		.build();</span>
 
@@ -510,49 +525,12 @@ private String title;
 
 @Notes:
 
-1. Must mark the field as projectable in mapping
-1. Start building the query
-1. Then instead of asEntity, asProjection
-1. Here we project on the field directly
-1. But there are others (distance, ...)
-1. Then build the query as usual
-1. Result type according to the projection
-
--
-
-<!-- .element: class="grid" -->
-
-### Sort
-
-<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
-@KeywordField(
-	normalizer = "cleaned_keyword"<span class="fragment" data-fragment-index="1">,
-	sortable = Sortable.YES</span>
-)
-private String category;
-</code></pre>
-
-<pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment">FullTextQuery&lt;Book&gt; query =
-		fullTextEM.search(Book.class).query()
-		.asEntity()
-		.predicate(f ->
-		 	f.matchAll().toPredicate()
-		)
-		<span class="fragment">.sort(f ->
-			f.byField("category")
-			.then().byScore()
-		)</span>
-		.build();</span>
-</code></pre>
-
-@Notes:
-
 1. Must mark the field as sortable in mapping
 1. Start building the query as usual
+1. For a projection: instead of asEntity, asProjection
+1. Here we project on the field directly
 1. Then after the predicate add a sort
 1. Here we sort on the field directly
-1. But there are other sorts (distance, ...)
 1. Then build the query as usual
 1. Result type according to the projection
 
