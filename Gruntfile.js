@@ -1,4 +1,4 @@
-const sass = require('node-sass');
+const sass = require('sass');
 
 module.exports = function(grunt) {
 	var port = grunt.option('port') || 8000;

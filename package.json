@@ -32,7 +32,7 @@
     "grunt-exec": "~3.0.0",
     "grunt-gh-pages": "~4.0.0",
     "grunt-sass": "~3.0.2",
-    "node-sass": "~6.0.1"
+    "sass": "~1.43.4"
   },
   "license": "CC-BY-SA-4.0"
 }
