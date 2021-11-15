@@ -19,19 +19,19 @@
     "viz.js": "~2.1.2"
   },
   "devDependencies": {
-    "grunt": "~1.0.3",
+    "grunt": "^1.4.1",
     "grunt-autoprefixer": "~3.0.3",
-    "grunt-contrib-connect": "~2.0.0",
-    "grunt-contrib-jshint": "~2.0.0",
     "grunt-contrib-clean": "~2.0.0",
-    "grunt-contrib-copy": "~1.0.0",
     "grunt-contrib-concat": "~1.0.1",
+    "grunt-contrib-connect": "~2.0.0",
+    "grunt-contrib-copy": "~1.0.0",
     "grunt-contrib-cssmin": "~3.0.0",
-    "grunt-contrib-watch": "~1.1.0",
-    "grunt-gh-pages": "~3.1.0",
-    "grunt-exec": "~3.0.0",
-    "grunt-sass": "~3.0.2",
+    "grunt-contrib-jshint": "~2.0.0",
     "grunt-contrib-less": "~2.0.0",
+    "grunt-contrib-watch": "~1.1.0",
+    "grunt-exec": "~3.0.0",
+    "grunt-gh-pages": "~3.1.0",
+    "grunt-sass": "~3.0.2",
     "node-sass": "~4.11.0"
   },
   "license": "CC-BY-SA-4.0"
