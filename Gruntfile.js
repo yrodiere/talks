@@ -34,7 +34,14 @@ module.exports = function(grunt) {
 			}
 		},
 
-		autoprefixer: {
+		postcss: {
+			options: {
+				map: true,
+				processors: [
+					require('autoprefixer'), // add vendor prefixes
+					require('cssnano') // minify the result
+				]
+			},
 			dist: {
 				src: 'dist/css/main.css'
 			}
@@ -61,14 +68,6 @@ module.exports = function(grunt) {
 					{ expand: true, dest: 'dist/', cwd: 'content', src: '**' },
 					{ expand: true, dest: 'dist/', src: 'image/**' }
 				]
-			}
-		},
-
-		cssmin: {
-			compress: {
-				files: {
-					'dist/css/main.min.css': [ 'dist/css/main.css' ]
-				}
 			}
 		},
 
@@ -146,12 +145,11 @@ module.exports = function(grunt) {
 	// Dependencies
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
-	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-sass' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
-	grunt.loadNpmTasks( 'grunt-autoprefixer' );
+	grunt.loadNpmTasks( '@lodder/grunt-postcss' );
 	grunt.loadNpmTasks( 'grunt-gh-pages' );
 	grunt.loadNpmTasks( 'grunt-exec' );
 
@@ -166,8 +164,8 @@ module.exports = function(grunt) {
 
 	// CSS
 	grunt.registerTask( 'css-themes', [ 'sass:themes' ] );
-	grunt.registerTask( 'css-core', [ 'sass:core', 'copy:css', 'autoprefixer', 'cssmin' ] );
-	grunt.registerTask( 'css', [ 'sass', 'copy:css', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'css-core', [ 'sass:core', 'copy:css', 'postcss' ] );
+	grunt.registerTask( 'css', [ 'sass', 'copy:css', 'postcss' ] );
 
 
 	// Serve presentation locally
