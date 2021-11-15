@@ -4,7 +4,7 @@
 
    On Fedora:
    ```sh
-   $ sudo dnf install npm nodejs-grunt
+   $ sudo dnf install npm ; sudo npm install -g grunt-cli
    ```
 
 2. Install dependencies of this project (run within the git checkout):
