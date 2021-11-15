@@ -1,5 +1,6 @@
-@import "reveal.css";
-@import "zenburn.css";
+@import "reveal/reset.css";
+@import "reveal/reveal.css";
+@import "reveal/plugin/highlight/zenburn.css";
 
 .reveal section {
 	img.logo {

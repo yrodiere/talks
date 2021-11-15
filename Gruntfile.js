@@ -11,17 +11,6 @@ module.exports = function(grunt) {
 			test: [ 'dist' ]
 		},
 
-		concat: {
-			js: {
-				src: [
-					'node_modules/reveal.js/lib/js/head.min.js',
-					'node_modules/reveal.js/js/reveal.js',
-					'js/reveal-bootstrap.js'
-				],
-				dest: 'dist/js/reveal-bootstrap.js'
-			}
-		},
-
 		sass: {
 			options: {
 				implementation: sass,
@@ -54,16 +43,17 @@ module.exports = function(grunt) {
 		copy: {
 			js: {
 				files: [
-					{ expand: true, dest: 'dist/js/plugin/', cwd: 'node_modules/reveal.js/plugin/', src: '**' },
-					{ expand: true, dest: 'dist/js/viz', cwd: 'node_modules/viz.js/', src: ['**/viz.js', '**/full.render.js'] }
+					{ expand: true, dest: 'dist/js/', cwd: 'js/', src: '**' },
+					{ expand: true, dest: 'dist/js/reveal/', cwd: 'node_modules/reveal.js/dist/', src: '*.js' },
+					{ expand: true, dest: 'dist/js/reveal/plugin/', cwd: 'node_modules/reveal.js/plugin/', src: '**' },
+					{ expand: true, dest: 'dist/js/viz', cwd: 'node_modules/viz.js/', src: '**.js' }
 				],
 			},
 			css: {
 				files: {
-					'dist/css/reveal.css': 'node_modules/reveal.js/css/reveal.css',
-					'dist/css/print/paper.css': 'node_modules/reveal.js/css/print/paper.css',
-					'dist/css/print/pdf.css': 'node_modules/reveal.js/css/print/pdf.css',
-					'dist/css/zenburn.css': 'node_modules/reveal.js/lib/css/zenburn.css'
+					'dist/css/reveal/reveal.css': 'node_modules/reveal.js/dist/reveal.css',
+					'dist/css/reveal/reset.css': 'node_modules/reveal.js/dist/reset.css',
+					'dist/css/reveal/plugin/highlight/zenburn.css': 'node_modules/reveal.js/plugin/highlight/zenburn.css'
 				},
 			},
 			content: {
@@ -156,7 +146,6 @@ module.exports = function(grunt) {
 	// Dependencies
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
-	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
@@ -170,7 +159,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'default', [ 'clean', 'css', 'js', 'content' ] );
 
 	// JS task
-	grunt.registerTask( 'js', [ 'jshint', 'copy:js', 'concat:js' ] );
+	grunt.registerTask( 'js', [ 'jshint', 'copy:js' ] );
 
 	// Content
 	grunt.registerTask( 'content', [ 'copy:content', 'exec:generate_index' ] );
