@@ -2,14 +2,14 @@
 
 * Java 8+
 * Hibernate Object/Relational Mapper
-* Relational database
-* Any framework: Quarkus, Spring Boot, Jakarta EE, ...
+* Base de données relationnelle
+* Framework indifférent: Quarkus, Spring Boot, Jakarta EE, ...
 * <!-- .element: class="fragment" -->
   Recherche dans des données textuelles ?
 
 @Notes:
 
-Application with...
+Application avec...
 
 ---
 
@@ -288,7 +288,7 @@ digraph {
 		
 		ftSync [label = "Sync ? Mapping ?", pos = "6,0.5!", style = dashed];
 	
-		db -> ftSync [headlabel = "Load", labeldistance="4", style = dashed];
+		orm -> ftSync [headlabel = "Load", labeldistance="4", style = dashed];
 		ftSync -> elasticsearch [headlabel = "Put", labeldistance="4", style = dashed];
 	}
 	subgraph {
@@ -298,7 +298,7 @@ digraph {
 		ftQuery [label = "API Java ?", pos = "3,-1!", style = dashed];
 	
 		ftQuery -> app [headlabel = "Requêtes full-text", labeldistance="7", style = dashed];
-		orm -> ftQuery [headlabel = "Select", labeldistance="7", style = dashed];
+		orm -> ftQuery [headlabel = "Load", labeldistance="7", style = dashed];
 		elasticsearch -> ftQuery [headlabel = "Requêtes\nfull-text", labeldistance="5", style = dashed]
 	}
 }
@@ -669,7 +669,7 @@ public class Chapter {
 
 -
 
-### Automatic reindexing
+### Ré-indexation automatique
 
 <pre><code class="lang-java" data-trim data-noescape>
 EntityManager entityManager = ...;
@@ -753,13 +753,13 @@ digraph {
 
 <pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
 @FullTextField(
-	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
+	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="2">,
 	projectable = Projectable.YES</span>
 )
 private String title;
 
 @KeywordField(
-	normalizer = "cleaned_keyword"<span class="fragment" data-fragment-index="1">,
+	normalizer = "cleaned_keyword"<span class="fragment" data-fragment-index="4">,
 	sortable = Sortable.YES</span>
 )
 private String category;
