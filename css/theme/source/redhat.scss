@@ -54,7 +54,7 @@ $selectionBackgroundColor: $blue-light;
 	background-image: url("../../image/background/redhat_overlay.svg");
 	background-size: cover;
 
-	html.focus & {
+	&.focus {
 		background-color: $red;
 		background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
 	}
