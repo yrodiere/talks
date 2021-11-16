@@ -39,7 +39,7 @@ html.focus .reveal a, html.focus .reveal a:hover {
   background-size: cover;
   background-color: var(--r-background-color);
 }
-html.focus .reveal-viewport {
+.reveal-viewport.focus {
   background-color: #A30000;
   background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
 }
