@@ -4,24 +4,22 @@
 @import "../template/diagram/settings";
 
 // Corporate colors
-$red-light: #CC0000;
-$red: #A30000;
-$red-dark: #820000;
-$black: #000000;
+// https://www.redhat.com/en/about/brand/standards/color
+// Using presentation palette 1
+$blue-light: #E4F3F4;
+$blue: #43ADAF;
+$blue-dark: #1B4546;
+$red-dark: #5F0000;
+$red: #EE0000;
+$red-light: #F56D6D;
+$red-lighter: #FDDBDB;
+
+// Neutrals
 $white: #FFFFFF;
-
-// Secondary colors
-$blue-dark: #004153;
-$blue-light: #A3EBE8;
-$gray-dark: #4C4C4C;
-$gray-light: #DCDCDC;
-
-// Accent colors (to be used sparingly: no more than one)
-$violet: #3B0083;
-$yellow: #F0AB00;
-$cadetblue: #007A87;
-$deepskyblue: #00B9E4;
-$lawngreen: #92D400;
+$gray-light: #C9C9C9;
+$gray: #8B8B8B;
+$gray-dark: #4D4D4D;
+$black: #000000;
 
 // Main text
 $mainFont: Overpass, Helvetica, 'sans-serif';
@@ -42,43 +40,44 @@ $heading3Size: 1.3em;
 $heading4Size: 1.0em;
 
 // Links
-$linkColor: $blue-light;
-$linkColorHover: $cadetblue;
+$linkColor: $red-light;
+$linkColorHover: $red;
 
 // Background
-$backgroundColor: $blue-dark;
-$selectionBackgroundColor: $blue-light;
-
-@mixin bodyBackground() {
-        background-color: $backgroundColor;
-	background-image: url("../../image/background/redhat_overlay.svg");
-	background-size: cover;
-
-	&.focus {
-		background-color: $red;
-		background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
-	}
-}
-
-html.focus .reveal {
-	a, a:hover {
-		color: white;
-		font-weight: 300;
-	}
-}
+$backgroundColor: $gray-dark;
+$selectionBackgroundColor: $red-dark;
 
 // Diagrams
 
 $graphTextFontFamily: Overpass, Helvetica, 'sans-serif';
 $graphTextFillColor: $white;
 
-$nodeStrokeColor: $white;
-$nodeFillColor: $blue-dark;
+$nodeStrokeColor: $mainColor;
+$nodeFillColor: $backgroundColor;
 $nodeFontSize: 0.5em;
 
-$edgeStrokeColor: $white;
-$edgeFillColor: $white;
+$edgeStrokeColor: $mainColor;
+$edgeFillColor: $mainColor;
 $edgeFontSize: 0.3em;
+
+@mixin bodyBackground() {
+  background-color: $backgroundColor;
+	background-image: url("../../image/background/redhat_overlay.svg");
+	background-size: cover;
+
+  &.focus {
+    --r-main-color: #{$black};
+    --r-background-color: #{$white};
+    --r-heading-color: #{$red};
+    --r-link-color: #{$red-light};
+    --r-link-color-hover: #{$red};
+    --r-selection-color: #{$red-dark};
+    --r-selection-background-color: #{$red-light};
+    background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
+  }
+}
+
+// Themes
 
 @import "../template/theme";
 @import "../template/diagram/theme";
