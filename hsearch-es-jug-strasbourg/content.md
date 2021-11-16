@@ -108,8 +108,8 @@ carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
 * But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
 * « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
 * Vue très simplifiée. En pratique, plus complexe :
- * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
- * Données supplémentaires (scoring, "stored fields", ...)
+  * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
+  * Données supplémentaires (scoring, "stored fields", ...)
 
 -
 
@@ -290,9 +290,9 @@ digraph {
 @Notes:
 * Nécessaire car le moteur full-text (Lucene comme ES) ne comprend pas les POJO, il a son propre format de données ("Document")
 * Problématiques:
- * Dénormalisation: le contenu d'une entité peut finir dans plusieurs documents
- * Encodage: comment indexer un enum... ?
- * Conversion des résultats de recherches en entités managées
+  * Dénormalisation: le contenu d'une entité peut finir dans plusieurs documents
+  * Encodage: comment indexer un enum... ?
+  * Conversion des résultats de recherches en entités managées
 
 <!--
 -
@@ -333,17 +333,22 @@ digraph {
 
 ## Le full-text dans la base de données ?
 
-* <!-- .element: class="fragment" --> Avantage : synchronisation des index facilitée (triggers)
-* <!-- .element: class="fragment" --> Mais...
- * <!-- .element: class="fragment" --> Couplage fort avec un SGBD précis
- * <!-- .element: class="fragment" --> Recherche : requêtes SQL natives  
-  (ou ajouts à la syntaxe HQL/JPQL)
- * <!-- .element: class="fragment" --> Mapping **table** &rarr; document : admin. BDD
- * <!-- .element: class="fragment" --> Technologies parfois moins matures que Lucene
+* <!-- .element: class="fragment" -->
+  Avantage : synchronisation des index facilitée (triggers)
+* <!-- .element: class="fragment" -->
+  Mais...
+  * <!-- .element: class="fragment" -->
+    Couplage fort avec un SGBD précis
+  * <!-- .element: class="fragment" -->
+    Recherche : requêtes SQL natives (ou ajouts à la syntaxe HQL/JPQL)
+  * <!-- .element: class="fragment" -->
+    Mapping **table** &rarr; document : admin. BDD
+  * <!-- .element: class="fragment" -->
+    Technologies parfois moins matures que Lucene
 
 @Notes:
 
- * Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
+ Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
 
 ---
 
@@ -353,9 +358,12 @@ digraph {
 +
 <img data-src="../image/logo/lucene.svg" class="logo lucene" />
 
-* Synchronisation des index transparente (événements Hibernate ORM) <!-- .element: class="fragment" -->
-* Mapping entité &harr; document déclaratif (annotations) <!-- .element: class="fragment" -->
-* ... et bien plus <!-- .element: class="fragment" -->
+* <!-- .element: class="fragment" -->
+  Synchronisation des index transparente (événements Hibernate ORM)
+* <!-- .element: class="fragment" -->
+  Mapping entité &harr; document déclaratif (annotations)
+* <!-- .element: class="fragment" -->
+  ... et bien plus
 
 @Notes:
 * et bien plus: débuté en 2007, en évolution permanente depuis
@@ -458,8 +466,8 @@ foo: <résultat tiré de getFoo()>
 
 @Notes:
 * Fonctionne aussi sur les getters (getFoo())
- * même si pas lié à une propriété
- * attention aux performances avec @Transient (désactive les optimisations)
+  * même si pas lié à une propriété
+  * attention aux performances avec @Transient (désactive les optimisations)
 
 -
 
@@ -580,7 +588,7 @@ public class Page {
 
 @Notes:
 
- * Les résultats sont des instances managées par Hibernate ORM !
+* Les résultats sont des instances managées par Hibernate ORM !
 
 -
 
@@ -658,16 +666,18 @@ digraph {
 @Notes:
 
 * Clustering BDD:
- * PostgreSQL: PgPool, PostgresXL, ... <https://wiki.postgresql.org/wiki/Replication,_Clustering,_and_Connection_Pooling>
- * Oracle RAC <https://www.oracle.com/database/real-application-clusters/index.html> 
+  * PostgreSQL: PgPool, PostgresXL, ... <https://wiki.postgresql.org/wiki/Replication,_Clustering,_and_Connection_Pooling>
+  * Oracle RAC <https://www.oracle.com/database/real-application-clusters/index.html> 
 
 -
 
 * L'index Lucene est local, non partagé
 * Solutions existent : <!-- .element: class="fragment" -->
- * <!-- .element: class="fragment" --> Master/slave avec [JMS ou JGroups](https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#_back_end)
- * <!-- .element: class="fragment" --> Stockage des index dans [Infinispan](https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#infinispan-directories)
- * <!-- .element: class="fragment" --> ... mais un peu complexe.
+  * <!-- .element: class="fragment" -->
+  Master/slave avec [JMS ou JGroups](https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#_back_end)
+  * <!-- .element: class="fragment" -->
+  Stockage des index dans [Infinispan](https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#infinispan-directories)
+  * ... mais un peu complexe. <!-- .element: class="fragment" -->
 
 ---
 
@@ -709,8 +719,8 @@ hibernate.search.default.elasticsearch.host http://127.0.0.1:9200
 
 @Notes:
 
- * Hôtes: possibilité d'authentification (préférer SSL !)
- * Hôtes: load-balancing (+ bientôt failover)
+* Hôtes: possibilité d'authentification (préférer SSL !)
+* Hôtes: load-balancing (+ bientôt failover)
 
 -
 
@@ -822,7 +832,7 @@ hibernate.search.default.elasticsearch.refresh_after_write true
 
 ### Recherche
 
-* <!-- .element: class="fragment" --> Le DSL est aussi compatible avec Elasticsearch !
+* Le DSL est aussi compatible avec Elasticsearch ! <!-- .element: class="fragment" -->
 ```
 queryBuilder.keyword()
 		.onField( "title" ).boostedTo( 2.0f )
@@ -830,7 +840,7 @@ queryBuilder.keyword()
 		.matching( term )
 		.createQuery();
 ```
-* <!-- .element: class="fragment" --> Mais requêtes natives possibles :
+* Mais requêtes natives possibles : <!-- .element: class="fragment" -->
 ```java
 QueryDescriptor esQuery = ElasticsearchQueries.fromJson(
 		"{ 'query': { 'match' : { 'title' : 'car' } } }"
@@ -964,25 +974,25 @@ public class MyCustomTypeBridge implements StringBridge {
 
 ### Et bien plus
 
- * Recherche spatiale
- * Faceting
- * Filtres
- * Multi-tenant
- * Dynamic sharding
- * ...
+* Recherche spatiale
+* Faceting
+* Filtres
+* Multi-tenant
+* Dynamic sharding
+* ...
 
 ---
 
 ## Hibernate Search, et après ?
 
 * 5.8 (en cours) :
- * Elasticsearch 5
- * Définition programmatique des analyzers
- * Simple Query String : `"foo AND NOT bar*"`
+  * Elasticsearch 5
+  * Définition programmatique des analyzers
+  * Simple Query String : `"foo AND NOT bar*"`
 * 6.0 :
- * APIs plus indépendantes de Lucene
- * Hibernate ORM 6
- * Lucene 7
- * ...
+  * APIs plus indépendantes de Lucene
+  * Hibernate ORM 6
+  * Lucene 7
+  * ...
 
 Et toujours intégré à Hibernate OGM !

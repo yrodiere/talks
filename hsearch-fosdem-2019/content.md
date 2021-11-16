@@ -135,6 +135,7 @@ hibernate.search.backends.backend1.password = j@rV1s</span>
 
 <div class="column">
 Java Entity
+
 <pre><code class="lang-java" data-trim data-noescape>
 <span class="fragment" data-fragment-index="1">@Indexed(index = "book")</span>
 @Entity

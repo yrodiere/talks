@@ -10,7 +10,7 @@ Yoann Rodière
 
 @Notes:
 
- * Yoann Rodière
- * Red Hat Middleware  
- * Hibernate team
- * Hibernate Search project lead
+* Yoann Rodière
+* Red Hat Middleware  
+* Hibernate team
+* Hibernate Search project lead
