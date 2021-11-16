@@ -10,7 +10,7 @@ Yoann Rodière
 
 ## Yoann Rodière
 
- * Ingénieur logiciel chez Red Hat
- * Équipe Hibernate
- * Principal sujet de travail : Hibernate Search
- * `yoann@hibernate.org`
+* Ingénieur logiciel chez Red Hat
+* Équipe Hibernate
+* Principal sujet de travail : Hibernate Search
+* `yoann@hibernate.org`
