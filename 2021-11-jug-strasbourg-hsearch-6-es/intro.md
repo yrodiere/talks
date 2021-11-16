@@ -1,5 +1,7 @@
 <!-- .slide: data-state="focus" -->
-# From table to index (and back)<br>with Hibernate Search 6
+# Hibernate Search 6
+
+Combiner base de données relationnelle et Elasticsearch
 
 Yoann Rodière
 
