@@ -490,6 +490,54 @@ public class MyAnalysisConfigurer
 
 ---
 
+## Initialisation d'Elasticsearch
+
+-
+
+### Gestion du schéma
+
+Au démarrage :
+
+<pre><code data-trim data-noescape>
+hibernate.search.schema_management.strategy = create-or-validate
+</code></pre>
+
+* `none`
+* `create`
+* `validate`
+* `create-or-validate` (par défaut)
+* `update`
+* `drop-and-create`
+* `drop-and-create-and-drop` (tests)
+
+<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
+
+@Notes:
+
+* Expliquer chaque stratégie
+
+-
+
+### `MassIndexer`
+
+<pre><code class="lang-java" data-trim data-noescape>
+EntityManagerFactory emf = /* ... */;
+Search.mapping(emf).scope(Object.class).massIndexer()
+		<span class="fragment">.purgeAllOnStart(true)
+		.typesToIndexInParallel(2)
+		.batchSizeToLoadObjects(25)
+		.idFetchSize(150)
+		.threadsToLoadObjects(30)</span>
+		.startAndWait();
+</code></pre>
+
+@Notes:
+
+1. Réindexe toutes les entités; peut prendre un certain temps
+1. Plein d'options pour tuner les performances
+
+---
+
 ## Persister *et* indexer
 
 <pre><code class="lang-java" data-trim data-noescape>
@@ -842,52 +890,3 @@ Mapping et recherche avec Hibernate Search
 * `curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?q=car&brief=true' | jq`
 * "Picard"? => Faux positif...
 * "Cars! Cars! Cars" devrait probablement être en première position
-
----
-
-## Encore un peu de temps?
-
--
-
-### Gestion du schéma
-
-Au démarrage :
-
-<pre><code data-trim data-noescape>
-hibernate.search.schema_management.strategy = create-or-validate
-</code></pre>
-
-* `none`
-* `create`
-* `validate`
-* `create-or-validate` (par défaut)
-* `update`
-* `drop-and-create`
-* `drop-and-create-and-drop` (tests)
-
-<span class="fragment">Aussi possible via API à n'importe quel moment.</span> 
-
-@Notes:
-
-* Expliquer chaque stratégie
-
--
-
-### `MassIndexer`
-
-<pre><code class="lang-java" data-trim data-noescape>
-EntityManagerFactory emf = /* ... */;
-Search.mapping(emf).scope(Object.class).massIndexer()
-		<span class="fragment">.purgeAllOnStart(true)
-		.typesToIndexInParallel(2)
-		.batchSizeToLoadObjects(25)
-		.idFetchSize(150)
-		.threadsToLoadObjects(30)</span>
-		.startAndWait();
-</code></pre>
-
-@Notes:
-
-1. Réindexe toutes les entités; peut prendre un certain temps
-1. Plein d'options pour tuner les performances
-
