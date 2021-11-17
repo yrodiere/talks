@@ -92,6 +92,27 @@ Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016.
 
 -
 
+### Index inversé
+
+Token | Emplacement
+:---|:---
+... | ...
+car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
+careless | Doc. 5 (pos. : 2)
+carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
+... | ...
+
+(doc. = document, pos. = position)
+
+@Notes:
+* But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
+* « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
+* Vue très simplifiée. En pratique, plus complexe :
+    * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
+    * Données supplémentaires (scoring, "stored fields", ...)
+
+-
+
 ### Principe
 <div class="viz">
 digraph {
@@ -134,27 +155,6 @@ digraph {
 * Analyse = extraction et « nettoyage » de tokens.
 * On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
 * On analyse les requêtes de la même manière => tokens correspondants
-
--
-
-### Index inversé
-
-Token | Emplacement
-:---|:---
-... | ...
-car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
-careless | Doc. 5 (pos. : 2)
-carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
-... | ...
-
-(doc. = document, pos. = position)
-
-@Notes:
-* But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
-* « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
-* Vue très simplifiée. En pratique, plus complexe :
-   * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
-   * Données supplémentaires (scoring, "stored fields", ...)
 
 -
 
