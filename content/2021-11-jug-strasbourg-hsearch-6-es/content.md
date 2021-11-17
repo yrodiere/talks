@@ -61,7 +61,7 @@ En bref: solution qui atteint très vite ses limites
 * <!-- .element: class="fragment" -->
   Avantages :
   * Mise à jour des index immédiate, transactionnelle
-  * Combinaison de full-text et de SQL traditionel (`JOIN`, ...)
+  * Combinaison de full-text et de SQL traditionnel (`JOIN`, ...)
 * <!-- .element: class="fragment" -->
   Mais...
    * <!-- .element: class="fragment" -->
