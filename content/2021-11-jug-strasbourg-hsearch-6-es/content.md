@@ -938,5 +938,47 @@ Mapping et recherche avec Hibernate Search
 * projet "search"
 * Montrer TShirtService
 * `curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?q=car&brief=true' | jq`
-* "Picard"? => Faux positif...
-* "Cars! Cars! Cars" devrait probablement être en première position
+* "Picard" n'apparaît plus
+* "Cars! Cars! Cars" est en première position
+* Indexation automatique
+  ```shell script
+  # Search before (no result):
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true&q=bicycle' | jq
+  # Show collection:
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/collection/2' | jq
+  # Update collection:
+  curl -s -XPOST -H 'Content-Type: application/json' 'localhost:8080/collection/2' -d'{"year": 2019, "season": "SPRING_SUMMER", "keywords": "bike, sport, bicycle"}}' | jq
+  # Wait for Elasticsearch to refresh (~1 second), the see the reindexed data:
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true&q=bicycle' | jq
+  ```
+* projet "search-advanced"
+* `TShirtService.autocomplete`, `TShirt`, `AnalysisConfigurer`
+* ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/autocomplete' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+* ```shell script
+  # Then type whatever you want, followed by <ENTER>
+  ju
+  ju sk
+  ```
+* La même chose sans taper dans la BDD
+  ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/autocomplete_nodb' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+* `TShirtService.searchWithFacets`, `TShirt`
+  ```shell script
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true&size=XL' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=false&color=grey' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true&size=XL&color=grey' | jq -C | less
+  ```
+* `TShirtService.suggest`
+  ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/suggest' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+  ```shell script
+  # Then type whatever you want, followed by <ENTER>
+  montain
+  juml into
+  operture scienwe
+  ```
