@@ -490,6 +490,54 @@ public class MyAnalysisConfigurer
 
 ---
 
+## Initialisation d'Elasticsearch
+
+-
+
+### Gestion du schéma
+
+Au démarrage :
+
+<pre><code data-trim data-noescape>
+hibernate.search.schema_management.strategy = create-or-validate
+</code></pre>
+
+* `none`
+* `create`
+* `validate`
+* `create-or-validate` (par défaut)
+* `update`
+* `drop-and-create`
+* `drop-and-create-and-drop` (tests)
+
+<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
+
+@Notes:
+
+* Expliquer chaque stratégie
+
+-
+
+### `MassIndexer`
+
+<pre><code class="lang-java" data-trim data-noescape>
+EntityManagerFactory emf = /* ... */;
+Search.mapping(emf).scope(Object.class).massIndexer()
+		<span class="fragment">.purgeAllOnStart(true)
+		.typesToIndexInParallel(2)
+		.batchSizeToLoadObjects(25)
+		.idFetchSize(150)
+		.threadsToLoadObjects(30)</span>
+		.startAndWait();
+</code></pre>
+
+@Notes:
+
+1. Réindexe toutes les entités; peut prendre un certain temps
+1. Plein d'options pour tuner les performances
+
+---
+
 ## Persister *et* indexer
 
 <pre><code class="lang-java" data-trim data-noescape>
@@ -829,6 +877,56 @@ List<Pair<String, Float>> hits =
 2. Prédicats spatiaux, pour rechercher par distance à un point
 3. Projections composites
 
+-
+
+### Aggrégations
+
+```java
+AggregationKey<Map<Genre, Long>> countsByGenreKey =
+        AggregationKey.of( "countsByGenre" ); 
+
+List<Book> result = searchSession.search( Book.class ) 
+        .where( f -> f.match().field( "title" ) 
+                .matching( "robot" ) )
+        .aggregation( countsByGenreKey, f -> f.terms() 
+                .field( "genre", Genre.class ) )
+        .fetchHits( 20 ); 
+
+Map<Genre, Long> countsByGenre = result.aggregation( countsByGenreKey ); 
+```
+
+<div class="fragment">
+
+```java
+        // ...
+        .aggregation( countsByPriceKey, f -> f.range()
+                .field( "price", Double.class ) 
+                .range( 0.0, 10.0 ) 
+                .range( 10.0, 20.0 )
+                .range( 20.0, null ) )
+        // ...
+Map<Range<Double>, Long> countsByPrice = result.aggregation( countsByPriceKey );
+```
+
+</div>
+
+-
+
+### Intégration de JSON natif
+
+```java
+        // ...
+        .aggregation( priceStatsKey, f -> f.fromJson( "{\n" +
+                "  \"stats\": {\n" +
+                "    \"field\": \"variants.price\"\n" +
+                "  }\n" +
+                "}" ) )
+        // ...
+JsonObject priceStats = result.aggregation( priceStatsKey ); 
+```
+
+Fonctionne également pour prédicats, tris, et même requête complète.
+
 ---
 
 ### Démo
@@ -840,54 +938,47 @@ Mapping et recherche avec Hibernate Search
 * projet "search"
 * Montrer TShirtService
 * `curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?q=car&brief=true' | jq`
-* "Picard"? => Faux positif...
-* "Cars! Cars! Cars" devrait probablement être en première position
-
----
-
-## Encore un peu de temps?
-
--
-
-### Gestion du schéma
-
-Au démarrage :
-
-<pre><code data-trim data-noescape>
-hibernate.search.schema_management.strategy = create-or-validate
-</code></pre>
-
-* `none`
-* `create`
-* `validate`
-* `create-or-validate` (par défaut)
-* `update`
-* `drop-and-create`
-* `drop-and-create-and-drop` (tests)
-
-<span class="fragment">Aussi possible via API à n'importe quel moment.</span> 
-
-@Notes:
-
-* Expliquer chaque stratégie
-
--
-
-### `MassIndexer`
-
-<pre><code class="lang-java" data-trim data-noescape>
-EntityManagerFactory emf = /* ... */;
-Search.mapping(emf).scope(Object.class).massIndexer()
-		<span class="fragment">.purgeAllOnStart(true)
-		.typesToIndexInParallel(2)
-		.batchSizeToLoadObjects(25)
-		.idFetchSize(150)
-		.threadsToLoadObjects(30)</span>
-		.startAndWait();
-</code></pre>
-
-@Notes:
-
-1. Réindexe toutes les entités; peut prendre un certain temps
-1. Plein d'options pour tuner les performances
-
+* "Picard" n'apparaît plus
+* "Cars! Cars! Cars" est en première position
+* Indexation automatique
+  ```shell script
+  # Search before (no result):
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true&q=bicycle' | jq
+  # Show collection:
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/collection/2' | jq
+  # Update collection:
+  curl -s -XPOST -H 'Content-Type: application/json' 'localhost:8080/collection/2' -d'{"year": 2019, "season": "SPRING_SUMMER", "keywords": "bike, sport, bicycle"}}' | jq
+  # Wait for Elasticsearch to refresh (~1 second), the see the reindexed data:
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true&q=bicycle' | jq
+  ```
+* projet "search-advanced"
+* `TShirtService.autocomplete`, `TShirt`, `AnalysisConfigurer`
+* ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/autocomplete' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+* ```shell script
+  # Then type whatever you want, followed by <ENTER>
+  ju
+  ju sk
+  ```
+* La même chose sans taper dans la BDD
+  ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/autocomplete_nodb' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+* `TShirtService.searchWithFacets`, `TShirt`
+  ```shell script
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true&size=XL' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=false&color=grey' | jq -C | less
+  curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search_facets?brief=true&size=XL&color=grey' | jq -C | less
+  ```
+* `TShirtService.suggest`
+  ```shell script
+  while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/suggest' -G --data-urlencode "terms=$TEXT" | jq ; done
+  ```
+  ```shell script
+  # Then type whatever you want, followed by <ENTER>
+  montain
+  juml into
+  operture scienwe
+  ```
