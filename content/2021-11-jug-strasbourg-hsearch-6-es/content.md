@@ -877,6 +877,56 @@ List<Pair<String, Float>> hits =
 2. Prédicats spatiaux, pour rechercher par distance à un point
 3. Projections composites
 
+-
+
+### Aggrégations
+
+```java
+AggregationKey<Map<Genre, Long>> countsByGenreKey =
+        AggregationKey.of( "countsByGenre" ); 
+
+List<Book> result = searchSession.search( Book.class ) 
+        .where( f -> f.match().field( "title" ) 
+                .matching( "robot" ) )
+        .aggregation( countsByGenreKey, f -> f.terms() 
+                .field( "genre", Genre.class ) )
+        .fetchHits( 20 ); 
+
+Map<Genre, Long> countsByGenre = result.aggregation( countsByGenreKey ); 
+```
+
+<div class="fragment">
+
+```java
+        // ...
+        .aggregation( countsByPriceKey, f -> f.range()
+                .field( "price", Double.class ) 
+                .range( 0.0, 10.0 ) 
+                .range( 10.0, 20.0 )
+                .range( 20.0, null ) )
+        // ...
+Map<Range<Double>, Long> countsByPrice = result.aggregation( countsByPriceKey );
+```
+
+</div>
+
+-
+
+### Intégration de JSON natif
+
+```java
+        // ...
+        .aggregation( priceStatsKey, f -> f.fromJson( "{\n" +
+                "  \"stats\": {\n" +
+                "    \"field\": \"variants.price\"\n" +
+                "  }\n" +
+                "}" ) )
+        // ...
+JsonObject priceStats = result.aggregation( priceStatsKey ); 
+```
+
+Fonctionne également pour prédicats, tris, et même requête complète.
+
 ---
 
 ### Démo
