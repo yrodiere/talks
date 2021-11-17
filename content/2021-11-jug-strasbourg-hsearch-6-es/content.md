@@ -885,12 +885,12 @@ List<Pair<String, Float>> hits =
 AggregationKey<Map<Genre, Long>> countsByGenreKey =
         AggregationKey.of( "countsByGenre" ); 
 
-List<Book> result = searchSession.search( Book.class ) 
+SearchResult<Book> result = searchSession.search( Book.class ) 
         .where( f -> f.match().field( "title" ) 
                 .matching( "robot" ) )
         .aggregation( countsByGenreKey, f -> f.terms() 
                 .field( "genre", Genre.class ) )
-        .fetchHits( 20 ); 
+        .fetch( 20 ); 
 
 Map<Genre, Long> countsByGenre = result.aggregation( countsByGenreKey ); 
 ```
