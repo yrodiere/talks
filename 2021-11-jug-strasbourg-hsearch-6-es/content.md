@@ -805,13 +805,12 @@ digraph {
 
 <pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
 @FullTextField(
-	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="2">,
-	projectable = Projectable.YES</span>
+	"<span class="fragment" data-fragment-index="2">projectable = Projectable.YES</span>
 )
 private String title;
 
 @KeywordField(
-	normalizer = "cleaned_keyword"<span class="fragment" data-fragment-index="4">,
+	normalizer = "my-normalizer"<span class="fragment" data-fragment-index="4">,
 	sortable = Sortable.YES</span>
 )
 private String category;
