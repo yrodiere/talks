@@ -950,7 +950,7 @@ Mapping et recherche avec Hibernate Search
   # Show collection:
   curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/collection/2' | jq
   # Update collection:
-  curl -s -XPOST -H 'Content-Type: application/json' 'localhost:8080/collection/2' -d'{"year": 2019, "season": "SPRING_SUMMER", "keywords": "bike, sport, bicycle"}}' | jq
+  curl -s -XPUT -H 'Content-Type: application/json' 'localhost:8080/collection/2' -d'{"year": 2019, "season": "SPRING_SUMMER", "keywords": "bike, sport, bicycle"}}' | jq
   # Wait for Elasticsearch to refresh (~1 second), the see the reindexed data:
   curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true&q=bicycle' | jq
   ```
