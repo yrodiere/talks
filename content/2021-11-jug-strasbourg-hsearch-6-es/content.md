@@ -674,6 +674,10 @@ public class Book {
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
 public class Chapter {
+	
+	@ManyToOne
+	private Book book;
+	
 	<span class="fragment" data-fragment-index="2">@FullTextField</span>
 	private String title;
 	<span class="fragment" data-fragment-index="2">@FullTextField</span>
