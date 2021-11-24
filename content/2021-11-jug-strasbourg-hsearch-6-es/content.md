@@ -412,10 +412,10 @@ public class Book {
 	@GeneratedValue
 	private Long id;
 
-	<span class="fragment" data-fragment-index="2">@FullTextField(analyzer = "cleaned_text")</span>
+	<span class="fragment" data-fragment-index="2">@FullTextField</span>
 	<span class="fragment" data-fragment-index="3">@KeywordField(
 			name = "title_sort",
-			normalizer = "cleaned_keyword",
+			normalizer = "my-normalizer",
 			sortable = Sortable.YES
 	)</span>
 	@Basic(optional = false)
@@ -432,11 +432,11 @@ Mapping Elasticsearch
   "properties" : {
     <span class="fragment" data-fragment-index="2">"title" : {
   	"type" : "text",
-  	"analyzer" : "cleaned_text"
+  	"analyzer" : "default"
     }</span><span class="fragment" data-fragment-index="3">,
     "title_sort" : {
   	"type" : "keyword",
-  	"normalizer" : "cleaned_keyword"
+  	"normalizer" : "my-normalizer"
     }</span>
   }
 }
@@ -467,13 +467,13 @@ public class MyAnalysisConfigurer
         implements ElasticsearchAnalysisConfigurer {
 	@Override
 	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
-		context.analyzer( "cleaned_text" ).custom()
+		context.analyzer( "my-analyzer" ).custom()
 				.tokenizer( "whitespace" )
 				.charFilters( "html_strip" )
 				.tokenFilters( "asciifolding", "lowercase",
-                        "stop", "porter_stem" );
+						"stop", "porter_stem" );
 		</span><span class="fragment" data-fragment-index="3">
-		context.normalizer( "cleaned_keyword" ).custom()
+		context.normalizer( "my-normalizer" ).custom()
 				.tokenFilters( "asciifolding", "lowercase" );</span>
 	}
 }
@@ -481,12 +481,12 @@ public class MyAnalysisConfigurer
 
 @Notes:
 
-1. Les analyzers referencés dans le mapping doivent être définis
+1. Les analyzers reférencés dans le mapping doivent être définis
 1. Dans HSearch, définition via un bean
-1. Le bean doit être referencé dans la configuration
+1. Le bean doit être reférencé dans la configuration
 1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
 1. On ajoute quelques définitions...
-1. Et HSearch poussera les définitions lorsqu'il créera l'index!
+1. Mais... comment pousser ça vers Elasticsearch?
 
 ---
 
@@ -674,9 +674,9 @@ public class Book {
 <pre><code class="lang-java" data-trim data-noescape>
 @Entity
 public class Chapter {
-	<span class="fragment" data-fragment-index="2">@FullTextField(analyzer = "cleaned_text")</span>
+	<span class="fragment" data-fragment-index="2">@FullTextField</span>
 	private String title;
-	<span class="fragment" data-fragment-index="2">@FullTextField(analyzer = "cleaned_text")</span>
+	<span class="fragment" data-fragment-index="2">@FullTextField</span>
 	private String text;
 	<span class="fragment" data-fragment-index="2">@GenericField</span>
 	private Integer pageCount;
