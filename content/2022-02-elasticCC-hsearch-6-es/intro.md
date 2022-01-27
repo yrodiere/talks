@@ -1,7 +1,7 @@
 <!-- .slide: data-state="focus" -->
-# Hibernate Search 6
+# Hibernate Search
 
-Combiner base de données relationnelle et Elasticsearch
+Indexation au fil de l'eau de données relationnelles vers Elasticsearch
 
 Yoann Rodière
 

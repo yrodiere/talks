@@ -1,29 +1,25 @@
-Vous utilisez Hibernate ORM pour accéder à votre SGBD relationnel ?
-Vous voulez offrir à vos utilisateurs une recherche dans des données textuelles ?
+Traditionnellement, les applications Java utilisent souvent Hibernate ORM et une base de données relationnelle
+pour leurs besoin en stockage de données.
+Bien que ce soit une solution populaire,
+elle souffre néanmoins d'inconvénients communs à la plupart des base de données relationnelles,
+en particulier des fonctionnalités de recherche full-text inférieures à Elasticsearch.
 
-Vous avez donc constaté que le standard SQL (et donc Hibernate ORM) est limité à de simples LIKE/ILIKE.
-Certains SGBD proposent des extensions SQL full-text non standards, mais leurs fonctionnalités sont parfois limitées;
-rien à voir avec des solutions dédiées à la recherche full-text telles que [Elasticsearch](https://www.elastic.co/elasticsearch/).
+Cette session présente Hibernate Search 6,
+une bibliothèque logicielle qui s'intègre à Hibernate ORM pour indexer (au moins en partie)
+les données relationnelles d'une application,
+soit en une seule fois pour toutes les données disponibles ("mass indexer"),
+soit en continu lorsque les données changent ("indexation automatique" au fil de l'eau).
+Hibernate Search fournit également une API Java qui s'abstrait des différences
+entre le modèle entité/relationnel et le modèle Elasticsearch/document.
 
-Et si, au lieu de se limiter au SQL,
-vous pouviez indexer une partie de votre base de donnée relationnelle dans Elasticsearch,
-et ainsi profiter de ses API de recherche avancée ?
-
-Ce talk présente Hibernate Search 6, une intégration à Hibernate ORM qui permet d'indexer automatiquement
-ses entités dans Elasticsearch, et offre une API Java haut niveau pour requêter d'Elasticsearch.
-
-Pré-requis : connaissances basiques de JPA ou Hibernate ORM.
-
-La présentation inclut :
-
-* Les fondamentaux de la recherche full-text dans le monde Apache Lucene / Elasticsearch
-* Les problématiques de l'indexation automatique d'une base de données dans Elasticsearch, et les solutions apportées par Hibernate Search 6.
-* Les bases de l'utilisation d'Hibernate Search 6 : configuration, annotations, initialisation, API de recherche.
-* Une démonstration d'une application utilisant Hibernate Search 6 avec la stack Quarkus.
+Cette solution simple à mettre en place mais complète fournit aux applications
+les moyens de continuer à utiliser leur base de données relationnelle habituelle
+pour leurs besoins de stockage de données,
+tout en bénéficiant d'index Elasticsearch continuellement mis à jour
+pour leurs besoins de recherche full-text (et plus).
 
 ## Speaker
 
-Yoann Rodière est Software Engineer chez Red Hat dans l'équipe Hibernate.
-Il est lead developer du projet Hibernate Search (http://hibernate.org/search/),
-ainsi que l'un des principaux contributeurs aux extensions Hibernate (ORM, Search, Validator)
-au sein de la stack Quarkus (https://quarkus.io/).
+Yoann Rodière is lead developer of the Hibernate Search project (http://hibernate.org/search/),
+and one of the main contributors to the Hibernate extensions (ORM, Search, Validator)
+in the Quarkus Java stack (https://quarkus.io/).
