@@ -817,16 +817,13 @@ private String category;
 </code></pre>
 
 <pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="2">List&lt;String&gt; hits =</span>
-		searchSession.search(Book.class)
-		<span class="fragment" data-fragment-index="2">.select(f ->
-                f.field("title", String.class))</span>
-		<span class="fragment" data-fragment-index="3">.where(f ->
-			f.match().field("title")
-			.matching(userInput))</span>
-		<span class="fragment" data-fragment-index="4">.sort(f ->
-			f.field("category")
-			.then().score())</span>
+<span class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="2">List&lt;String&gt; hits =</span> searchSession.search(Book.class)
+		<span class="fragment" data-fragment-index="2">.select(f -> f.field("title", String.class))</span>
+		<span class="fragment" data-fragment-index="3">.where(f -> f.match()
+				.field("title")
+				.matching(userInput))</span>
+		<span class="fragment" data-fragment-index="4">.sort(f -> f.field("category")
+				.then().score())</span>
 		<span class="fragment" data-fragment-index="5">.fetchHits(20);</span></span>
 </code></pre>
 
@@ -847,30 +844,27 @@ private String category;
 ### Et encore plus...
 
 ```java
-.where(f ->
-	f.bool()
-	.must(f.match()
-			.field("title")
-			.matching("ring"))
-	.must(f.range()
-			.field("pageCount")
-			.from(200).to(500)))
+.where(f -> f.bool()
+		.must(f.match()
+		.field("title")
+		.matching("ring"))
+		.must(f.range()
+		.field("pageCount")
+		.from(200).to(500)))
 ```
 ```java
-.where(f ->
-	f.spatial().within()
-	.field("location")
-	.circle(45.7515926, 4.8514779,
-			1.5, DistanceUnit.KILOMETERS))
+.where(f -> f.spatial().within()
+		.field("location")
+		.circle(45.7515926, 4.8514779,
+				1.5, DistanceUnit.KILOMETERS))
 ```
 ```java
-List<Pair<String, Float>> hits =
-		searchSession.search(Book.class)
+List<Pair<String, Float>> hits = searchSession.search(Book.class)
 		.select(f -> f.composite(
-            Pair::new,
-            f.field("title", String.class),
-            f.score()
-        ))
+		Pair::new,
+		f.field("title", String.class),
+		f.score()
+		))
 		...
 ```
 
@@ -886,29 +880,30 @@ List<Pair<String, Float>> hits =
 
 ```java
 AggregationKey<Map<Genre, Long>> countsByGenreKey =
-        AggregationKey.of( "countsByGenre" ); 
+		AggregationKey.of("countsByGenre"); 
 
-SearchResult<Book> result = searchSession.search( Book.class ) 
-        .where( f -> f.match().field( "title" ) 
-                .matching( "robot" ) )
-        .aggregation( countsByGenreKey, f -> f.terms() 
-                .field( "genre", Genre.class ) )
-        .fetch( 20 ); 
+SearchResult<Book> result = searchSession.search(Book.class)
+		.where(f -> f.match()
+				.field("title") 
+				.matching("robot"))
+		.aggregation(countsByGenreKey, f -> f.terms()
+				.field("genre", Genre.class))
+		.fetch(20); 
 
-Map<Genre, Long> countsByGenre = result.aggregation( countsByGenreKey ); 
+Map<Genre, Long> countsByGenre = result.aggregation(countsByGenreKey); 
 ```
 
 <div class="fragment">
 
 ```java
-        // ...
-        .aggregation( countsByPriceKey, f -> f.range()
-                .field( "price", Double.class ) 
-                .range( 0.0, 10.0 ) 
-                .range( 10.0, 20.0 )
-                .range( 20.0, null ) )
-        // ...
-Map<Range<Double>, Long> countsByPrice = result.aggregation( countsByPriceKey );
+		// ...
+		.aggregation(countsByPriceKey, f -> f.range()
+				.field("price", Double.class) 
+				.range(0.0, 10.0) 
+				.range(10.0, 20.0)
+				.range(20.0, null))
+		// ...
+Map<Range<Double>, Long> countsByPrice = result.aggregation(countsByPriceKey);
 ```
 
 </div>
@@ -918,13 +913,13 @@ Map<Range<Double>, Long> countsByPrice = result.aggregation( countsByPriceKey );
 ### Intégration de JSON natif
 
 ```java
-        // ...
-        .aggregation( priceStatsKey, f -> f.fromJson( "{\n" +
-                "  \"stats\": {\n" +
-                "    \"field\": \"variants.price\"\n" +
-                "  }\n" +
-                "}" ) )
-        // ...
+		// ...
+		.aggregation(priceStatsKey, f -> f.fromJson("{\n" +
+				"  \"stats\": {\n" +
+				"    \"field\": \"variants.price\"\n" +
+				"  }\n" +
+				"}"))
+		// ...
 JsonObject priceStats = result.aggregation( priceStatsKey ); 
 ```
 
