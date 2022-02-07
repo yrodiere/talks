@@ -17,12 +17,12 @@ Application avec...
 
 ```sql
 SELECT * FROM entity
-WHERE entity.textcontent ILIKE '%car%';
+WHERE entity.textcontent ILIKE '%Thé%';
 ```
 
 ```sql
 SELECT * FROM entity
-WHERE lower(entity.textcontent) LIKE lower('%car%');
+WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 ```
 
 ---
@@ -30,7 +30,9 @@ WHERE lower(entity.textcontent) LIKE lower('%car%');
 ### `LIKE`/`ILIKE`: bilan
 
 * <!-- .element: class="fragment" -->
-  Faux positifs: "car" => "Picard"
+  Faux positifs: "thé" => "kinési***thé***rapie"
+* <!-- .element: class="fragment" -->
+  Faux négatifs: "thés" &nrArr; "thé"
 * <!-- .element: class="fragment" -->
   Pas de tri par pertinence
 * <!-- .element: class="fragment" -->
