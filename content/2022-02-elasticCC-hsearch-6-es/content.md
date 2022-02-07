@@ -562,9 +562,9 @@ EntityManager entityManager = /*...*/;
 
 ```java
 .where(f -> f.bool()
-		.must(f.match()
+		.must(f.simpleQueryString()
 				.field("title")
-				.matching("ring"))
+				.matching(userInput))
 		.must(f.range()
 				.field("pageCount")
 				.from(200).to(500)))
