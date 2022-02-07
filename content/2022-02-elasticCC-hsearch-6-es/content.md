@@ -11,7 +11,7 @@
 
 Application avec...
 
----
+-
 
 ### Solution naïve : `LIKE`/`ILIKE`
 
@@ -25,7 +25,7 @@ SELECT * FROM entity
 WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 ```
 
----
+-
 
 ### `LIKE`/`ILIKE`: bilan
 
@@ -41,7 +41,7 @@ WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 En bref: solution qui atteint très vite ses limites
 <!-- .element: class="fragment" -->
 
----
+-
 
 ## Le full-text dans la base de données ?
 
@@ -68,7 +68,7 @@ En bref: solution qui atteint très vite ses limites
   difficile de choisir l'index en fonction du langage.
 * Recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
 
----
+-
 
 ## Le full-text déporté
 
@@ -183,29 +183,12 @@ hibernate.search.backend.password = j@rV1s</span>
 
 <div class="fragment">
 
-Spring Boot: `spring.jpa.properties.*`
-
-</div>
-
-<div class="fragment">
-
-Quarkus: `application.yaml`
-
-```
-quarkus.hibernate-search-orm:
-  elasticsearch:
-    hosts: elasticsearch.mycompany.com
-    version: 7 
-```
-
-</div>
+Quarkus, Spring Boot: similaire, cf. documentation.
 
 @Notes:
 
 1. Adresse d'Elasticsearch
 2. Si besoin, authentification
-3. Intégration plus poussée dans Quarkus, préfixes différents
-4. Même préfixe que JPA pour Spring Boot
 
 -
 
@@ -263,90 +246,6 @@ Mapping Elasticsearch
 1. Ajoute un champs full-text, avec sa config
 1. On peut ajouter plusieurs champs avec une config différente (utile pour tri, par exemple)
 1. Entité => Document, c'est bon. Et ensuite?
-
--
-
-### Analyse
-
-<pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
-hibernate.search.backend.analysis.configurer = myAnalysisConfigurer
-</code></pre>
-
-<pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1">@Dependent
-@Named("myAnalysisConfigurer")</span>
-public class MyAnalysisConfigurer
-        implements ElasticsearchAnalysisConfigurer {
-	@Override
-	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
-		context.analyzer( "my-analyzer" ).custom()
-				.tokenizer( "whitespace" )
-				.charFilters( "html_strip" )
-				.tokenFilters( "asciifolding", "lowercase",
-						"stop", "porter_stem" );
-		</span><span class="fragment" data-fragment-index="3">
-		context.normalizer( "my-normalizer" ).custom()
-				.tokenFilters( "asciifolding", "lowercase" );</span>
-	}
-}
-</code></pre>
-
-@Notes:
-
-1. Les analyzers reférencés dans le mapping doivent être définis
-1. Dans HSearch, définition via un bean
-1. Le bean doit être reférencé dans la configuration
-1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
-1. On ajoute quelques définitions...
-1. Mais... comment pousser ça vers Elasticsearch?
-
----
-
-## Initialisation d'Elasticsearch
-
--
-
-### Gestion du schéma
-
-Au démarrage :
-
-<pre><code data-trim data-noescape>
-hibernate.search.schema_management.strategy = create-or-validate
-</code></pre>
-
-* `none`
-* `create`
-* `validate`
-* `create-or-validate` (par défaut)
-* `update`
-* `drop-and-create`
-* `drop-and-create-and-drop` (tests)
-
-<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
-
-@Notes:
-
-* Expliquer chaque stratégie
-
--
-
-### `MassIndexer`
-
-<pre><code class="lang-java" data-trim data-noescape>
-EntityManagerFactory emf = /* ... */;
-Search.mapping(emf).scope(Object.class).massIndexer()
-		<span class="fragment">.purgeAllOnStart(true)
-		.typesToIndexInParallel(2)
-		.batchSizeToLoadObjects(25)
-		.idFetchSize(150)
-		.threadsToLoadObjects(30)</span>
-		.startAndWait();
-</code></pre>
-
-@Notes:
-
-1. Réindexe toutes les entités; peut prendre un certain temps
-1. Plein d'options pour tuner les performances
 
 ---
 
@@ -554,6 +453,54 @@ tx.commit();<span class="fragment"> // Réindexe le *Book*</span>
 
 ---
 
+## Initialisation d'Elasticsearch
+
+-
+
+### Gestion du schéma
+
+Au démarrage :
+
+<pre><code data-trim data-noescape>
+hibernate.search.schema_management.strategy = create-or-validate
+</code></pre>
+
+* `none`
+* `create`
+* `validate`
+* `create-or-validate` (par défaut)
+* `update`
+* `drop-and-create`
+* `drop-and-create-and-drop` (tests)
+
+<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
+
+@Notes:
+
+* Expliquer chaque stratégie
+
+-
+
+### `MassIndexer`
+
+<pre><code class="lang-java" data-trim data-noescape>
+EntityManagerFactory emf = /* ... */;
+Search.mapping(emf).scope(Object.class).massIndexer()
+		<span class="fragment">.purgeAllOnStart(true)
+		.typesToIndexInParallel(2)
+		.batchSizeToLoadObjects(25)
+		.idFetchSize(150)
+		.threadsToLoadObjects(30)</span>
+		.startAndWait();
+</code></pre>
+
+@Notes:
+
+1. Réindexe toutes les entités; peut prendre un certain temps
+1. Plein d'options pour tuner les performances
+
+---
+
 ## Recherche
 
 <div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
@@ -647,6 +594,42 @@ List<Pair<String, Float>> hits = searchSession.search(Book.class)
 ---
 
 ## Encore un peu de temps ?
+
+-
+
+### Analyse
+
+<pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
+hibernate.search.backend.analysis.configurer = myAnalysisConfigurer
+</code></pre>
+
+<pre><code class="lang-java" data-trim data-noescape>
+<span class="fragment" data-fragment-index="1">@Dependent
+@Named("myAnalysisConfigurer")</span>
+public class MyAnalysisConfigurer
+        implements ElasticsearchAnalysisConfigurer {
+	@Override
+	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
+		context.analyzer( "my-analyzer" ).custom()
+				.tokenizer( "whitespace" )
+				.charFilters( "html_strip" )
+				.tokenFilters( "asciifolding", "lowercase",
+						"stop", "porter_stem" );
+		</span><span class="fragment" data-fragment-index="3">
+		context.normalizer( "my-normalizer" ).custom()
+				.tokenFilters( "asciifolding", "lowercase" );</span>
+	}
+}
+</code></pre>
+
+@Notes:
+
+1. Les analyzers reférencés dans le mapping doivent être définis
+1. Dans HSearch, définition via un bean
+1. Le bean doit être reférencé dans la configuration
+1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
+1. On ajoute quelques définitions...
+1. Mais... comment pousser ça vers Elasticsearch?
 
 -
 
