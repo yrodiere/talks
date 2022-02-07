@@ -36,12 +36,20 @@ deck.initialize().then(() => {
 
   // See https://github.com/magjac/d3-graphviz
   document.querySelectorAll(".viz").forEach(vizElement => {
-    var engine = vizElement.dataset.vizEngine || 'dot';
     var dot = vizElement.textContent;
     vizElement.innerHTML = '';
-    d3.select(vizElement).graphviz()
-        .engine(engine)
-        .renderDot(
+
+    var engine = vizElement.dataset.vizEngine || 'dot';
+    var graphviz = d3.select(vizElement).graphviz()
+        .engine(engine);
+    var images = vizElement.dataset.vizImages;
+    if (images) {
+      images.split(';').map(s => s.split(','))
+          .forEach(image => {
+            graphviz = graphviz.addImage(image[0], image[1], image[2]);
+          });
+    }
+    graphviz.renderDot(
           dot,
           function () {
             vizElement.querySelectorAll("[class^='data-'], [class*=' data-']")
