@@ -38,7 +38,7 @@ WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 * <!-- .element: class="fragment" -->
   Performances limitées
 
-En bref: solution qui atteint très vite ses limites
+En bref : solution qui atteint très vite ses limites
 <!-- .element: class="fragment" -->
 
 -
@@ -278,7 +278,7 @@ digraph {
 
 	app [label = "Application", pos = "-3,0!"];
 	orm [label = "ORM", labelloc="t", pos = "0,0!"];
-	db [label = "DB", pos = "5,0!"];
+	db [label = "BDD", pos = "5,0!"];
 
 	app -> orm [label = "Modif. d'entité", headclip = false, arrowhead = none];
 	orm -> db [label = "INSERT/UPDATE", tailclip = false];
@@ -309,9 +309,9 @@ digraph {
 	rankdir = LR;
 	node [margin = 0.25];
 
-	change1 [label = "Change 1", shape = record, style = rounded];
-	change2 [label = "Change 2", shape = record, style = rounded];
-	change3 [label = "Change 3", shape = record, style = rounded];
+	change1 [label = "Modif. 1", shape = record, style = rounded];
+	change2 [label = "Modif. 2", shape = record, style = rounded];
+	change3 [label = "Modif. 3", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
     elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0];
@@ -511,7 +511,7 @@ digraph {
 
 	app [label = "Application", pos = "-4,-2!"];
 	orm [label = "ORM", labelloc="t", pos = "0,0!"];
-	db [label = "DB", pos = "4,0!"];
+	db [label = "BDD", pos = "4,0!"];
 
 	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
     elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
