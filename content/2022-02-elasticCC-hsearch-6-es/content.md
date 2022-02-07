@@ -46,71 +46,27 @@ En bref: solution qui atteint très vite ses limites
 ## Le full-text dans la base de données ?
 
 * <!-- .element: class="fragment" -->
-  Avantages :
-  * Mise à jour des index immédiate, transactionnelle
-  * Combinaison de full-text et de SQL traditionnel (`JOIN`, ...)
+  Couplage fort avec SGBD
 * <!-- .element: class="fragment" -->
-  Mais...
-   * <!-- .element: class="fragment" -->
-     Couplage fort avec un SGBD précis
-   * <!-- .element: class="fragment" -->
-     Recherche : requêtes SQL natives (ou ajouts à la syntaxe HQL/JPQL)
-   * <!-- .element: class="fragment" -->
-     Mapping **table** &rarr; document : admin. BDD
-   * <!-- .element: class="fragment" -->
-     Technologies parfois moins matures que Lucene
+  Mapping &rarr; modification de schéma en BDD
+* <!-- .element: class="fragment" -->
+  Pas de bindings JPA pré-existants (JPQL, ...)
+* <!-- .element: class="fragment" -->
+  Périmètre d'indexation strict (table)
+* <!-- .element: class="fragment" -->
+  Fonctionnalités limitées
 
 @Notes:
 
-Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
-
----
-
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
-
-<div class="viz">
-digraph {
-	rankdir = LR;
-	splines = ortho;
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		query [label = "Requête\n(texte)"];
-		documents [label = "Documents\n(texte)"];
-		analyzedQuery [label = "Requête\nanalysée\n(structurée)"];
-		results [label = "Résultats"];
-		index [label = "Index inversé"];
-	}
-
-	subgraph {
-		rank = same;
-		queryAnalysis [label = "Analyse"];
-		documentAnalysis [label = "Analyse"];
-	}
-
-	subgraph {
-		rank = same;
-		queryExecution [label = "Exécution"];
-		index;
-	}
-
-	query -> queryAnalysis;
-	queryAnalysis -> analyzedQuery;
-	documents -> documentAnalysis;
-	documentAnalysis -> index;
-	index -> queryExecution;
-	analyzedQuery -> queryExecution;
-	queryExecution -> results;
-}
-</div>
-
-
-@Notes:
-* Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
-* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
-* Analyse = extraction et « nettoyage » de tokens.
-* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
-* On analyse les requêtes de la même manière => tokens correspondants
+* Chaque BDD a sa propre syntaxe SQL
+* Config full text change => schéma de BDD change
+  Opération lourde, surtout si full-text est une fonctionnalité non critique
+* Configuration du mapping : pas d'annotation JPA;
+  requêtes SQL : pas de bindings Criteria fournis par JPA,
+  pas de fonctions JPQL dédiées.
+* Si langage et données sont dans tables différentes,
+  difficile de choisir l'index en fonction du langage.
+* Recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
 
 ---
 
@@ -600,30 +556,6 @@ tx.commit();<span class="fragment"> // Réindexe le *Book*</span>
 
 ## Recherche
 
-<pre><code class="lang-java" data-trim data-noescape>
-String userInput = /*...*/;
-EntityManager entityManager = /*...*/;
-<span class="fragment" data-fragment-index="1">SearchSession searchSession = Search.session(entityManager);</span>
-
-<span class="fragment" data-fragment-index="2"><span class="fragment" data-fragment-index="4">List&lt;Book&gt; hits =</span> searchSession.search(Book.class)</span>
-        <span class="fragment" data-fragment-index="3">.where(f -> f.match().field("title").matching(userInput))</span>
-        <span class="fragment" data-fragment-index="4">.fetchHits(20);</span>
-</code></pre>
-
-@Notes:
-
-1. On peut utiliser les API d'Elasticsearch directement, si on le désire
-1. Mais une API Java peut aider: type-safe dans une certaine mesure, auto-complétion, pas de parsing
-1. Configuration classique: terme fourni par l'utilisateur + entity manager (session)
-1. Accès à l'API HSearch via `Search.session`
-1. De là, on démarre une recherche sur la classe `Book` (cible implicitement l'index "book")
-1. On définit un prédicat (`f` est une "factory" de prédicats)
-1. On récupère les hits: ce sont des entités managées! (i.e. lazy loading, etc.)
-
--
-
-### Récupération automatique des entités
-
 <div class="viz" data-viz-engine="neato">
 digraph {
 	splines = polyline;
@@ -651,7 +583,69 @@ digraph {
 1. Puis, à partir des identifiants de documents, HSearch récupère les entités
 1. Et les transmet à l'application
 1. Évidemment, ça implique un accès à la BDD
-1. Si vous ne voulez pas ça...
+
+-
+
+<pre><code class="lang-java" data-trim data-noescape>
+String userInput = /*...*/;
+EntityManager entityManager = /*...*/;
+<span class="fragment" data-fragment-index="1">SearchSession searchSession = Search.session(entityManager);</span>
+
+<span class="fragment" data-fragment-index="2"><span class="fragment" data-fragment-index="4">List&lt;Book&gt; hits =</span> searchSession.search(Book.class)</span>
+        <span class="fragment" data-fragment-index="3">.where(f -> f.match().field("title").matching(userInput))</span>
+        <span class="fragment" data-fragment-index="4">.fetchHits(20);</span>
+</code></pre>
+
+@Notes:
+
+1. On peut utiliser les API d'Elasticsearch directement, si on le désire
+1. Mais une API Java peut aider: type-safe dans une certaine mesure, auto-complétion, pas de parsing
+1. Configuration classique: terme fourni par l'utilisateur + entity manager (session)
+1. Accès à l'API HSearch via `Search.session`
+1. De là, on démarre une recherche sur la classe `Book` (cible implicitement l'index "book")
+1. On définit un prédicat (`f` est une "factory" de prédicats)
+1. On récupère les hits: ce sont des entités managées! (i.e. lazy loading, etc.)
+
+-
+
+<!-- .element: class="grid" -->
+
+### Et encore plus...
+
+```java
+.where(f -> f.bool()
+		.must(f.match()
+				.field("title")
+				.matching("ring"))
+		.must(f.range()
+				.field("pageCount")
+				.from(200).to(500)))
+```
+```java
+.where(f -> f.spatial().within()
+		.field("location")
+		.circle(45.7515926, 4.8514779,
+				1.5, DistanceUnit.KILOMETERS))
+```
+```java
+List<Pair<String, Float>> hits = searchSession.search(Book.class)
+		.select(f -> f.composite(
+				Pair::new,
+				f.field("title", String.class),
+				f.score()
+		))
+		...
+```
+
+@Notes:
+
+1. Jonctions booléenne, permettent l'équivalent d'un ET/OU
+2. Prédicats spatiaux, pour rechercher par distance à un point
+3. Projections composites
+
+---
+
+## Encore un peu de temps ?
 
 -
 
@@ -692,43 +686,6 @@ private String category;
 1. Puis on ajoute un tri
 1. Ici, on trie sur un seul champ, puis par score (pertinence) en cas d'égalité
 1. On finit par un `fetchHits` comme d'habitude
-
--
-
-<!-- .element: class="grid" -->
-
-### Et encore plus...
-
-```java
-.where(f -> f.bool()
-		.must(f.match()
-				.field("title")
-				.matching("ring"))
-		.must(f.range()
-				.field("pageCount")
-				.from(200).to(500)))
-```
-```java
-.where(f -> f.spatial().within()
-		.field("location")
-		.circle(45.7515926, 4.8514779,
-				1.5, DistanceUnit.KILOMETERS))
-```
-```java
-List<Pair<String, Float>> hits = searchSession.search(Book.class)
-		.select(f -> f.composite(
-				Pair::new,
-				f.field("title", String.class),
-				f.score()
-		))
-		...
-```
-
-@Notes:
-
-1. Jonctions booléenne, permettent l'équivalent d'un ET/OU
-2. Prédicats spatiaux, pour rechercher par distance à un point
-3. Projections composites
 
 -
 
@@ -781,9 +738,7 @@ JsonObject priceStats = result.aggregation( priceStatsKey );
 
 Fonctionne également pour prédicats, tris, et même requête complète.
 
----
-
-<!-- .element: data-visibility="hidden" -->
+-
 
 ### Démo
 
