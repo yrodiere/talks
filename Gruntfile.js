@@ -51,9 +51,12 @@ module.exports = function(grunt) {
 			js: {
 				files: [
 					{ expand: true, dest: 'dist/js/', cwd: 'js/', src: '**' },
-					{ expand: true, dest: 'dist/js/reveal/', cwd: 'node_modules/reveal.js/dist/', src: '*.js' },
+					{ expand: true, dest: 'dist/js/reveal/', cwd: 'node_modules/reveal.js/dist/', src: '*.js*' },
 					{ expand: true, dest: 'dist/js/reveal/plugin/', cwd: 'node_modules/reveal.js/plugin/', src: '**' },
-					{ expand: true, dest: 'dist/js/viz', cwd: 'node_modules/viz.js/', src: '**.js' }
+					{ expand: true, dest: 'dist/js/d3/', cwd: 'node_modules/d3/dist/', src: '**.js*' },
+					{ expand: true, dest: 'dist/js/d3-graphviz/', cwd: 'node_modules/d3-graphviz/build/', src: '**.js*' },
+					{ expand: true, dest: 'dist/js/@hpcc-js/wasm/', cwd: 'node_modules/@hpcc-js/wasm/dist/', src: '**.js*' },
+					{ expand: true, dest: 'dist/js/@hpcc-js/wasm/', cwd: 'node_modules/@hpcc-js/wasm/dist/', src: '**.wasm*' }
 				],
 			},
 			css: {
