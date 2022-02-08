@@ -1,9 +1,8 @@
-/* globals Viz */
+/* globals d3 */
 import Reveal from './reveal/reveal.esm.js';
 import RevealMarkdown from './reveal/plugin/markdown/markdown.esm.js';
 import RevealNotes from './reveal/plugin/notes/notes.esm.js';
 import RevealHighlight from './reveal/plugin/highlight/highlight.esm.js';
-//import RevealViz from './reveal-plugin-viz.esm.js';
 
 // More info https://github.com/hakimel/reveal.js#configuration
 let deck = new Reveal({
@@ -35,21 +34,26 @@ deck.initialize().then(() => {
     } );
   }
 
-  // See also https://github.com/mdaines/viz.js/wiki/Usage
-  var viz = new Viz();
+  // See https://github.com/magjac/d3-graphviz
   document.querySelectorAll(".viz").forEach(vizElement => {
+    var dot = vizElement.textContent;
+    vizElement.innerHTML = '';
+
     var engine = vizElement.dataset.vizEngine || 'dot';
-    viz.renderSVGElement(vizElement.textContent, {engine: engine})
-        .then(svgElement => {
-          svgElement.querySelectorAll("[class^='data-'], [class*=' data-']")
-              .forEach(element => convertDataCssClassesToDataAttributes('data-', element));
-          vizElement.innerHTML = '';
-          vizElement.appendChild(svgElement);
-        })
-        .catch(error => {
-          // Create a new Viz instance (see https://github.com/mdaines/viz.js/wiki/Caveats for more info)
-          viz = new Viz();
-          console.error("Viz.js: Error while rendering:\n %s\nError:\n%O", vizElement.textContent, error);
-        });
+    var graphviz = d3.select(vizElement).graphviz()
+        .engine(engine);
+    var images = vizElement.dataset.vizImages;
+    if (images) {
+      images.split(';').map(s => s.split(','))
+          .forEach(image => {
+            graphviz = graphviz.addImage(image[0], image[1], image[2]);
+          });
+    }
+    graphviz.renderDot(
+          dot,
+          function () {
+            vizElement.querySelectorAll("[class^='data-'], [class*=' data-']")
+               .forEach(element => convertDataCssClassesToDataAttributes('data-', element));
+         });
   });
 });

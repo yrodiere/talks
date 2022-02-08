@@ -6,3 +6,5 @@
 
 ## [hsearch-fosdem-2019](hsearch-fosdem-2019)
 
+## [2022-02-elasticCC-hsearch-6-es](2022-02-elasticCC-hsearch-6-es)
+

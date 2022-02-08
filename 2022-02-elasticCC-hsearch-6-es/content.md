@@ -11,256 +11,68 @@
 
 Application avec...
 
----
+-
 
 ### Solution naïve : `LIKE`/`ILIKE`
 
 ```sql
 SELECT * FROM entity
-WHERE entity.textcontent ILIKE '%car%';
+WHERE entity.textcontent ILIKE '%Thé%';
 ```
 
 ```sql
 SELECT * FROM entity
-WHERE lower(entity.textcontent) LIKE lower('%car%');
+WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 ```
 
 -
 
-### Démo
-
-Recherche full-text naïve avec `LIKE`
-
-@Notes:
-
-* projet "base"
-* Montrer TShirt
-* Montrer TShirtService
-* `curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?q=car&brief=true' | jq`
-* "Picard"? => Faux positif...
-* "Cars! Cars! Cars" devrait probablement être en première position
-
--
-
-### Bilan
+### `LIKE`/`ILIKE`: bilan
 
 * <!-- .element: class="fragment" -->
-  Faux positifs
+  Faux positifs: "thé" => "kinési***thé***rapie"
+* <!-- .element: class="fragment" -->
+  Faux négatifs: "thés" &nrArr; "thé"
 * <!-- .element: class="fragment" -->
   Pas de tri par pertinence
 * <!-- .element: class="fragment" -->
   Performances limitées
 
-En bref: solution qui atteint très vite ses limites
+En bref : solution qui atteint très vite ses limites
 <!-- .element: class="fragment" -->
 
----
+-
 
 ## Le full-text dans la base de données ?
 
 * <!-- .element: class="fragment" -->
-  Avantages :
-  * Mise à jour des index immédiate, transactionnelle
-  * Combinaison de full-text et de SQL traditionnel (`JOIN`, ...)
+  Couplage fort avec SGBD
 * <!-- .element: class="fragment" -->
-  Mais...
-   * <!-- .element: class="fragment" -->
-     Couplage fort avec un SGBD précis
-   * <!-- .element: class="fragment" -->
-     Recherche : requêtes SQL natives (ou ajouts à la syntaxe HQL/JPQL)
-   * <!-- .element: class="fragment" -->
-     Mapping **table** &rarr; document : admin. BDD
-   * <!-- .element: class="fragment" -->
-     Technologies parfois moins matures que Lucene
+  Mapping &rarr; modification de schéma en BDD
+* <!-- .element: class="fragment" -->
+  Pas de bindings JPA pré-existants (JPQL, ...)
+* <!-- .element: class="fragment" -->
+  Périmètre d'indexation strict (table)
+* <!-- .element: class="fragment" -->
+  Fonctionnalités limitées
 
 @Notes:
 
-Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
-
----
-
-## La recherche full-text dans le monde Lucene
-
-<img data-src="../image/logo/lucene.svg" class="logo lucene" />
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
-
-@Notes:
-* Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
-* Lucene: Fondation Apache
-* Elasticsearch utilise Lucene en interne, donc même combat
-* D'autres implémentations de moteurs full-text existent, vocabulaire différent
+* Chaque BDD a sa propre syntaxe SQL
+* Config full text change => schéma de BDD change
+  Opération lourde, surtout si full-text est une fonctionnalité non critique
+* Configuration du mapping : pas d'annotation JPA;
+  requêtes SQL : pas de bindings Criteria fournis par JPA,
+  pas de fonctions JPQL dédiées.
+* Si langage et données sont dans tables différentes,
+  difficile de choisir l'index en fonction du langage.
+* Recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
 
 -
-
-### Index inversé
-
-Token | Emplacement
-:---|:---
-... | ...
-car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
-careless | Doc. 5 (pos. : 2)
-carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
-... | ...
-
-(doc. = document, pos. = position)
-
-@Notes:
-* But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
-* « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
-* Vue très simplifiée. En pratique, plus complexe :
-    * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
-    * Données supplémentaires (scoring, "stored fields", ...)
-
--
-
-### Principe
-<div class="viz">
-digraph {
-	rankdir = LR;
-	splines = ortho;
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		query [label = "Requête\n(texte)"];
-		documents [label = "Documents\n(texte)"];
-		analyzedQuery [label = "Requête\nanalysée\n(structurée)"];
-		results [label = "Résultats"];
-		index [label = "Index inversé"];
-	}
-
-	subgraph {
-		rank = same;
-		queryAnalysis [label = "Analyse"];
-		documentAnalysis [label = "Analyse"];
-	}
-
-	subgraph {
-		rank = same;
-		queryExecution [label = "Exécution"];
-		index;
-	}
-
-	query -> queryAnalysis;
-	queryAnalysis -> analyzedQuery;
-	documents -> documentAnalysis;
-	documentAnalysis -> index;
-	index -> queryExecution;
-	analyzedQuery -> queryExecution;
-	queryExecution -> results;
-}
-</div>
-
-@Notes:
-* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
-* Analyse = extraction et « nettoyage » de tokens.
-* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
-* On analyse les requêtes de la même manière => tokens correspondants
-
--
-
-### Analyse, partie 1 : tokenization
-<div class="viz">
-digraph {
-	rankdir = LR;
-
-	tokenizer [label = "Tokenizer"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "a big car"];
-		output [label = "{ a | big | car }"];
-	}
-
-	input -> tokenizer;
-	tokenizer -> output;
-}
-</div>
-
-@Notes:
-* Plus précis que '%car%'
-* ... donc permet moins d'approximations ('CAR', 'cars', ...)
-* => Filtering
-
--
-
-### Analyse, partie 2 : Filtering
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	lowercase [label = "Lower case filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ A | BIG | CaR}"];
-		output [label = "{ a | big | car }"];
-	}
-
-	input -> lowercase;
-	lowercase -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	asciiFolding [label = "ASCII folding filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ bon | appétit }"];
-		output [label = "{ bon | appetit }"];
-	}
-
-	input -> asciiFolding;
-	asciiFolding -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stemming [label = "Stemmer"]
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ two | tuned | cars }"];
-		output [label = "{ two | tun | car }"];
-	}
-
-	input -> stemming;
-	stemming -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stopWords [label = "Stop-words filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ a | big | car }"];
-		output [label = "{ big | car }"];
-	}
-
-	input -> stopWords;
-	stopWords -> output;
-}
-</div>
-
-Et caetera, et caetera. <!-- .element: class="fragment" -->
-
-@Notes:
-* Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
-* ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
-* Bilan: c'est mieux ! Mais...
-
----
 
 ## Le full-text déporté
 
-<div class="viz" data-viz-engine="neato">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	splines = curves;
@@ -280,7 +92,7 @@ digraph {
 		node [class="fragment data-fragment-index_1"];
 		edge [class="fragment data-fragment-index_1"];
 		
-		elasticsearch [label = "Elasticsearch", pos = "6,-1!", style = dashed];
+		elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "6,-1!"];
 	}
 	subgraph {
 		node [class="fragment data-fragment-index_2"];
@@ -289,7 +101,7 @@ digraph {
 		ftSync [label = "Sync ? Mapping ?", pos = "6,0.5!", style = dashed];
 	
 		orm -> ftSync [headlabel = "Load", labeldistance="4", style = dashed];
-		ftSync -> elasticsearch [headlabel = "Put", labeldistance="4", style = dashed];
+		ftSync -> elasticsearch [headlabel = "Put", labeldistance="3", style = dashed];
 	}
 	subgraph {
 		node [class="fragment data-fragment-index_3"];
@@ -315,7 +127,7 @@ Notre approche:
 
 1. ES: riche en fonctionnalités, ne réinventons pas la roue
 2. Synchronisation
-   1.Deux datastores... deux vérités?
+   1. Deux datastores... deux vérités?
    2. Deux écritures => source d'erreurs
    3. Synchronisation automatique?
    4. Comment déclencher la synchronisation? Réindexation complète toutes les 60s => impossible
@@ -340,12 +152,12 @@ Notre approche:
 <dependency>
    <groupId>org.hibernate.search</groupId>
    <artifactId>hibernate-search-mapper-orm</artifactId>
-   <version>6.0.7.Final</version>
+   <version>6.1.0.Final</version>
 </dependency>
 <dependency>
    <groupId>org.hibernate.search</groupId>
    <artifactId>hibernate-search-backend-elasticsearch</artifactId>
-   <version>6.0.7.Final</version>
+   <version>6.1.0.Final</version>
 </dependency>
 ```
 
@@ -371,29 +183,12 @@ hibernate.search.backend.password = j@rV1s</span>
 
 <div class="fragment">
 
-Spring Boot: `spring.jpa.properties.*`
-
-</div>
-
-<div class="fragment">
-
-Quarkus: `application.yaml`
-
-```
-quarkus.hibernate-search-orm:
-  elasticsearch:
-    hosts: elasticsearch.mycompany.com
-    version: 7 
-```
-
-</div>
+Quarkus, Spring Boot: similaire, cf. documentation.
 
 @Notes:
 
 1. Adresse d'Elasticsearch
 2. Si besoin, authentification
-3. Intégration plus poussée dans Quarkus, préfixes différents
-4. Même préfixe que JPA pour Spring Boot
 
 -
 
@@ -452,90 +247,6 @@ Mapping Elasticsearch
 1. On peut ajouter plusieurs champs avec une config différente (utile pour tri, par exemple)
 1. Entité => Document, c'est bon. Et ensuite?
 
--
-
-### Analyse
-
-<pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
-hibernate.search.backend.analysis.configurer = myAnalysisConfigurer
-</code></pre>
-
-<pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1">@Dependent
-@Named("myAnalysisConfigurer")</span>
-public class MyAnalysisConfigurer
-        implements ElasticsearchAnalysisConfigurer {
-	@Override
-	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
-		context.analyzer( "my-analyzer" ).custom()
-				.tokenizer( "whitespace" )
-				.charFilters( "html_strip" )
-				.tokenFilters( "asciifolding", "lowercase",
-						"stop", "porter_stem" );
-		</span><span class="fragment" data-fragment-index="3">
-		context.normalizer( "my-normalizer" ).custom()
-				.tokenFilters( "asciifolding", "lowercase" );</span>
-	}
-}
-</code></pre>
-
-@Notes:
-
-1. Les analyzers reférencés dans le mapping doivent être définis
-1. Dans HSearch, définition via un bean
-1. Le bean doit être reférencé dans la configuration
-1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
-1. On ajoute quelques définitions...
-1. Mais... comment pousser ça vers Elasticsearch?
-
----
-
-## Initialisation d'Elasticsearch
-
--
-
-### Gestion du schéma
-
-Au démarrage :
-
-<pre><code data-trim data-noescape>
-hibernate.search.schema_management.strategy = create-or-validate
-</code></pre>
-
-* `none`
-* `create`
-* `validate`
-* `create-or-validate` (par défaut)
-* `update`
-* `drop-and-create`
-* `drop-and-create-and-drop` (tests)
-
-<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
-
-@Notes:
-
-* Expliquer chaque stratégie
-
--
-
-### `MassIndexer`
-
-<pre><code class="lang-java" data-trim data-noescape>
-EntityManagerFactory emf = /* ... */;
-Search.mapping(emf).scope(Object.class).massIndexer()
-		<span class="fragment">.purgeAllOnStart(true)
-		.typesToIndexInParallel(2)
-		.batchSizeToLoadObjects(25)
-		.idFetchSize(150)
-		.threadsToLoadObjects(30)</span>
-		.startAndWait();
-</code></pre>
-
-@Notes:
-
-1. Réindexe toutes les entités; peut prendre un certain temps
-1. Plein d'options pour tuner les performances
-
 ---
 
 ## Persister *et* indexer
@@ -561,19 +272,19 @@ tx.commit();<span class="fragment" data-fragment-index="1"> // Déclenche aussi 
 
 ### Indexation automatique
 
-<div class="viz" data-viz-engine="neato">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
 	app [label = "Application", pos = "-3,0!"];
 	orm [label = "ORM", labelloc="t", pos = "0,0!"];
-	db [label = "DB", pos = "5,0!"];
+	db [label = "BDD", pos = "5,0!"];
 
 	app -> orm [label = "Modif. d'entité", headclip = false, arrowhead = none];
 	orm -> db [label = "INSERT/UPDATE", tailclip = false];
 
 	hsearch [label = "Hibernate Search", pos = "0,-2!"];
-	elasticsearch [label = "Elasticsearch", pos = "5,-2!"];
+    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
 
 	orm -> hsearch:nw [headlabel = "Evénement\nde modif.", style = dashed, tailclip = false, class="fragment data-fragment-index_1"];
 	orm -> hsearch:ne [headlabel = "Evénement\nde commit", style = dashed, tailclip = false, class="fragment data-fragment-index_2"];
@@ -593,17 +304,17 @@ digraph {
 -
 
 ### *Bulking* automatique
-<div class="viz">
+<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	node [margin = 0.25];
 
-	change1 [label = "Change 1", shape = record, style = rounded];
-	change2 [label = "Change 2", shape = record, style = rounded];
-	change3 [label = "Change 3", shape = record, style = rounded];
+	change1 [label = "Modif. 1", shape = record, style = rounded];
+	change2 [label = "Modif. 2", shape = record, style = rounded];
+	change3 [label = "Modif. 3", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
-	elasticsearch [label = "Elasticsearch"];
+    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0];
 
 	change1 -> hsearch;
 	change2 -> hsearch;
@@ -742,7 +453,86 @@ tx.commit();<span class="fragment"> // Réindexe le *Book*</span>
 
 ---
 
+## Initialisation d'Elasticsearch
+
+-
+
+### Gestion du schéma
+
+Au démarrage :
+
+<pre><code data-trim data-noescape>
+hibernate.search.schema_management.strategy = create-or-validate
+</code></pre>
+
+* `none`
+* `create`
+* `validate`
+* `create-or-validate` (par défaut)
+* `update`
+* `drop-and-create`
+* `drop-and-create-and-drop` (tests)
+
+<span class="fragment">Aussi possible via API à n'importe quel moment.</span>
+
+@Notes:
+
+* Expliquer chaque stratégie
+
+-
+
+### `MassIndexer`
+
+<pre><code class="lang-java" data-trim data-noescape>
+EntityManagerFactory emf = /* ... */;
+Search.mapping(emf).scope(Object.class).massIndexer()
+		<span class="fragment">.purgeAllOnStart(true)
+		.typesToIndexInParallel(2)
+		.batchSizeToLoadObjects(25)
+		.idFetchSize(150)
+		.threadsToLoadObjects(30)</span>
+		.startAndWait();
+</code></pre>
+
+@Notes:
+
+1. Réindexe toutes les entités; peut prendre un certain temps
+1. Plein d'options pour tuner les performances
+
+---
+
 ## Recherche
+
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+digraph {
+	splines = polyline;
+
+	node [margin = 0.2];
+
+	app [label = "Application", pos = "-4,-2!"];
+	orm [label = "ORM", labelloc="t", pos = "0,0!"];
+	db [label = "BDD", pos = "4,0!"];
+
+	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
+    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
+
+	orm -> hsearch [label = "Entités managées", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
+	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];
+
+	elasticsearch -> hsearch [taillabel = "Hits", headclip = false, class="fragment data-fragment-index_1"];
+	hsearch -> app [label = "Entités managées", tailclip = false, class="fragment data-fragment-index_3"];
+}
+</div>
+
+@Notes:
+
+1. Comment ça marche?
+1. En premier lieu, HSearch récupères les hits d'Elasticsearch
+1. Puis, à partir des identifiants de documents, HSearch récupère les entités
+1. Et les transmet à l'application
+1. Évidemment, ça implique un accès à la BDD
+
+-
 
 <pre><code class="lang-java" data-trim data-noescape>
 String userInput = /*...*/;
@@ -766,36 +556,80 @@ EntityManager entityManager = /*...*/;
 
 -
 
-### Récupération automatique des entités
+<!-- .element: class="grid" -->
 
-<div class="viz" data-viz-engine="neato">
-digraph {
-	splines = polyline;
+### Et encore plus...
 
-	node [margin = 0.2];
-
-	app [label = "Application", pos = "-4,-2!"];
-	orm [label = "ORM", labelloc="t", pos = "0,0!"];
-	db [label = "DB", pos = "4,0!"];
-
-	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
-	elasticsearch [label = "Elasticsearch", pos = "4,-2!"];
-
-	orm -> hsearch [label = "Entités managées", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
-	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];
-	elasticsearch -> hsearch [taillabel = "Hits", headclip = false, class="fragment data-fragment-index_1"];
-	hsearch -> app [label = "Entités managées", tailclip = false, class="fragment data-fragment-index_3"];
-}
-</div>
+```java
+.where(f -> f.bool()
+		.must(f.simpleQueryString()
+				.field("title")
+				.matching(userInput))
+		.must(f.range()
+				.field("pageCount")
+				.from(200).to(500)))
+```
+```java
+.where(f -> f.spatial().within()
+		.field("location")
+		.circle(45.7515926, 4.8514779,
+				1.5, DistanceUnit.KILOMETERS))
+```
+```java
+List<Pair<String, Float>> hits = searchSession.search(Book.class)
+		.select(f -> f.composite(
+				Pair::new,
+				f.field("title", String.class),
+				f.score()
+		))
+		...
+```
 
 @Notes:
 
-1. Comment ça marche?
-1. En premier lieu, HSearch récupères les hits d'Elasticsearch
-1. Puis, à partir des identifiants de documents, HSearch récupère les entités
-1. Et les transmet à l'application
-1. Évidemment, ça implique un accès à la BDD
-1. Si vous ne voulez pas ça...
+1. Jonctions booléenne, permettent l'équivalent d'un ET/OU
+2. Prédicats spatiaux, pour rechercher par distance à un point
+3. Projections composites
+
+---
+
+## Encore un peu de temps ?
+
+-
+
+### Analyse
+
+<pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
+hibernate.search.backend.analysis.configurer = myAnalysisConfigurer
+</code></pre>
+
+<pre><code class="lang-java" data-trim data-noescape>
+<span class="fragment" data-fragment-index="1">@Dependent
+@Named("myAnalysisConfigurer")</span>
+public class MyAnalysisConfigurer
+        implements ElasticsearchAnalysisConfigurer {
+	@Override
+	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
+		context.analyzer( "my-analyzer" ).custom()
+				.tokenizer( "whitespace" )
+				.charFilters( "html_strip" )
+				.tokenFilters( "asciifolding", "lowercase",
+						"stop", "porter_stem" );
+		</span><span class="fragment" data-fragment-index="3">
+		context.normalizer( "my-normalizer" ).custom()
+				.tokenFilters( "asciifolding", "lowercase" );</span>
+	}
+}
+</code></pre>
+
+@Notes:
+
+1. Les analyzers reférencés dans le mapping doivent être définis
+1. Dans HSearch, définition via un bean
+1. Le bean doit être reférencé dans la configuration
+1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
+1. On ajoute quelques définitions...
+1. Mais... comment pousser ça vers Elasticsearch?
 
 -
 
@@ -836,43 +670,6 @@ private String category;
 1. Puis on ajoute un tri
 1. Ici, on trie sur un seul champ, puis par score (pertinence) en cas d'égalité
 1. On finit par un `fetchHits` comme d'habitude
-
--
-
-<!-- .element: class="grid" -->
-
-### Et encore plus...
-
-```java
-.where(f -> f.bool()
-		.must(f.match()
-		.field("title")
-		.matching("ring"))
-		.must(f.range()
-		.field("pageCount")
-		.from(200).to(500)))
-```
-```java
-.where(f -> f.spatial().within()
-		.field("location")
-		.circle(45.7515926, 4.8514779,
-				1.5, DistanceUnit.KILOMETERS))
-```
-```java
-List<Pair<String, Float>> hits = searchSession.search(Book.class)
-		.select(f -> f.composite(
-		Pair::new,
-		f.field("title", String.class),
-		f.score()
-		))
-		...
-```
-
-@Notes:
-
-1. Jonctions booléenne, permettent l'équivalent d'un ET/OU
-2. Prédicats spatiaux, pour rechercher par distance à un point
-3. Projections composites
 
 -
 
@@ -925,7 +722,7 @@ JsonObject priceStats = result.aggregation( priceStatsKey );
 
 Fonctionne également pour prédicats, tris, et même requête complète.
 
----
+-
 
 ### Démo
 
