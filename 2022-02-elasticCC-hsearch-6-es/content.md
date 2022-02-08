@@ -1,6 +1,6 @@
 ## Contexte
 
-* Java 8+
+* Java
 * Hibernate Object/Relational Mapper
 * Base de données relationnelle
 * Framework indifférent: Quarkus, Spring Boot, Jakarta EE, ...
@@ -137,6 +137,8 @@ Notre approche:
 ---
 
 ## Hibernate Search
+
+ORM. Elasticsearch. Intégrés.
 
 @Notes:
 
@@ -604,8 +606,7 @@ hibernate.search.backend.analysis.configurer = myAnalysisConfigurer
 </code></pre>
 
 <pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1">@Dependent
-@Named("myAnalysisConfigurer")</span>
+<span class="fragment" data-fragment-index="1">@Component("myAnalysisConfigurer")</span>
 public class MyAnalysisConfigurer
         implements ElasticsearchAnalysisConfigurer {
 	@Override
@@ -627,7 +628,7 @@ public class MyAnalysisConfigurer
 1. Les analyzers reférencés dans le mapping doivent être définis
 1. Dans HSearch, définition via un bean
 1. Le bean doit être reférencé dans la configuration
-1. Supporté: Spring DI, CDI, et reflection (`class.getConstructor().newInstance()`)
+1. Supporté: Spring DI, CDI, et réflection (`class.getConstructor().newInstance()`)
 1. On ajoute quelques définitions...
 1. Mais... comment pousser ça vers Elasticsearch?
 
@@ -711,16 +712,17 @@ Map<Range<Double>, Long> countsByPrice = result.aggregation(countsByPriceKey);
 
 ```java
 		// ...
-		.aggregation(priceStatsKey, f -> f.fromJson("{\n" +
-				"  \"stats\": {\n" +
-				"    \"field\": \"variants.price\"\n" +
-				"  }\n" +
-				"}"))
+		.aggregation(priceStatsKey, f -> f.fromJson("""
+				{
+				  "stats": {
+				    "field": "variants.price"
+				  }
+				}"""))
 		// ...
 JsonObject priceStats = result.aggregation( priceStatsKey ); 
 ```
 
-Fonctionne également pour prédicats, tris, et même requête complète.
+Fonctionne également pour prédicats, tris, et même requêtes complètes.
 
 -
 

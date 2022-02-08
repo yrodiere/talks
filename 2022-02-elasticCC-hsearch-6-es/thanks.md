@@ -2,8 +2,9 @@
 ## Merci !
 
 
-* *Getting started*, coordonnées maven, documentation : <https://hibernate.org/search/releases/6.1/>
+* *Getting started*, coordonnées Maven, documentation : <https://hibernate.org/search/releases/6.1/>
 * Dans Quarkus : <https://quarkus.io/guides/hibernate-search-orm-elasticsearch>
+* Autres tutoriels : <https://hibernate.org/search/articles/>
 
 * Blog de l'équipe Hibernate : <https://in.relation.to>
 * Cette presentation : <https://yrodiere.github.io/presentation/2022-02-elasticCC-hsearch-6-es/>
