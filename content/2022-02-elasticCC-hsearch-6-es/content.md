@@ -647,14 +647,14 @@ public class MyAnalysisConfigurer
         implements ElasticsearchAnalysisConfigurer {
 	@Override
 	public void configure(ElasticsearchAnalysisConfigurationContext context) {<span class="fragment" data-fragment-index="2">
-		context.analyzer( "my-analyzer" ).custom()
-				.tokenizer( "whitespace" )
-				.charFilters( "html_strip" )
-				.tokenFilters( "asciifolding", "lowercase",
-						"stop", "porter_stem" );
+		context.analyzer("my-analyzer").custom()
+				.tokenizer("whitespace")
+				.charFilters("html_strip")
+				.tokenFilters("asciifolding", "lowercase",
+						"stop", "porter_stem");
 		</span><span class="fragment" data-fragment-index="3">
-		context.normalizer( "my-normalizer" ).custom()
-				.tokenFilters( "asciifolding", "lowercase" );</span>
+		context.normalizer("my-normalizer").custom()
+				.tokenFilters("asciifolding", "lowercase");</span>
 	}
 }
 </code></pre>
@@ -706,12 +706,12 @@ public class FullNameBinder implements TypeBinder {
     @Override
     public void bind(TypeBindingContext context) {
         context.dependencies()
-                .use( "firstName" )
-                .use( "lastName" );
+                .use("firstName")
+                .use("lastName");
         IndexFieldReference&lt;String&gt; fullNameField =
             /* ... */;
-        context.bridge( Author.class,
-                new Bridge( fullNameField ) );
+        context.bridge(Author.class,
+                new Bridge(fullNameField));
     }
     private static class Bridge
             implements TypeBridge&lt;Author&gt; {
@@ -724,7 +724,7 @@ public class FullNameBinder implements TypeBinder {
                 TypeBridgeWriteContext context) {
             String fullName = author.getLastName()
                     + " " + author.getFirstName();
-            target.addValue( fullNameField, fullName );
+            target.addValue(fullNameField, fullName);
         }
     }
 }
