@@ -674,6 +674,71 @@ public class MyAnalysisConfigurer
 
 -
 
+<!-- .element: class="grid separated" -->
+
+### Bridges and binders
+
+<div class="column">
+<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
+@Entity
+@Indexed
+<span class="fragment" data-fragment-index="1">@FullNameBinding</span>
+public class Author {
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    // ...
+}
+</code></pre>
+
+<pre class="fragment" data-fragment-index="2"><code class="lang-java" data-trim>
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
+@TypeMapping(/* ... */)
+@Documented
+public @interface FullNameBinding {
+    // ...
+}
+</code></pre>
+</div>
+
+<div class="column">
+<pre class="fragment" data-fragment-index="3"><code class="lang-java smaller" data-trim data-noescape>
+public class FullNameBinder implements TypeBinder {
+    @Override
+    public void bind(TypeBindingContext context) {
+        context.dependencies()
+                .use( "firstName" )
+                .use( "lastName" );
+        IndexFieldReference&lt;String&gt; fullNameField =
+            /* ... */;
+        context.bridge( Author.class,
+                new Bridge( fullNameField ) );
+    }
+    private static class Bridge
+            implements TypeBridge&lt;Author&gt; {
+        private final IndexFieldReference&lt;String&gt;
+                fullNameField;
+        // ...
+        @Override
+        public void write(DocumentElement target,
+                Author author,
+                TypeBridgeWriteContext context) {
+            String fullName = author.getLastName()
+                    + " " + author.getFirstName();
+            target.addValue( fullNameField, fullName );
+        }
+    }
+}
+</code></pre>
+</div>
+
+@Notes:
+
+-
+
 ### Aggrégations
 
 ```java

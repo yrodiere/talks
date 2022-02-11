@@ -46,6 +46,11 @@
 	// But do not change the behavior in <pre> (which also reset line height)
 	pre code {
 		font-size: inherit;
+		// ... except on request
+		&.smaller {
+			font-size: 0.7em;
+			line-height: 1.2em;
+		}
 	}
 
 	// Make <pre> take the full width in lists
