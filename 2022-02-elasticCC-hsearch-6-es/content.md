@@ -38,7 +38,7 @@ WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 * <!-- .element: class="fragment" -->
   Performances limitées
 
-En bref : solution qui atteint très vite ses limites
+En bref : solution qui atteint très vite ses limites.
 <!-- .element: class="fragment" -->
 
 -
@@ -48,9 +48,9 @@ En bref : solution qui atteint très vite ses limites
 * <!-- .element: class="fragment" -->
   Couplage fort avec SGBD
 * <!-- .element: class="fragment" -->
-  Mapping &rarr; modification de schéma en BDD
-* <!-- .element: class="fragment" -->
   Pas de bindings JPA pré-existants (JPQL, ...)
+* <!-- .element: class="fragment" -->
+  Mapping &rarr; modification de schéma en BDD
 * <!-- .element: class="fragment" -->
   Périmètre d'indexation strict (table)
 * <!-- .element: class="fragment" -->
