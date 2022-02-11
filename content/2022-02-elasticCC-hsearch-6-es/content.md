@@ -560,6 +560,46 @@ EntityManager entityManager = /*...*/;
 
 <!-- .element: class="grid" -->
 
+### Projection et tri
+
+<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
+@FullTextField(
+	<span class="fragment" data-fragment-index="2">projectable = Projectable.YES</span>
+)
+private String title;
+
+@KeywordField(
+	normalizer = "my-normalizer"<span class="fragment" data-fragment-index="4">,
+	sortable = Sortable.YES</span>
+)
+private String category;
+</code></pre>
+
+<pre><code class="lang-java" data-trim data-noescape>
+<span class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="2">List&lt;String&gt; hits =</span> searchSession.search(Book.class)
+		<span class="fragment" data-fragment-index="2">.select(f -> f.field("title", String.class))</span>
+		<span class="fragment" data-fragment-index="3">.where(f -> f.match()
+				.field("title")
+				.matching(userInput))</span>
+		<span class="fragment" data-fragment-index="4">.sort(f -> f.field("category")
+				.then().score())</span>
+		<span class="fragment" data-fragment-index="5">.fetchHits(20);</span></span>
+</code></pre>
+
+@Notes:
+
+1. On doit marquer un champ comme projectable/triable dans le mapping
+1. On commence la recherche comme d'habitude
+1. Pour une projection, on ajoute un `.select()`
+1. Ici, on projete directement sur un seul champ de type `String`, et le résultat a donc ce type
+1. Puis on ajoute un tri
+1. Ici, on trie sur un seul champ, puis par score (pertinence) en cas d'égalité
+1. On finit par un `fetchHits` comme d'habitude
+
+-
+
+<!-- .element: class="grid" -->
+
 ### Et encore plus...
 
 ```java
@@ -631,46 +671,6 @@ public class MyAnalysisConfigurer
 1. Supporté: Spring DI, CDI, et réflection (`class.getConstructor().newInstance()`)
 1. On ajoute quelques définitions...
 1. Mais... comment pousser ça vers Elasticsearch?
-
--
-
-<!-- .element: class="grid" -->
-
-### Projection et tri
-
-<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
-@FullTextField(
-	<span class="fragment" data-fragment-index="2">projectable = Projectable.YES</span>
-)
-private String title;
-
-@KeywordField(
-	normalizer = "my-normalizer"<span class="fragment" data-fragment-index="4">,
-	sortable = Sortable.YES</span>
-)
-private String category;
-</code></pre>
-
-<pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="2">List&lt;String&gt; hits =</span> searchSession.search(Book.class)
-		<span class="fragment" data-fragment-index="2">.select(f -> f.field("title", String.class))</span>
-		<span class="fragment" data-fragment-index="3">.where(f -> f.match()
-				.field("title")
-				.matching(userInput))</span>
-		<span class="fragment" data-fragment-index="4">.sort(f -> f.field("category")
-				.then().score())</span>
-		<span class="fragment" data-fragment-index="5">.fetchHits(20);</span></span>
-</code></pre>
-
-@Notes:
-
-1. On doit marquer un champ comme projectable/triable dans le mapping
-1. On commence la recherche comme d'habitude
-1. Pour une projection, on ajoute un `.select()`
-1. Ici, on projete directement sur un seul champ de type `String`, et le résultat a donc ce type
-1. Puis on ajoute un tri
-1. Ici, on trie sur un seul champ, puis par score (pertinence) en cas d'égalité
-1. On finit par un `fetchHits` comme d'habitude
 
 -
 
