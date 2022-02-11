@@ -558,28 +558,28 @@ EntityManager entityManager = /*...*/;
 
 ### Projection et tri
 
-<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
+<pre><code class="lang-java" data-trim data-noescape>
 @FullTextField(
-	<span class="fragment" data-fragment-index="2">projectable = Projectable.YES</span>
+	projectable = Projectable.YES
 )
 private String title;
 
 @KeywordField(
-	normalizer = "my-normalizer"<span class="fragment" data-fragment-index="4">,
-	sortable = Sortable.YES</span>
+	normalizer = "my-normalizer",
+	sortable = Sortable.YES
 )
 private String category;
 </code></pre>
 
 <pre><code class="lang-java" data-trim data-noescape>
-<span class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="2">List&lt;String&gt; hits =</span> searchSession.search(Book.class)
-		<span class="fragment" data-fragment-index="2">.select(f -> f.field("title", String.class))</span>
-		<span class="fragment" data-fragment-index="3">.where(f -> f.match()
+List&lt;String&gt; hits = searchSession.search(Book.class)
+		.select(f -> f.field("title", String.class))
+		.where(f -> f.match()
 				.field("title")
-				.matching(userInput))</span>
-		<span class="fragment" data-fragment-index="4">.sort(f -> f.field("category")
-				.then().score())</span>
-		<span class="fragment" data-fragment-index="5">.fetchHits(20);</span></span>
+				.matching(userInput))
+		.sort(f -> f.field("category")
+				.then().score())
+		.fetchHits(20);
 </code></pre>
 
 @Notes:
