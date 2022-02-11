@@ -50,8 +50,6 @@ En bref : solution qui atteint très vite ses limites.
 * <!-- .element: class="fragment" -->
   Pas de bindings JPA pré-existants (JPQL, ...)
 * <!-- .element: class="fragment" -->
-  Mapping &rarr; modification de schéma en BDD
-* <!-- .element: class="fragment" -->
   Périmètre d'indexation strict (table)
 * <!-- .element: class="fragment" -->
   Fonctionnalités limitées
@@ -59,8 +57,6 @@ En bref : solution qui atteint très vite ses limites.
 @Notes:
 
 * Chaque BDD a sa propre syntaxe SQL
-* Config full text change => schéma de BDD change
-  Opération lourde, surtout si full-text est une fonctionnalité non critique
 * Configuration du mapping : pas d'annotation JPA;
   requêtes SQL : pas de bindings Criteria fournis par JPA,
   pas de fonctions JPQL dédiées.
