@@ -63,17 +63,21 @@
 		display: flex !important;
 		flex-wrap: wrap;
 		align-items: center;
+
 		& > .column {
 			display: flex;
 			flex-direction: column;
 			position: relative;
+			margin-left: 10px;
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 0;
+		}
+		& > ul.column {
+			margin-left: 1em;
 		}
 
 		// Set widths so that everything flexes as expected
-		& > * {
-			flex-grow: 1;
-			margin-left: 10px;
-		}
 		& > h1, & > h2, & > h3, & > h4, & > h5, & > h6 {
 			width: 100%;
 		}
