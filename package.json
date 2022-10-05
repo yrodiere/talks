@@ -18,10 +18,10 @@
     "defaults"
   ],
   "dependencies": {
-    "reveal.js": "~4.2.0",
+    "@hpcc-js/wasm": "1.12.8",
+    "d3": "^7.6.1",
     "d3-graphviz": "~4.1.0",
-    "d3": "^6.6.1",
-    "@hpcc-js/wasm": "1.12.8"
+    "reveal.js": "^4.3.1"
   },
   "devDependencies": {
     "@lodder/grunt-postcss": "~3.1.1",
