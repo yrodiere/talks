@@ -1023,12 +1023,21 @@
       }
 
       postMessage.call(this, {
+        type: "layout",
         dot: "",
         engine: 'dot',
         vizURL: vizURL
       }, function (event) {
         switch (event.data.type) {
-          case "init":
+                }
+      });
+      postMessage.call(this, {
+        type: "version"
+      }, function (event) {
+        switch (event.data.type) {
+          case "version":
+            graphvizInstance._graphvizVersion = event.data.version;
+
             graphvizInstance._dispatch.call("initEnd", this);
 
             break;
@@ -1046,6 +1055,7 @@
   function layout(src, engine, vizOptions, callback) {
     if (this._worker) {
       postMessage.call(this, {
+        type: "layout",
         dot: src,
         engine: engine,
         options: vizOptions
@@ -2071,6 +2081,16 @@
         //                                    document = {currentScript: {src: event.data.vizURL}};
       }
 
+      if (event.data.type == "version") {
+        hpccWasm.graphvizVersion().then(function (version) {
+          port.postMessage({
+            type: "version",
+            version: version
+          });
+        });
+        return;
+      }
+
       hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then(function (svg) {
         if (svg) {
           port.postMessage({
@@ -2191,11 +2211,12 @@
       this._workerPort = this._worker;
       this._workerPortClose = this._worker.terminate.bind(this._worker);
       this._workerCallbacks = [];
+    } else {
+      wasm.graphvizVersion().then(function (version) {
+        _this._graphvizVersion = version;
+      }.bind(this));
     }
 
-    wasm.graphvizVersion().then(function (version) {
-      _this._graphvizVersion = version;
-    }.bind(this));
     this._selection = selection;
     this._active = false;
     this._busy = false;
