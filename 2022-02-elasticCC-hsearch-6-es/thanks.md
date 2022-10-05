@@ -13,6 +13,8 @@
 
 -
 
+<!-- .element data-visibility="uncounted" -->
+
 ### License
 
 Logos in this presentation are trademarks or registered trademarks of their respective owners in the United States and other countries.
