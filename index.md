@@ -2,7 +2,7 @@
 
 ## [2021-11-jug-strasbourg-hsearch-6-es](2021-11-jug-strasbourg-hsearch-6-es)
 
-## [2022-10-06-jug-nancy-intro-to-quarkus](2022-10-06-jug-nancy-intro-to-quarkus)
+## [2022-10-06-lorraine-jug-intro-to-quarkus](2022-10-06-lorraine-jug-intro-to-quarkus)
 
 ## [template](template)
 
