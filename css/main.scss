@@ -25,6 +25,11 @@
 		}
 	}
 
+	img.qr {
+		float: right;
+    height: 250px;
+	}
+
 	mark {
 		// Disable syntax highlighting in child elements
 		// Also, switch to a less aggressive yellow background
