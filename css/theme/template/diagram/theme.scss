@@ -4,26 +4,14 @@
 	}
 
 	.node {
-		& > polyline {
-			stroke: $nodeStrokeColor;
-		}
-		& > ellipse, & > polygon, & > path {
-			fill: $nodeFillColor;
-			stroke: $nodeStrokeColor;
-		}
+	  @include graphElementColor($nodeStrokeColor, $nodeFillColor);
 		& > text {
 			font-size: $nodeFontSize;
 		}
 	}
 
 	.edge {
-		& > polyline, & > path {
-			stroke: $edgeStrokeColor;
-		}
-		& > ellipse, & > polygon {
-			fill: $edgeFillColor;
-			stroke: $edgeStrokeColor;
-		}
+	  @include graphElementColor($edgeStrokeColor, $edgeFillColor);
 		& > text {
 			font-size: $edgeFontSize;
 		}

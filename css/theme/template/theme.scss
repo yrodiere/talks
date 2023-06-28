@@ -1,1 +1,43 @@
 @import "../../../node_modules/reveal.js/css/theme/template/theme.scss";
+
+.reveal section {
+	// Custom fragment styles
+	&.nested-fragments-highlight-current, & .nested-fragments-highlight-current {
+		.fragment.current-fragment {
+			color: $highlightColor;
+			// Also disable syntax highlighting
+			span {
+				background-color: inherit;
+				color: inherit;
+			}
+			// Change the color of graph elements too
+			&.node {
+			  @include graphElementColor($highlightColor, transparent);
+			}
+			&.edge {
+			  @include graphElementColor($highlightColor, $highlightColor);
+			}
+		}
+	}
+	.fragment.strike {
+		opacity: 1;
+		visibility: inherit;
+		&.visible {
+			text-decoration: line-through;
+		}
+	}
+	.fragment.display-fade-out {
+		opacity: 1;
+		visibility: inherit;
+		&.visible {
+			display: none;
+		}
+	}
+	.fragment.display-fade-in {
+		display: none;
+		&.visible {
+			animation: added-item-animation 0.3s linear forwards;
+			display: inline;
+		}
+	}
+}

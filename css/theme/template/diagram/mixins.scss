@@ -1,0 +1,12 @@
+@mixin graphElementColor($strokeColor, $fillColor) {
+		& > polyline, & > path {
+			stroke: $strokeColor;
+		}
+		& > ellipse, & > polygon {
+			fill: $fillColor;
+			stroke: $strokeColor;
+		}
+		& > text {
+			fill: $strokeColor;
+		}
+}

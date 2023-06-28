@@ -1,6 +1,7 @@
 @import "reveal/reset.css";
 @import "reveal/reveal.css";
 @import "reveal/plugin/highlight/zenburn.css";
+@import "reveal/plugin/highlight/zenburn.css";
 
 .reveal section {
 	img.logo {
@@ -88,40 +89,6 @@
 		}
 		pre {
 			width: auto;
-		}
-
-	}
-
-	// Custom fragment styles
-	&.nested-fragments-highlight-current-red, & .nested-fragments-highlight-current-red {
-		.fragment.current-fragment {
-			color: #ff2c2d;
-			// Also disable syntax highlighting
-			* {
-				background-color: inherit;
-				color: inherit;
-			}
-		}
-	}
-	.fragment.strike {
-		opacity: 1;
-		visibility: inherit;
-		&.visible {
-			text-decoration: line-through;
-		}
-	}
-	.fragment.display-fade-out {
-		opacity: 1;
-		visibility: inherit;
-		&.visible {
-			display: none;
-		}
-	}
-	.fragment.display-fade-in {
-		display: none;
-		&.visible {
-			animation: added-item-animation 0.3s linear forwards;
-			display: inline;
 		}
 	}
 }

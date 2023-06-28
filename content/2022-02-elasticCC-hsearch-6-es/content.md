@@ -190,7 +190,7 @@ Quarkus, Spring Boot: similaire, cf. documentation.
 
 -
 
-<!-- .element: class="grid nested-fragments-highlight-current-red" -->
+<!-- .element: class="grid nested-fragments-highlight-current" -->
 
 ### Mapping
 
@@ -363,7 +363,7 @@ digraph {
 
 -
 
-<!-- .element: class="grid nested-fragments-highlight-current-red" -->
+<!-- .element: class="grid nested-fragments-highlight-current" -->
 
 <div class="column">
 <pre><code class="lang-java" data-trim data-noescape>
@@ -675,7 +675,7 @@ public class MyAnalysisConfigurer
 ### Bridges and binders
 
 <div class="column">
-<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
+<pre><code class="lang-java nested-fragments-highlight-current" data-trim data-noescape>
 @Entity
 @Indexed
 <span class="fragment" data-fragment-index="1">@FullNameBinding</span>
