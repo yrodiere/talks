@@ -49,6 +49,10 @@ deck.initialize().then(() => {
             graphviz = graphviz.addImage(image[0], image[1], image[2]);
           });
     }
+    if (vizElement.dataset.width) {
+      graphviz.fit(true);
+      graphviz.width(vizElement.dataset.width);
+    }
     graphviz.renderDot(
           dot,
           function () {

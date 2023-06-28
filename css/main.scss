@@ -64,7 +64,7 @@
 		margin: 20px 0px;
 	}
 
-	&.grid {
+	.grid, &.grid {
 		display: flex !important;
 		flex-wrap: wrap;
 		align-items: center;

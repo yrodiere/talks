@@ -152,9 +152,9 @@ digraph {
 	tokenizer [label = "Tokenizer"];
 
 	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "a big car"];
-		output [label = "{ a | big | car }"];
+		node [shape = record, style = rounded, margin = 0.3];
+		input [label = "manger des pommes"];
+		output [label = "{ manger | des | pommes }"];
 	}
 
 	input -> tokenizer;
@@ -178,8 +178,8 @@ digraph {
 
 	subgraph {
 		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ A | BIG | CaR}"];
-		output [label = "{ a | big | car }"];
+		input [label = "{ UNE | Pomme }"];
+		output [label = "{ une | pomme }"];
 	}
 
 	input -> lowercase;
@@ -210,8 +210,8 @@ digraph {
 
 	subgraph {
 		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ two | tuned | cars }"];
-		output [label = "{ two | tun | car }"];
+		input [label = "{ manger | des | pommes }"];
+		output [label = "{ mang | de | pomm }"];
 	}
 
 	input -> stemming;
@@ -226,8 +226,8 @@ digraph {
 
 	subgraph {
 		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ a | big | car }"];
-		output [label = "{ big | car }"];
+		input [label = "{ je | mange | une | pomme }"];
+		output [label = "{ mange | pomme }"];
 	}
 
 	input -> stopWords;
