@@ -24,6 +24,13 @@
 		&.elasticsearch {
 			height: 100px;
 		}
+		&.debezium {
+			height: 70px;
+		}
+		&.kafka {
+			height: 100px;
+			filter: invert(100%) ;
+		}
 	}
 
 	img.qr {
