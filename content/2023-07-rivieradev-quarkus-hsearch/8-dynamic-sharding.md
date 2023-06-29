@@ -1,9 +1,11 @@
 ## Agents
 
-| id | expiration        | state   | total shard count | assigned shard index | ... |
-|----|-------------------|---------|-------------------|----------------------|-----|
-| 1  | ...T14:12:30.000Z | RUNNING | 2                 | 0                    |     |
-| 2  | ...T14:12:32.000Z | RUNNING | 2                 | 1                    |     |
+| id | état      | index de partition assignée | nombre de partitions supposé | expiration          | ... |
+|----|-----------|-----------------------------|------------------------------|---------------------|-----|
+| 1  | `RUNNING` | 0                           | 2                            | `...T14:12:30.000Z` |     |
+| 2  | `RUNNING` | 1                           | 2                            | `...T14:12:32.000Z` |     |
+
+État: `SUSPENDED`, `WAITING`, `RUNNING`
 
 @Notes:
 
@@ -42,7 +44,7 @@ SELECT * FROM hsearch_outboxevent
 
 <div class="column">
 
-### Processing loop
+### Boucle principale
 
 ```python
 while true {
@@ -58,11 +60,11 @@ while true {
 </div>
 <div class="column fragment" data-fragment-index="2">
 
-### Pulse
+### Pouls
 
 ```python
 function pulse() {
-    update_self_registration()
+    update_self_expiration()
     eject_expired_others()
     while !topology_matches_expectations()
         wait(<polling_interval>)
