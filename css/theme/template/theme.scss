@@ -2,21 +2,24 @@
 
 .reveal section {
 	// Custom fragment styles
-	&.nested-fragments-highlight-current, & .nested-fragments-highlight-current {
-		.fragment.current-fragment {
-			color: $highlightColor;
-			// Also disable syntax highlighting
-			span {
-				background-color: inherit;
-				color: inherit;
-			}
-			// Change the color of graph elements too
-			&.node {
-			  @include graphElementColor($highlightColor, transparent);
-			}
-			&.edge {
-			  @include graphElementColor($highlightColor, $highlightColor);
-			}
+	&.nested-fragments-highlight-current .fragment.current-fragment,
+			& .nested-fragments-highlight-current .fragment.current-fragment,
+			& .highlight {
+		color: $highlightColor;
+		// Also disable syntax highlighting
+		span {
+			background-color: inherit;
+			color: inherit;
+		}
+		// Change the color of graph elements too
+		&.node {
+			@include graphElementColor($highlightColor, transparent);
+		}
+		&.cluster {
+			@include graphElementColor($highlightColor, transparent);
+		}
+		&.edge {
+			@include graphElementColor($highlightColor, $highlightColor);
 		}
 	}
 	.fragment.strike {

@@ -10,6 +10,13 @@
 		}
 	}
 
+	.cluster {
+	  @include graphElementColor($clusterStrokeColor, $clusterFillColor);
+		& > text {
+			font-size: $clusterFontSize;
+		}
+	}
+
 	.edge {
 	  @include graphElementColor($edgeStrokeColor, $edgeFillColor);
 		& > text {

@@ -61,6 +61,10 @@ $edgeStrokeColor: $mainColor;
 $edgeFillColor: $mainColor;
 $edgeFontSize: 0.3em;
 
+$clusterStrokeColor: $mainColor;
+$clusterFillColor: $mainColor;
+$clusterFontSize: 0.4em;
+
 @mixin bodyBackground() {
   background-color: $backgroundColor;
 	background-image: url("../../image/background/redhat_overlay.svg");
