@@ -357,18 +357,93 @@
     background-color: var(--r-background-color);
   }
 }
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment, .reveal section .nested-fragments-highlight-current .fragment.current-fragment, .reveal section .highlight {
+  color: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment span, .reveal section .nested-fragments-highlight-current .fragment.current-fragment span, .reveal section .highlight span {
+  background-color: inherit;
+  color: inherit;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.node > polyline, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.node > path, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.node > polyline, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.node > path, .reveal section .highlight.node > polyline, .reveal section .highlight.node > path {
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.node > ellipse, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.node > polygon, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.node > ellipse, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.node > polygon, .reveal section .highlight.node > ellipse, .reveal section .highlight.node > polygon {
+  fill: transparent;
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.node > text, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.node > text, .reveal section .highlight.node > text {
+  fill: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.cluster > polyline, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.cluster > path, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.cluster > polyline, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.cluster > path, .reveal section .highlight.cluster > polyline, .reveal section .highlight.cluster > path {
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.cluster > ellipse, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.cluster > polygon, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.cluster > ellipse, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.cluster > polygon, .reveal section .highlight.cluster > ellipse, .reveal section .highlight.cluster > polygon {
+  fill: transparent;
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.cluster > text, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.cluster > text, .reveal section .highlight.cluster > text {
+  fill: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.edge > polyline, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.edge > path, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.edge > polyline, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.edge > path, .reveal section .highlight.edge > polyline, .reveal section .highlight.edge > path {
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.edge > ellipse, .reveal section.nested-fragments-highlight-current .fragment.current-fragment.edge > polygon, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.edge > ellipse, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.edge > polygon, .reveal section .highlight.edge > ellipse, .reveal section .highlight.edge > polygon {
+  fill: #F56D6D;
+  stroke: #F56D6D;
+}
+.reveal section.nested-fragments-highlight-current .fragment.current-fragment.edge > text, .reveal section .nested-fragments-highlight-current .fragment.current-fragment.edge > text, .reveal section .highlight.edge > text {
+  fill: #F56D6D;
+}
+.reveal section .fragment.strike {
+  opacity: 1;
+  visibility: inherit;
+}
+.reveal section .fragment.strike.visible {
+  text-decoration: line-through;
+}
+.reveal section .fragment.display-fade-out {
+  opacity: 1;
+  visibility: inherit;
+}
+.reveal section .fragment.display-fade-out.visible {
+  display: none;
+}
+.reveal section .fragment.display-fade-in {
+  display: none;
+}
+.reveal section .fragment.display-fade-in.visible {
+  animation: added-item-animation 0.3s linear forwards;
+  display: inline;
+}
+
 .viz .graph > polygon {
   fill: transparent;
 }
-.viz .node > polyline {
+.viz .node > polyline, .viz .node > path {
   stroke: #FFFFFF;
 }
-.viz .node > ellipse, .viz .node > polygon, .viz .node > path {
+.viz .node > ellipse, .viz .node > polygon {
   fill: #4D4D4D;
   stroke: #FFFFFF;
 }
 .viz .node > text {
+  fill: #FFFFFF;
+}
+.viz .node > text {
   font-size: 0.5em;
+}
+.viz .cluster > polyline, .viz .cluster > path {
+  stroke: #FFFFFF;
+}
+.viz .cluster > ellipse, .viz .cluster > polygon {
+  fill: #FFFFFF;
+  stroke: #FFFFFF;
+}
+.viz .cluster > text {
+  fill: #FFFFFF;
+}
+.viz .cluster > text {
+  font-size: 0.4em;
 }
 .viz .edge > polyline, .viz .edge > path {
   stroke: #FFFFFF;
@@ -376,6 +451,9 @@
 .viz .edge > ellipse, .viz .edge > polygon {
   fill: #FFFFFF;
   stroke: #FFFFFF;
+}
+.viz .edge > text {
+  fill: #FFFFFF;
 }
 .viz .edge > text {
   font-size: 0.3em;

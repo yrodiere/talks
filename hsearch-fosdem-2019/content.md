@@ -129,7 +129,7 @@ hibernate.search.backends.backend1.password = j@rV1s</span>
 
 -
 
-<!-- .element: class="grid nested-fragments-highlight-current-red" -->
+<!-- .element: class="grid nested-fragments-highlight-current" -->
 
 ### Mapping
 
@@ -339,7 +339,7 @@ digraph {
 
 -
 
-<!-- .element: class="grid nested-fragments-highlight-current-red" -->
+<!-- .element: class="grid nested-fragments-highlight-current" -->
 
 <div class="column">
 <pre><code class="lang-java" data-trim data-noescape>
@@ -494,7 +494,7 @@ digraph {
 
 ### Projection and sort
 
-<pre><code class="lang-java nested-fragments-highlight-current-red" data-trim data-noescape>
+<pre><code class="lang-java nested-fragments-highlight-current" data-trim data-noescape>
 @FullTextField(
 	analyzer = "cleaned_text"<span class="fragment" data-fragment-index="1">,
 	projectable = Projectable.YES</span>
