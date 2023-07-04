@@ -66,6 +66,45 @@ digraph {
 
 -
 
+<!-- .element: class="grid" -->
+## Dé-normalisation
+<div class="column">
+<div class="viz">
+digraph {
+	node [margin = 0.2, shape = record, style = rounded];
+	rankdir = TB;
+
+	entity1 [label = "Livre"];
+	entity2 [label = "Auteur 1"];
+	entity3 [label = "Auteur 2"];
+	entity1 -> entity2;
+	entity1 -> entity3;
+}
+</div>
+</div>
+
+<div class="column" style="font-size: 3em;">
+&rarr;
+</div>
+
+<div class="column">
+<div class="viz">
+digraph {
+	node [margin = 0.6, shape = note];
+
+	document [label = "Un seul document"];
+}
+</div>
+</div>
+
+@Notes:
+
+1. Support limité des jointures dans Elasticsearch, et généralement déconseillé (pas toujours très rapide)
+2. En pratique, on contourne le problème via la de-normalization
+3. C'est en partie ça qui fait la performance d'Elasticsearch
+
+-
+
 ## Recherche
 
 <div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">

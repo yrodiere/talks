@@ -2,45 +2,6 @@
 
 -
 
-<!-- .element: class="grid" -->
-## Dé-normalisation
-<div class="column">
-<div class="viz">
-digraph {
-	node [margin = 0.2, shape = record, style = rounded];
-	rankdir = TB;
-
-	entity1 [label = "Livre"];
-	entity2 [label = "Chapitre 1"];
-	entity3 [label = "Chapitre 2"];
-	entity1 -> entity2;
-	entity1 -> entity3;
-}
-</div>
-</div>
-
-<div class="column" style="font-size: 3em;">
-&rarr;
-</div>
-
-<div class="column">
-<div class="viz">
-digraph {
-	node [margin = 0.6, shape = note];
-
-	document [label = "Un seul document"];
-}
-</div>
-</div>
-
-@Notes:
-
-1. Support limité des jointures dans Elasticsearch, et généralement déconseillé (pas toujours très rapide)
-2. En pratique, on contourne le problème via la de-normalization
-3. C'est en partie ça qui fait la performance d'Elasticsearch
-
--
-
 ## Conflits
 
 <div class="grid">
@@ -51,8 +12,8 @@ digraph {
 	rankdir = TB;
 
 	entity1 [label = "Livre"];
-	entity2 [label = "Chapitre 1 (v2)", color = "red"];
-	entity3 [label = "Chapitre 2"];
+	entity2 [label = "Auteur 1 (v2)", color = "red"];
+	entity3 [label = "Auteur 2"];
 	entity1 -> entity2;
 	entity1 -> entity3;
 }
@@ -68,7 +29,7 @@ digraph {
 digraph {
 	node [margin = 0.6, shape = note];
 
-	document [label = "Un seul document (Chapitre 1 v2)"];
+	document [label = "Un seul document (Auteur 1 v2)"];
 }
 </div>
 </div>
@@ -82,8 +43,8 @@ digraph {
 	rankdir = TB;
 
 	entity1 [label = "Livre"];
-	entity2 [label = "Chapitre 1"];
-	entity3 [label = "Chapitre 2 (v2)"];
+	entity2 [label = "Auteur 1"];
+	entity3 [label = "Auteur 2 (v2)"];
 	entity1 -> entity2;
 	entity1 -> entity3;
 }
@@ -99,7 +60,7 @@ digraph {
 digraph {
 	node [margin = 0.6, shape = note];
 
-	document [label = "Un seul document (Chapitre 2 v2)"];
+	document [label = "Un seul document (Auteur 2 v2)"];
 }
 </div>
 </div>
@@ -107,7 +68,7 @@ digraph {
 
 @Notes:
 
-* Il est théoriquement possible d'arriver à un index non synchronisé en cas de conflit
+* Dans de rares cas, il est théoriquement possible d'arriver à un index non synchronisé en cas de conflit
 * Deux modifications en parallèles sur deux entités différentes (donc pas de conflit pour la BDD)
 * Pas de transactions dans Elasticsearch, donc pas de conflit détecté non plus
 * En pratique rare et pas forcément critique (réindexation la nuit), mais quand même...
