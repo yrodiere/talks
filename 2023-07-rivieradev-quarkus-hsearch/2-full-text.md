@@ -26,7 +26,7 @@ WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 
 -
 
-### `LIKE`/`ILIKE`: bilan
+### `LIKE`/`ILIKE`: incovénients
 
 * <!-- .element: class="fragment" -->
   Faux positifs: "thé" => "kinési***thé***rapie"
@@ -47,11 +47,10 @@ En bref : solution qui atteint très vite ses limites.
 * <!-- .element: class="fragment" -->
   Couplage fort avec SGBD
 * <!-- .element: class="fragment" -->
-  Pas de bindings JPA pré-existants (JPQL, ...)
+  Intégration inexistante dans JPA (annotations, JPQL, ...),
+  limitée dans Hibernate ORM.
 * <!-- .element: class="fragment" -->
-  Périmètre d'indexation strict (table)
-* <!-- .element: class="fragment" -->
-  Fonctionnalités limitées
+  Solutions généralistes, fonctionnalités limitées
 
 @Notes:
 
@@ -59,9 +58,11 @@ En bref : solution qui atteint très vite ses limites.
 * Configuration du mapping : pas d'annotation JPA;
   requêtes SQL : pas de bindings Criteria fournis par JPA,
   pas de fonctions JPQL dédiées.
+  (Mais Hibernate ORM fait mieux dans ce domaine)
 * Si langage et données sont dans tables différentes,
   difficile de choisir l'index en fonction du langage.
-* Recherche de phrase dans PostgreSQL 9.6, en septembre 2016...
+* Même PostgreSQL, pourtant relativement en avance,
+  n'a introduit la recherche de phrase qu'en 9.6 (septembre 2016)...
 
 ---
 
