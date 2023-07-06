@@ -1,20 +1,6 @@
-## Agents
-
-| id | état      | index de partition assignée | nombre de partitions supposé | expiration          | ... |
-|----|-----------|-----------------------------|------------------------------|---------------------|-----|
-| 1  | `RUNNING` | 0                           | 2                            | `...T14:12:30.000Z` |     |
-| 2  | `RUNNING` | 1                           | 2                            | `...T14:12:32.000Z` |     |
-
-État: `SUSPENDED`, `WAITING`, `RUNNING`
-
-@Notes:
-
-* table en BDD où chaque "agent" (processeur d'événement ou autre) s'enregistre
-* sert de base à la coordination
+## Partitionnement dynamique
 
 -
-
-## Partitionnement dynamique
 
 <https://en.wikipedia.org/wiki/MurmurHash>
 
@@ -40,6 +26,22 @@ Exemple : shard 0 = `0 -> 999`, shard 1 = `1000 -> 1999`, etc.
 * Ici, BETWEEN; permet d'appliquer des index si besoin
 * Point important : on découpe l'ensemble des hash dynamiquement, à la lecture !
 * Permet de redéfinir les partitions
+
+-
+
+## Agents
+
+| id | état      | index de partition assignée | nombre de partitions supposé | expiration          | ... |
+|----|-----------|-----------------------------|------------------------------|---------------------|-----|
+| 1  | `RUNNING` | 0                           | 2                            | `...T14:12:30.000Z` |     |
+| 2  | `RUNNING` | 1                           | 2                            | `...T14:12:32.000Z` |     |
+
+État: `SUSPENDED`, `WAITING`, `RUNNING`
+
+@Notes:
+
+* table en BDD où chaque "agent" (processeur d'événement ou autre) s'enregistre
+* sert de base à la coordination
 
 -
 

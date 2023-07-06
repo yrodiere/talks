@@ -172,13 +172,15 @@ digraph {
 @Notes:
 * Tokenization
   * Plus précis que '%thé%'
-  * ... donc permet moins d'approximations ('CAR', 'cars', ...)
+  * ... donc permet moins d'approximations ('THE', 'thés', ...)
 * => Filtering
   * Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
   * ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
   * Bilan: c'est mieux !
 
 -
+
+<!-- .element data-visibility="hidden" -->
 
 ### Index inversé
 
