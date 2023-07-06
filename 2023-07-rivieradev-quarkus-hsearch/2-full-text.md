@@ -51,7 +51,7 @@ En bref : solution qui atteint très vite ses limites.
   limitée dans Hibernate ORM.
 * <!-- .element: class="fragment" -->
   Solutions généralistes,
-* fonctionnalités parfois limitées ou peu flexibles.
+  fonctionnalités parfois limitées ou peu flexibles.
 
 @Notes:
 
