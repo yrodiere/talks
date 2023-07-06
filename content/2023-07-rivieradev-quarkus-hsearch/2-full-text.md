@@ -79,27 +79,6 @@ En bref : solution qui atteint très vite ses limites.
 
 -
 
-### Index inversé
-
-Token | Emplacement
-:---|:---
-... | ...
-car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
-careless | Doc. 5 (pos. : 2)
-carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
-... | ...
-
-(doc. = document, pos. = position)
-
-@Notes:
-* But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
-* « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
-* Vue très simplifiée. En pratique, plus complexe :
-    * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
-    * Données supplémentaires (scoring, "stored fields", ...)
-
--
-
 ### Principe
 <div class="viz">
 digraph {
@@ -109,8 +88,9 @@ digraph {
 	subgraph {
 		node [shape = record, style = rounded, margin = 0.2];
 		query [label = "Requête\n(texte)"];
-		documents [label = "Documents\n(texte)"];
-		analyzedQuery [label = "Requête\nanalysée\n(structurée)"];
+		document [label = "Document \n(texte)"];
+		analyzedDocument [label = "Document \n(texte structuré)"];
+		analyzedQuery [label = "Requête\nanalysée\n(texte structuré)"];
 		results [label = "Résultats"];
 		index [label = "Index inversé"];
 	}
@@ -129,8 +109,9 @@ digraph {
 
 	query -> queryAnalysis;
 	queryAnalysis -> analyzedQuery;
-	documents -> documentAnalysis;
-	documentAnalysis -> index;
+	document -> documentAnalysis;
+	documentAnalysis -> analyzedDocument;
+	analyzedDocument -> index;
 	index -> queryExecution;
 	analyzedQuery -> queryExecution;
 	queryExecution -> results;
@@ -145,100 +126,74 @@ digraph {
 
 -
 
-### Analyse, partie 1 : tokenization
+### Analyse
 <div class="viz">
 digraph {
 	rankdir = LR;
 
-	tokenizer [label = "Tokenizer"];
-
-	subgraph {
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterData1 {
+        style = invis;
 		node [shape = record, style = rounded, margin = 0.3];
-		input [label = "manger des pommes"];
-		output [label = "{ manger | des | pommes }"];
+        input [label = "manger des POMMMES"];
+		stemmed [label = "{ mang | pomm }"];
+	}
+
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterProcess {
+      style = invis;
+      tokenizer [label = "Tokenizer"];
+      lowercase [label = "Lower case filter"];
+      stemming [label = "Stemmer"]
+      stopWords [label = "Stop-words filter"];
+	}
+
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterData {
+        style = invis;
+		node [shape = record, style = rounded, margin = 0.3];
+		tokenized [label = "{ manger | des | POMMES }"];
+		lowercased [label = "{ manger | des | pommes }"];
+		stopped [label = "{ manger | pommes }"];
 	}
 
 	input -> tokenizer;
-	tokenizer -> output;
+    tokenizer -> tokenized;
+    tokenized -> lowercase;
+    lowercase -> lowercased;
+    lowercased -> stopWords;
+    stopWords -> stopped;
+    stopped -> stemming;
+    stemming -> stemmed;
 }
 </div>
 
 @Notes:
-* Plus précis que '%car%'
-* ... donc permet moins d'approximations ('CAR', 'cars', ...)
+* Tokenization
+  * Plus précis que '%thé%'
+  * ... donc permet moins d'approximations ('CAR', 'cars', ...)
 * => Filtering
+  * Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
+  * ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
+  * Bilan: c'est mieux !
 
 -
 
-### Analyse, partie 2 : Filtering
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
+### Index inversé
 
-	lowercase [label = "Lower case filter"];
+Token | Emplacement
+:---|:---
+... | ...
+car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
+careless | Doc. 5 (pos. : 2)
+carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
+... | ...
 
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ UNE | Pomme }"];
-		output [label = "{ une | pomme }"];
-	}
-
-	input -> lowercase;
-	lowercase -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	asciiFolding [label = "ASCII folding filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ bon | appétit }"];
-		output [label = "{ bon | appetit }"];
-	}
-
-	input -> asciiFolding;
-	asciiFolding -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stemming [label = "Stemmer"]
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ manger | des | pommes }"];
-		output [label = "{ mang | de | pomm }"];
-	}
-
-	input -> stemming;
-	stemming -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stopWords [label = "Stop-words filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ je | mange | une | pomme }"];
-		output [label = "{ mange | pomme }"];
-	}
-
-	input -> stopWords;
-	stopWords -> output;
-}
-</div>
-
-Et caetera, et caetera. <!-- .element: class="fragment" -->
+(doc. = document, pos. = position)
 
 @Notes:
-* Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
-* ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
-* Bilan: c'est mieux ! Mais...
+* But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
+* « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
+* Vue très simplifiée. En pratique, plus complexe :
+  * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
+  * Données supplémentaires (scoring, "stored fields", ...)

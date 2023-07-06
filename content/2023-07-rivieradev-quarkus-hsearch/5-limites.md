@@ -75,6 +75,8 @@ digraph {
 
 -
 
+<!-- .element data-visibility="hidden" -->
+
 ## Résoudre à l'aide d'une version ?
 
 ```java

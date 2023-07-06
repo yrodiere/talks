@@ -44,6 +44,8 @@ digraph {
 
 -
 
+<!-- .element data-visibility="hidden" -->
+
 ### *Bulking* automatique
 <div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
@@ -104,6 +106,67 @@ digraph {
 3. C'est en partie ça qui fait la performance d'Elasticsearch
 
 -
+
+<!-- .element class="grid" -->
+
+## Et bien plus...
+
+<div class="column">
+
+API de recherche (Search DSL)
+```java
+List<Book> hits = searchSession
+        .search( Book.class )
+        .where( f -> f.simpleQueryString()
+                .fields( "title",
+                        "authors.name" )
+                .matching( query ) )
+        .sort( f -> f.field( "title_sort" ) )
+        .fetchHits( 20 )
+```
+
+</div>
+<div class="column">
+
+Mapping de projections
+```java
+@ProjectionConstructor
+record BookDTO(@IdProjection long id,
+               String title) {
+}
+
+List<BookDTO> hits = searchSession
+        .search( Book.class )
+        .select( BookDTO.class )
+        .where( ... )
+        .fetchHits( ... )
+```
+
+</div>
+<div class="column">
+
+Recherche géospatiale
+```java
+.where( f.spatial().within()
+        .field( "location")
+        .circle( 53.97, 32.15,
+                50, DistanceUnit.METERS ) )
+```
+
+</div>
+<div class="column">
+
+Faceting
+```java
+Map<Genre, Long> countByGenre =
+        searchResult.aggregation( ... );
+```
+
+</div>
+
+-
+
+<!-- .element data-visibility="hidden" -->
 
 ## Recherche
 

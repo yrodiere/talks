@@ -4,21 +4,13 @@ Quarkus & Hibernate Search
 
 @Notes:
 
-1. `pom.xml`
-   1. dépendances
-   2. Généré par `quarkus create`
-   3. addition manuelle de `mapstruct`.
+1. Quarkus!
 2. Lancer l'appli: `quarkus dev`
    1. Montrer `http://localhost:8080`
    2. Ne pas détailler, "on va y revenir"
 3. Configuration
    1. Config générale, pas important
    2. Version
-   3. Initialisation du schéma: `quarkus.hibernate-search-orm.schema-management.strategy`
-      1. `create-or-validate`
-      2. `none`
-      3. `drop-and-create-and-drop`
-      4. autres, pas besoin de détailler
 4. Analyse: `CustomAnalysisDefinitions.java`
    1. DSL, plus pratique grâce à l'auto-complétion
    2. Sera poussé vers Elasticsearch avec le schéma
@@ -35,32 +27,15 @@ Quarkus & Hibernate Search
    7. Et plus: https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-mapping
       1. Définition d'annotations, de binders, ...
    8. Entité => Document, c'est bon. Et ensuite?
-6. Montrer rapidement DTO, endpoints CRUD
-7. Indexation de données pré-existantes
+6. Indexation de données pré-existantes
    1. DevUI: `http://localhost:8080` puis cliquer `DevUI`
       1. Réindexe toutes les entités; peut prendre un certain temps
-   2. Endpoint (management port?)
-      1. Plein d'options pour tuner les performances
-      2. Ici, executé au démarrage en mode dev
-8. Recherche
-   1. On peut utiliser les API d'Elasticsearch directement, si on le désire
-   2. Mais une API Java peut aider: type-safe dans une certaine mesure, auto-complétion, pas de parsing
-      1. Configuration classique: terme fourni par l'utilisateur + entity manager (session)
-      2. Accès à l'API HSearch via `SearchSession` (injecté par Quarkus)
-      3. De là, on démarre une recherche sur la classe `Book` (cible implicitement l'index "book")
-      4. On définit un prédicat (`f` est une "factory" de prédicats)
-      5. On récupère les hits: ce sont des entités managées! (i.e. lazy loading, etc.)
-      6. Tri
-      7. Fetch, mapstruct pour DTO
-   3. Montrer la recherche en action
-      1. http://localhost:8080/q/swagger-ui/
-      2. `robot`/`robots`/`mystery`
-      3. `cord` => no match, even if there is `according`
-   4. Et plus: https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-dsl
-      1. Projections
-      2. Spatial
-      3. Faceting (aggrégations)
-      4. JSON natif
+7. Montrer rapidement endpoints CRUD
+   1. http://localhost:8080/q/swagger-ui/
+8. Montrer la recherche en action
+   1. http://localhost:8080/q/swagger-ui/
+   2. `robot`/`robots`/`mystery`
+   3. `cord` => no match, even if there is `according`
 9. Indexation par listener: modification d'auteur => réindexation de livre
    1. http://localhost:8080/q/swagger-ui/
    2. `GET /author/all`: repérer Asimov
