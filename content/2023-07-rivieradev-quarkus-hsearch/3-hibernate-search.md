@@ -13,7 +13,7 @@ ORM. Elasticsearch. Intégrés.
 <!-- .element: class="nested-fragments-highlight-current" -->
 ### Indexation automatique
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
@@ -25,7 +25,7 @@ digraph {
 	orm -> db [label = "1.3 INSERT/UPDATE", class="fragment data-fragment-index_2", tailclip = false];
 
 	hsearch [label = "Hibernate Search", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
 
 	orm -> hsearch:nw [headlabel = "1.2 Evénement\nde modif.", style = dashed, tailclip = false, class="fragment data-fragment-index_1"];
 	orm -> hsearch:ne [headlabel = "1.4 Evénement\nde commit", style = dashed, tailclip = false, class="fragment data-fragment-index_3"];
@@ -45,7 +45,7 @@ digraph {
 -
 
 ### *Bulking* automatique
-<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	node [margin = 0.25];
@@ -55,7 +55,7 @@ digraph {
 	change3 [label = "Modif. 3", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0];
 
 	change1 -> hsearch;
 	change2 -> hsearch;
@@ -107,7 +107,7 @@ digraph {
 
 ## Recherche
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	splines = polyline;
 
@@ -118,7 +118,7 @@ digraph {
 	db [shape=cylinder, label = "BDD", pos = "4,0!"];
 
 	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
 
 	orm -> hsearch [label = "Entités managées", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
 	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];

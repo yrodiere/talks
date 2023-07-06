@@ -1,0 +1,89 @@
+@import "../template/mixins";
+@import "../template/diagram/mixins";
+@import "../template/settings";
+@import "../template/diagram/settings";
+
+// Corporate colors
+// https://www.redhat.com/en/about/brand/standards/color
+// Using presentation palette 1
+$blue-light: #E4F3F4;
+$blue: #43ADAF;
+$blue-dark: #1B4546;
+$red-dark: #5F0000;
+$red: #EE0000;
+$red-light: #F56D6D;
+$red-lighter: #FDDBDB;
+
+// Neutrals
+$white: #FFFFFF;
+$gray-light: #C9C9C9;
+$gray: #8B8B8B;
+$gray-dark: #4D4D4D;
+$black: #000000;
+
+// Main text
+$mainFont: Overpass, Helvetica, 'sans-serif';
+$mainFontSize: 32px;
+$mainColor: $black;
+$highlightColor: $red;
+
+// Headings
+$headingFont: Overpass, Helvetica, 'sans-serif';
+$headingColor: $red;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: none;
+$headingFontWeight: 600;
+
+$heading1Size: 1.5em;
+$heading2Size: 1.4em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+// Links
+$linkColor: $red-light;
+$linkColorHover: $red;
+
+// Background
+$backgroundColor: $white;
+$selectionBackgroundColor: $red-light;
+
+// Diagrams
+
+$graphTextFontFamily: Overpass, Helvetica, 'sans-serif';
+$graphTextFillColor: $white;
+
+$nodeStrokeColor: $mainColor;
+$nodeFillColor: none;
+$nodeFontSize: 0.5em;
+
+$edgeStrokeColor: $mainColor;
+$edgeFillColor: $mainColor;
+$edgeFontSize: 0.3em;
+
+$clusterStrokeColor: $mainColor;
+$clusterFillColor: $mainColor;
+$clusterFontSize: 0.4em;
+
+@mixin bodyBackground() {
+  background-color: $backgroundColor;
+	background-size: cover;
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.075) 20%, rgba(0, 0, 0, 0.15) 20%, transparent 85%, rgba(0, 0, 0, 0.1) 85%);
+
+  &.focus {
+    --r-main-color: #{$black};
+    --r-background-color: #{$white};
+    --r-heading-color: #{$red};
+    --r-link-color: #{$red-light};
+    --r-link-color-hover: #{$red};
+    --r-selection-color: #{$red-dark};
+    --r-selection-background-color: #{$red-light};
+	  background-image: url("../../image/background/redhat_overlay.svg");
+  }
+}
+
+// Themes
+
+@import "../template/theme";
+@import "../template/diagram/theme";
+
