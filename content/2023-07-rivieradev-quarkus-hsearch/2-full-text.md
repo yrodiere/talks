@@ -136,7 +136,7 @@ digraph {
 	subgraph clusterData1 {
         style = invis;
 		node [shape = record, style = rounded, margin = 0.3];
-        input [label = "manger des POMMMES"];
+        input [label = "manger des POMMES"];
 		stemmed [label = "{ mang | pomm }"];
 	}
 

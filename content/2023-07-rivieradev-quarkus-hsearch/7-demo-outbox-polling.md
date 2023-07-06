@@ -4,7 +4,7 @@ Quarkus, Hibernate Search & outbox polling
 
 @Notes:
 
-1. Arrêter me dev mode
+1. Arrêter le dev mode
 2. Passer sur l'outbox-polling
    1. Dépendance: `quarkus ext add hibernate-search-orm-coordination-outbox-polling`
    2. Config: `quarkus.hibernate-search-orm.coordination.strategy=outbox-polling`
