@@ -69,13 +69,113 @@ En bref : solution qui atteint très vite ses limites.
 ## La recherche full-text dans le monde Lucene
 
 <img data-src="../image/logo/lucene.svg" class="logo lucene" />
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
+<img data-src="../image/logo/elasticsearch_large_default.png" class="logo elasticsearch" />
 
 @Notes:
 * Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
 * Lucene: Fondation Apache
 * Elasticsearch utilise Lucene en interne, donc même combat
 * D'autres implémentations de moteurs full-text existent, vocabulaire différent
+
+-
+
+### Principe
+<div class="viz">
+digraph {
+	rankdir = LR;
+	splines = ortho;
+
+	subgraph {
+		node [shape = record, style = rounded, margin = 0.2];
+		query [label = "Requête\n(texte)"];
+		document [label = "Document \n(texte)"];
+		analyzedDocument [label = "Document \n(texte structuré)"];
+		analyzedQuery [label = "Requête\nanalysée\n(texte structuré)"];
+		results [label = "Résultats"];
+		index [label = "Index inversé"];
+	}
+
+	subgraph {
+		rank = same;
+		queryAnalysis [label = "Analyse"];
+		documentAnalysis [label = "Analyse"];
+	}
+
+	subgraph {
+		rank = same;
+		queryExecution [label = "Exécution"];
+		index;
+	}
+
+	query -> queryAnalysis;
+	queryAnalysis -> analyzedQuery;
+	document -> documentAnalysis;
+	documentAnalysis -> analyzedDocument;
+	analyzedDocument -> index;
+	index -> queryExecution;
+	analyzedQuery -> queryExecution;
+	queryExecution -> results;
+}
+</div>
+
+@Notes:
+* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
+* Analyse = extraction et « nettoyage » de tokens.
+* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
+* On analyse les requêtes de la même manière => tokens correspondants
+
+-
+
+### Analyse
+<div class="viz">
+digraph {
+	rankdir = LR;
+
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterData1 {
+        style = invis;
+		node [shape = record, style = rounded, margin = 0.3];
+        input [label = "manger des POMMMES"];
+		stemmed [label = "{ mang | pomm }"];
+	}
+
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterProcess {
+      style = invis;
+      tokenizer [label = "Tokenizer"];
+      lowercase [label = "Lower case filter"];
+      stemming [label = "Stemmer"]
+      stopWords [label = "Stop-words filter"];
+	}
+
+    # Note the "cluster" prefix is necessary to have the subgraph taken into account in the layout.
+	subgraph clusterData {
+        style = invis;
+		node [shape = record, style = rounded, margin = 0.3];
+		tokenized [label = "{ manger | des | POMMES }"];
+		lowercased [label = "{ manger | des | pommes }"];
+		stopped [label = "{ manger | pommes }"];
+	}
+
+	input -> tokenizer;
+    tokenizer -> tokenized;
+    tokenized -> lowercase;
+    lowercase -> lowercased;
+    lowercased -> stopWords;
+    stopWords -> stopped;
+    stopped -> stemming;
+    stemming -> stemmed;
+}
+</div>
+
+@Notes:
+* Tokenization
+  * Plus précis que '%thé%'
+  * ... donc permet moins d'approximations ('CAR', 'cars', ...)
+* => Filtering
+  * Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
+  * ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
+  * Bilan: c'est mieux !
 
 -
 
@@ -95,150 +195,5 @@ carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
 * But : pouvoir, à partir d'un token donné, retrouver rapidement l'ensemble des documents qui le contiennent
 * « Inversé » parce que contenu => référence (valeur => clé), au lieu de référence => contenu (clé => valeur)
 * Vue très simplifiée. En pratique, plus complexe :
-    * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
-    * Données supplémentaires (scoring, "stored fields", ...)
-
--
-
-### Principe
-<div class="viz">
-digraph {
-	rankdir = LR;
-	splines = ortho;
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		query [label = "Requête\n(texte)"];
-		documents [label = "Documents\n(texte)"];
-		analyzedQuery [label = "Requête\nanalysée\n(structurée)"];
-		results [label = "Résultats"];
-		index [label = "Index inversé"];
-	}
-
-	subgraph {
-		rank = same;
-		queryAnalysis [label = "Analyse"];
-		documentAnalysis [label = "Analyse"];
-	}
-
-	subgraph {
-		rank = same;
-		queryExecution [label = "Exécution"];
-		index;
-	}
-
-	query -> queryAnalysis;
-	queryAnalysis -> analyzedQuery;
-	documents -> documentAnalysis;
-	documentAnalysis -> index;
-	index -> queryExecution;
-	analyzedQuery -> queryExecution;
-	queryExecution -> results;
-}
-</div>
-
-@Notes:
-* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
-* Analyse = extraction et « nettoyage » de tokens.
-* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
-* On analyse les requêtes de la même manière => tokens correspondants
-
--
-
-### Analyse, partie 1 : tokenization
-<div class="viz">
-digraph {
-	rankdir = LR;
-
-	tokenizer [label = "Tokenizer"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.3];
-		input [label = "manger des pommes"];
-		output [label = "{ manger | des | pommes }"];
-	}
-
-	input -> tokenizer;
-	tokenizer -> output;
-}
-</div>
-
-@Notes:
-* Plus précis que '%car%'
-* ... donc permet moins d'approximations ('CAR', 'cars', ...)
-* => Filtering
-
--
-
-### Analyse, partie 2 : Filtering
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	lowercase [label = "Lower case filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ UNE | Pomme }"];
-		output [label = "{ une | pomme }"];
-	}
-
-	input -> lowercase;
-	lowercase -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	asciiFolding [label = "ASCII folding filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ bon | appétit }"];
-		output [label = "{ bon | appetit }"];
-	}
-
-	input -> asciiFolding;
-	asciiFolding -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stemming [label = "Stemmer"]
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ manger | des | pommes }"];
-		output [label = "{ mang | de | pomm }"];
-	}
-
-	input -> stemming;
-	stemming -> output;
-}
-</div>
-<div class="viz fragment">
-digraph {
-	rankdir = LR;
-
-	stopWords [label = "Stop-words filter"];
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		input [label = "{ je | mange | une | pomme }"];
-		output [label = "{ mange | pomme }"];
-	}
-
-	input -> stopWords;
-	stopWords -> output;
-}
-</div>
-
-Et caetera, et caetera. <!-- .element: class="fragment" -->
-
-@Notes:
-* Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
-* ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
-* Bilan: c'est mieux ! Mais...
+  * Optimisations (arbres, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
+  * Données supplémentaires (scoring, "stored fields", ...)

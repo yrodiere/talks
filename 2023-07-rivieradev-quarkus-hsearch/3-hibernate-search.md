@@ -13,7 +13,8 @@ ORM. Elasticsearch. Intégrés.
 <!-- .element: class="nested-fragments-highlight-current" -->
 ### Indexation automatique
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-width="900"
+        data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
@@ -22,14 +23,16 @@ digraph {
 	db [shape=cylinder, label = "BDD", pos = "5,0!"];
 
 	app -> orm [label = "1.1 Modif. d'entité", headclip = false, arrowhead = none];
-	orm -> db [label = "1.3 INSERT/UPDATE", class="fragment data-fragment-index_2", tailclip = false];
+	orm -> db [headlabel = "1.3 INSERT/UPDATE", tailclip = false, labeldistance=10, labelangle=-6.0, class="fragment data-fragment-index_2"];
 
 	hsearch [label = "Hibernate Search", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
 
 	orm -> hsearch:nw [headlabel = "1.2 Evénement\nde modif.", style = dashed, tailclip = false, class="fragment data-fragment-index_1"];
-	orm -> hsearch:ne [headlabel = "1.4 Evénement\nde commit", style = dashed, tailclip = false, class="fragment data-fragment-index_3"];
-	hsearch -> elasticsearch [label = "1.5 PUT /book/_doc/1/", class="fragment data-fragment-index_4"];
+	orm -> hsearch:ne [headlabel = "1.4 Evénement\nde pré-commit", style = dashed, tailclip = false, labeldistance=6, labelangle=-45.0, class="fragment data-fragment-index_3"];
+	hsearch -> db [headlabel = "(1.5 SELECT ...)", labeldistance=15, labelangle=-10.0, class="fragment data-fragment-index_4"];
+	orm -> db [headlabel = "1.6 COMMIT", tailclip = false, labeldistance=10, labelangle=6.0, class="fragment data-fragment-index_5"];
+	hsearch -> elasticsearch [label = "1.7 PUT /book/_doc/1/", class="fragment data-fragment-index_6"];
 }
 </div>
 
@@ -44,8 +47,10 @@ digraph {
 
 -
 
+<!-- .element data-visibility="hidden" -->
+
 ### *Bulking* automatique
-<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	node [margin = 0.25];
@@ -55,7 +60,7 @@ digraph {
 	change3 [label = "Modif. 3", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0];
 
 	change1 -> hsearch;
 	change2 -> hsearch;
@@ -105,9 +110,70 @@ digraph {
 
 -
 
+<!-- .element class="grid" -->
+
+## Et bien plus...
+
+<div class="column">
+
+API de recherche (Search DSL)
+```java
+List<Book> hits = searchSession
+        .search( Book.class )
+        .where( f -> f.simpleQueryString()
+                .fields( "title",
+                        "authors.name" )
+                .matching( query ) )
+        .sort( f -> f.field( "title_sort" ) )
+        .fetchHits( 20 )
+```
+
+</div>
+<div class="column">
+
+Mapping de projections
+```java
+@ProjectionConstructor
+record BookDTO(@IdProjection long id,
+               String title) {
+}
+
+List<BookDTO> hits = searchSession
+        .search( Book.class )
+        .select( BookDTO.class )
+        .where( ... )
+        .fetchHits( ... )
+```
+
+</div>
+<div class="column">
+
+Recherche géospatiale
+```java
+.where( f.spatial().within()
+        .field( "location")
+        .circle( 53.97, 32.15,
+                50, DistanceUnit.METERS ) )
+```
+
+</div>
+<div class="column">
+
+Faceting
+```java
+Map<Genre, Long> countByGenre =
+        searchResult.aggregation( ... );
+```
+
+</div>
+
+-
+
+<!-- .element data-visibility="hidden" -->
+
 ## Recherche
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	splines = polyline;
 
@@ -118,7 +184,7 @@ digraph {
 	db [shape=cylinder, label = "BDD", pos = "4,0!"];
 
 	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
 
 	orm -> hsearch [label = "Entités managées", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
 	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];

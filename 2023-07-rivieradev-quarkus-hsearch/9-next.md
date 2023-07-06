@@ -1,7 +1,7 @@
 ## Et après ?
 
 
-<img data-src="../image/logo/debezium.svg" class="logo debezium" />
+<img data-src="../image/logo/debezium_black.svg" class="logo debezium" />
 <img data-src="../image/logo/kafka.svg" class="logo kafka" />
 
 @Notes:

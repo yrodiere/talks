@@ -1,9 +1,17 @@
+## Transactional outbox pattern
+
+<img data-src="../image/diagram/microsoft-transactional-outbox.png" class="diagram" />
+
+<small>https://learn.microsoft.com/en-us/azure/architecture/best-practices/transactional-outbox-cosmos<small>
+
+---
+
 <!-- .element: class="nested-fragments-highlight-current" -->
 
 ## Outbox polling
 
 <div class="viz" data-viz-engine="neato" data-width="900"
-    data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+    data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
     node [margin = 0.2];
     splines = ortho;
@@ -16,7 +24,7 @@ digraph {
 	orm -> db [headlabel = "1.3 INSERT/UPDATE", tailclip = false, labeldistance=5, labelangle=-20.0, class="fragment data-fragment-index_2"];
 
 	hsearch [label = "Hibernate Search", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "7,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "7,-2!"];
 
 	orm -> hsearch:nw [headlabel = "1.2 Evénement\nde modif.", style = dashed, tailclip = false, class="fragment data-fragment-index_1"];
 	orm -> hsearch:ne [label = "1.4 Evénement\nde pré-commit", style = dashed, tailclip = false, class="fragment data-fragment-index_3"];
@@ -54,59 +62,6 @@ digraph {
 1. L'event processor envoie la demande d'indexation à Elasticsearch
 1. Lorsque l'indexation est terminée, l'event processor supprime l'évenement et commit
 1. Indexer avant le commit signifie qu'on ne perd pas d'événements en cas d'échec de l'indexation
-
--
-
-## Pas de conflits
-
-<div class="viz" data-width="900">
-digraph {
-	rankdir = LR;
-    compound=true;
-
-    node [shape = record, style = rounded, margin = 0.2];
-
-    application1 [label = "Instance\nd'application 1"];
-    application2 [label = "Instance\nd'application 2"];
-
-    application1 -> shard1 [lhead = clusterOutbox, label = "Événement\nentité id=12"]
-    application1 -> shard2 [lhead = clusterOutbox, label = "Événement\nentité id=42", class = "highlight"]
-    application2 -> shard2 [lhead = clusterOutbox, label = "Événement\nentité id=42", class = "highlight"]
-    application2 -> shard3 [lhead = clusterOutbox, label = "Événement\nentité id=35"]
-
-    # Note the "cluster" prefix is necessary to have the subgraph drawn.
-	subgraph clusterOutbox {
-        label = "Outbox (BDD)";
-        labelloc = tl;
-        style = rounded;
-
-		shard1 [label = "Shard 1"];
-		shard2 [label = "Shard 2"];
-		shard3 [label = "Shard 3"];
-	}
-
-    shard1 -> processor1 [label = "Événements\nentité id=12"]
-    shard2 -> processor2 [label = "Événements\nentité id=42", class = "highlight"]
-    shard3 -> processor3 [label = "Événements\nentité id=35"]
-
-    processor1 [label = "Processeur\nd'événement 1"];
-    processor2 [label = "Processeur\nd'événement 2"];
-    processor3 [label = "Processeur\nd'événement 3"];
-
-    entityTable [label = "Table entité\n(BDD)"];
-
-    processor1 -> entityTable [dir = back, label = "Données\nentité id=12"]
-    processor2 -> entityTable [dir = back, label = "Données\nentité id=42", class = "highlight"]
-    processor3 -> entityTable [dir = back, label = "Données\nentité id=35"]
-}
-</div>
-
-@Notes:
-
-* Pas d'indexation concurrente d'une entité donnée:
-  Répartition des entités à indexer entre processeurs d'évenements selon leur ID (*sharding*)
-* Pas de problème de conflit de données entre événements:
-  Récupération de l'intégralité des données dans une nouvelle transaction
 
 -
 
@@ -176,17 +131,70 @@ digraph {
 
 -
 
+## Pas de conflits
+
+<div class="viz" data-width="900">
+digraph {
+	rankdir = LR;
+    compound=true;
+
+    node [shape = record, style = rounded, margin = 0.2];
+
+    application1 [label = "Instance\nd'application 1"];
+    application2 [label = "Instance\nd'application 2"];
+
+    application1 -> shard1 [lhead = clusterOutbox, label = "Événement\nentité id=12"]
+    application1 -> shard2 [lhead = clusterOutbox, label = "Événement\nentité id=42", class = "highlight"]
+    application2 -> shard2 [lhead = clusterOutbox, label = "Événement\nentité id=42", class = "highlight"]
+    application2 -> shard3 [lhead = clusterOutbox, label = "Événement\nentité id=35"]
+
+    # Note the "cluster" prefix is necessary to have the subgraph drawn.
+	subgraph clusterOutbox {
+        label = "Outbox (BDD)";
+        labelloc = tl;
+        style = rounded;
+
+		shard1 [label = "Shard 1"];
+		shard2 [label = "Shard 2"];
+		shard3 [label = "Shard 3"];
+	}
+
+    shard1 -> processor1 [label = "Événements\nentité id=12"]
+    shard2 -> processor2 [label = "Événements\nentité id=42", class = "highlight"]
+    shard3 -> processor3 [label = "Événements\nentité id=35"]
+
+    processor1 [label = "Processeur\nd'événement 1"];
+    processor2 [label = "Processeur\nd'événement 2"];
+    processor3 [label = "Processeur\nd'événement 3"];
+
+    entityTable [label = "Table entité\n(BDD)"];
+
+    processor1 -> entityTable [dir = back, label = "Données\nentité id=12"]
+    processor2 -> entityTable [dir = back, label = "Données\nentité id=42", class = "highlight"]
+    processor3 -> entityTable [dir = back, label = "Données\nentité id=35"]
+}
+</div>
+
+@Notes:
+
+* Pas d'indexation concurrente d'une entité donnée:
+  Répartition des entités à indexer entre processeurs d'évenements selon leur ID (*sharding*)
+* Pas de problème de conflit de données entre événements:
+  Récupération de l'intégralité des données dans une nouvelle transaction
+
+-
+
 <!-- .element: class="grid" -->
 ## Pas d'infra supplémentaire
 
 <div class="column">
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
 	app [label = "Application", pos = "0,0!"];
 	db [shape=cylinder, label = "BDD", pos = "2,0!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "1,-1!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "1,-1!"];
 }
 </div>
 </div>
@@ -196,13 +204,13 @@ digraph {
 </div>
 
 <div class="column">
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
 	app [label = "Application", pos = "0,0!"];
 	db [shape=cylinder, label = "BDD", pos = "2,0!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "1,-1!"];
+    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "1,-1!"];
 }
 </div>
 </div>
