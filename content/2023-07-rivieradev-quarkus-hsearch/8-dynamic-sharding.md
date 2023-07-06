@@ -16,6 +16,8 @@
 
 ## Partitionnement dynamique
 
+<https://en.wikipedia.org/wiki/MurmurHash>
+
 ```sql
 INSERT INTO hsearch_outboxevent (entity_name, entity_id, entity_id_hash)
     VALUES ('MyEntity', 42, <murmur3_hash_of_42>);
@@ -23,11 +25,12 @@ INSERT INTO hsearch_outboxevent (entity_name, entity_id, entity_id_hash)
 
 ```sql
 SELECT * FROM hsearch_outboxevent
-    WHERE entity_id_hash BETWEEN <shard_start> AND <shard_end>
+    WHERE entity_id_hash
+        BETWEEN <shard_start> AND <shard_end>
     ORDER BY <...>;
 ```
 
-<https://en.wikipedia.org/wiki/MurmurHash>
+Exemple : shard 0 = `0 -> 999`, shard 1 = `1000 -> 1999`, etc.
 
 @Notes:
 
