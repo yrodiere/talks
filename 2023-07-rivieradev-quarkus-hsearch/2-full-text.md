@@ -26,7 +26,7 @@ WHERE lower(entity.textcontent) LIKE lower('%Thé%');
 
 -
 
-### `LIKE`/`ILIKE`: incovénients
+### `LIKE`/`ILIKE`: inconvénients
 
 * <!-- .element: class="fragment" -->
   Faux positifs: "thé" => "kinési***thé***rapie"
