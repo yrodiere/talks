@@ -42,7 +42,7 @@ En bref : solution qui atteint très vite ses limites.
 
 -
 
-## Le full-text dans la base de données ?
+## Le plein-texte dans la base de données ?
 
 * <!-- .element: class="fragment" -->
   Couplage fort avec SGBD
@@ -50,7 +50,8 @@ En bref : solution qui atteint très vite ses limites.
   Intégration inexistante dans JPA (annotations, JPQL, ...),
   limitée dans Hibernate ORM.
 * <!-- .element: class="fragment" -->
-  Solutions généralistes, fonctionnalités limitées
+  Solutions généralistes,
+  fonctionnalités parfois limitées ou peu flexibles.
 
 @Notes:
 
@@ -59,14 +60,14 @@ En bref : solution qui atteint très vite ses limites.
   requêtes SQL : pas de bindings Criteria fournis par JPA,
   pas de fonctions JPQL dédiées.
   (Mais Hibernate ORM fait mieux dans ce domaine)
-* Si langage et données sont dans tables différentes,
-  difficile de choisir l'index en fonction du langage.
+* Exemple de limite: list de "stop-words" (mots ignorés) est globale ou par session dans MariaDB,
+  pas par index.
 * Même PostgreSQL, pourtant relativement en avance,
   n'a introduit la recherche de phrase qu'en 9.6 (septembre 2016)...
 
 ---
 
-## La recherche full-text dans le monde Lucene
+## La recherche plein-texte dans le monde Lucene
 
 <img data-src="../image/logo/lucene.svg" class="logo lucene" />
 <img data-src="../image/logo/elasticsearch_large_default.png" class="logo elasticsearch" />
