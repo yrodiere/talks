@@ -15,6 +15,7 @@ digraph {
         rank = "same";
         commit [label = "Commit"];
         restartJvm3 [label = "Redémarrage\ninopiné"];
+        commit -> restartJvm3;
     }
     indexing [label = "Indexation"];
     sync [label = "Index\nsynchronisé"];
@@ -31,9 +32,11 @@ digraph {
 
     sync -> restartJvm1 -> ok;
     outOfSync -> restartJvm2 -> ko;
-    commit -> restartJvm3 -> ko;
+    restartJvm3 -> ko;
 }
 </div>
+
+Les événements sont stockés en mémoire vive !
 
 @Notes:
 
@@ -77,6 +80,7 @@ digraph {
 }
 </div>
 
+La transaction ne peut pas être terminée avant la construction des documents !
 
 @Notes:
 
@@ -88,7 +92,7 @@ digraph {
 
 -
 
-## Conflits
+## Conflits 
 
 <div class="grid">
 <div class="column">
@@ -151,6 +155,8 @@ digraph {
 </div>
 </div>
 </div>
+
+Conflit en BDD != Conflit dans l'index
 
 @Notes:
 

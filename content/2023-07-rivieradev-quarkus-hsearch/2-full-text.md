@@ -80,53 +80,6 @@ En bref : solution qui atteint très vite ses limites.
 
 -
 
-### Principe
-<div class="viz">
-digraph {
-	rankdir = LR;
-	splines = ortho;
-
-	subgraph {
-		node [shape = record, style = rounded, margin = 0.2];
-		query [label = "Requête\n(texte)"];
-		document [label = "Document \n(texte)"];
-		analyzedDocument [label = "Document \n(texte structuré)"];
-		analyzedQuery [label = "Requête\nanalysée\n(texte structuré)"];
-		results [label = "Résultats"];
-		index [label = "Index inversé"];
-	}
-
-	subgraph {
-		rank = same;
-		queryAnalysis [label = "Analyse"];
-		documentAnalysis [label = "Analyse"];
-	}
-
-	subgraph {
-		rank = same;
-		queryExecution [label = "Exécution"];
-		index;
-	}
-
-	query -> queryAnalysis;
-	queryAnalysis -> analyzedQuery;
-	document -> documentAnalysis;
-	documentAnalysis -> analyzedDocument;
-	analyzedDocument -> index;
-	index -> queryExecution;
-	analyzedQuery -> queryExecution;
-	queryExecution -> results;
-}
-</div>
-
-@Notes:
-* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
-* Analyse = extraction et « nettoyage » de tokens.
-* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
-* On analyse les requêtes de la même manière => tokens correspondants
-
--
-
 ### Analyse
 <div class="viz">
 digraph {
@@ -177,6 +130,53 @@ digraph {
   * Permet de rendre la recherche plus "floue", faire correspondre entre eux des mots différents
   * ... mais aussi de rendre la recherche plus précise, en évitant des correspondances qui n'ont pas lieu d'être (ex. : stop-words)
   * Bilan: c'est mieux !
+
+-
+
+### Principe
+<div class="viz">
+digraph {
+	rankdir = LR;
+	splines = ortho;
+
+	subgraph {
+		node [shape = record, style = rounded, margin = 0.2];
+		query [label = "Requête\n(texte)"];
+		document [label = "Document \n(texte)"];
+		analyzedDocument [label = "Document \n(texte structuré)"];
+		analyzedQuery [label = "Requête\nanalysée\n(texte structuré)"];
+		results [label = "Résultats"];
+		index [label = "Index inversé"];
+	}
+
+	subgraph {
+		rank = same;
+		queryAnalysis [label = "Analyse"];
+		documentAnalysis [label = "Analyse"];
+	}
+
+	subgraph {
+		rank = same;
+		queryExecution [label = "Exécution"];
+		index;
+	}
+
+	query -> queryAnalysis;
+	queryAnalysis -> analyzedQuery;
+	document -> documentAnalysis;
+	documentAnalysis -> analyzedDocument;
+	analyzedDocument -> index;
+	index -> queryExecution;
+	analyzedQuery -> queryExecution;
+	queryExecution -> results;
+}
+</div>
+
+@Notes:
+* On analyse les données texte, on ne les considère plus comme « juste » une suite de caractères
+* Analyse = extraction et « nettoyage » de tokens.
+* On stocke les tokens de manière optimisée (accès rapide, surtout en lecture)
+* On analyse les requêtes de la même manière => tokens correspondants
 
 -
 
