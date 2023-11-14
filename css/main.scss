@@ -12,24 +12,8 @@
 		box-shadow: none;
 		margin: 0px 20px;
 
-		&.redhat {
-			height: 80px;
-		}
-		&.hibernate {
-			height: 100px;
-		}
-		&.lucene {
-			height: 60px;
-		}
-		&.elasticsearch {
-			height: 100px;
-		}
-		&.debezium {
-			height: 70px;
-		}
-		&.kafka {
-			height: 100px;
-		}
+    max-height: 150px;
+    max-width: 250px;
 	}
 
 	img.qr {

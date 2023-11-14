@@ -36,8 +36,8 @@ Recherche full-text naïve
 
 ## La recherche full-text
 
-<img data-src="../image/logo/lucene.svg" class="logo lucene" />
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
+<img data-src="../image/logo/lucene.svg" class="logo" />
+<img data-src="../image/logo/elasticsearch-color-horizontal.svg" class="logo" />
 
 @Notes:
 * Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
@@ -57,7 +57,7 @@ digraph {
 		node [shape = record, style = rounded, margin = 0.2];
 		query [label = "Requête"];
 		documents [label = "Documents"];
-		analyzedQuery [label = "Requête\nanalysée"];
+		analyzedQuery [label = "Requête\nanalysée"];~~~~
 		results [label = "Résultats"];
 		index [label = "Index"];
 	}
@@ -354,9 +354,9 @@ digraph {
 
 ## Hibernate Search
 
-<img data-src="../image/logo/hibernate_large.png" class="logo hibernate" />
+<img data-src="../image/logo/hibernate_large.png" class="logo" />
 +
-<img data-src="../image/logo/lucene.svg" class="logo lucene" />
+<img data-src="../image/logo/lucene.svg" class="logo" />
 
 * <!-- .element: class="fragment" -->
   Synchronisation des index transparente (événements Hibernate ORM)
@@ -683,9 +683,9 @@ digraph {
 
 ## Hibernate Search et Elasticsearch
 
-<img data-src="../image/logo/hibernate_large.png" class="logo hibernate" />
+<img data-src="../image/logo/hibernate_large.png" class="logo" />
 +
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
+<img data-src="../image/logo/elasticsearch-color-horizontal.svg" class="logo" />
 
 -
 

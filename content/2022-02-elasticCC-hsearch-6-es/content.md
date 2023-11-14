@@ -68,7 +68,7 @@ En bref : solution qui atteint très vite ses limites.
 
 ## Le full-text déporté
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elasticsearch-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	splines = curves;
@@ -88,7 +88,7 @@ digraph {
 		node [class="fragment data-fragment-index_1"];
 		edge [class="fragment data-fragment-index_1"];
 		
-		elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "6,-1!"];
+		elasticsearch [image="../image/logo/elasticsearch-color-reversed-horizontal.svg", label="", penwidth=0, pos = "6,-1!"];
 	}
 	subgraph {
 		node [class="fragment data-fragment-index_2"];
@@ -270,7 +270,7 @@ tx.commit();<span class="fragment" data-fragment-index="1"> // Déclenche aussi 
 
 ### Indexation automatique
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elasticsearch-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	node [margin = 0.2];
 
@@ -282,7 +282,7 @@ digraph {
 	orm -> db [label = "INSERT/UPDATE", tailclip = false];
 
 	hsearch [label = "Hibernate Search", pos = "0,-2!"];
-    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
+    elasticsearch [image="../image/logo/elasticsearch-color-reversed-horizontal.svg", label="", penwidth=0, pos = "5,-2!"];
 
 	orm -> hsearch:nw [headlabel = "Evénement\nde modif.", style = dashed, tailclip = false, class="fragment data-fragment-index_1"];
 	orm -> hsearch:ne [headlabel = "Evénement\nde commit", style = dashed, tailclip = false, class="fragment data-fragment-index_2"];
@@ -302,7 +302,7 @@ digraph {
 -
 
 ### *Bulking* automatique
-<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-images="../image/logo/elasticsearch-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	node [margin = 0.25];
@@ -312,7 +312,7 @@ digraph {
 	change3 [label = "Modif. 3", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
-    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0];
+    elasticsearch [image="../image/logo/elasticsearch-color-reversed-horizontal.svg", label="", penwidth=0];
 
 	change1 -> hsearch;
 	change2 -> hsearch;
@@ -501,7 +501,7 @@ Search.mapping(emf).scope(Object.class).massIndexer()
 
 ## Recherche
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-reversed-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elasticsearch-color-reversed-horizontal.svg,200px,100px">
 digraph {
 	splines = polyline;
 
@@ -512,7 +512,7 @@ digraph {
 	db [label = "BDD", pos = "4,0!"];
 
 	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
-    elasticsearch [image="../image/logo/elastic-search-logo-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
+    elasticsearch [image="../image/logo/elasticsearch-color-reversed-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
 
 	orm -> hsearch [label = "Entités managées", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
 	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];

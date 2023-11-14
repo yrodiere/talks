@@ -81,8 +81,8 @@ Manque de maturité: recherche de phrase dans PostgreSQL 9.6, en septembre 2016.
 
 ## La recherche full-text dans le monde Lucene
 
-<img data-src="../image/logo/lucene.svg" class="logo lucene" />
-<img data-src="../image/logo/elasticsearch_large_reverse.png" class="logo elasticsearch" />
+<img data-src="../image/logo/lucene.svg" class="logo" />
+<img data-src="../image/logo/elasticsearch-color-horizontal.svg" class="logo" />
 
 @Notes:
 * Full-text: « consiste pour le moteur de recherche à examiner tous les mots de chaque document enregistré et à essayer de les faire correspondre à ceux fournis par l'utilisateur »
