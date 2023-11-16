@@ -69,7 +69,7 @@ In short: this solution reaches its limits very quickly.
 
 <img data-src="../image/logo/lucene.svg" class="logo" />
 <p>
-<img data-src="../image/logo/elastic-search-logo-color-horizontal.svg" class="logo" />
+<img data-src="../image/logo/elasticsearch-color-horizontal.svg" class="logo" />
 <img data-src="../image/logo/opensearch-monochrome.svg" class="logo" />
 
 @Notes:

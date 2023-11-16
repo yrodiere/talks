@@ -53,7 +53,7 @@ digraph {
 
 <!-- .element data-visibility="hidden" -->
 ### Implicit *bulking*
-<div class="viz" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
+<div class="viz" data-viz-images="../image/logo/elasticsearch-color-horizontal.svg,200px,100px">
 digraph {
 	rankdir = LR;
 	node [margin = 0.25];
@@ -63,7 +63,7 @@ digraph {
 	change3 [label = "Doc. 3 update", shape = record, style = rounded];
 
 	hsearch [label = "Hibernate Search"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0];
+    elasticsearch [shape=none, image="../image/logo/elasticsearch-color-horizontal.svg", label="", penwidth=0];
 
 	change1 -> hsearch;
 	change2 -> hsearch;
@@ -174,7 +174,7 @@ Map<Genre, Long> countByGenre =
 <!-- .element data-visibility="hidden" -->
 ## Search
 
-<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elastic-search-logo-color-horizontal.svg,200px,100px">
+<div class="viz" data-viz-engine="neato" data-viz-images="../image/logo/elasticsearch-color-horizontal.svg,200px,100px">
 digraph {
 	splines = polyline;
 
@@ -185,7 +185,7 @@ digraph {
 	db [shape=cylinder, label = "DB", pos = "4,0!"];
 
 	hsearch [label = "Hibernate Search", labelloc="b", pos = "0,-2!"];
-    elasticsearch [shape=none, image="../image/logo/elastic-search-logo-color-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
+    elasticsearch [shape=none, image="../image/logo/elasticsearch-color-horizontal.svg", label="", penwidth=0, pos = "4,-2!"];
 
 	orm -> hsearch [label = "Managed entities", tailclip = false, headclip = false, class="fragment data-fragment-index_2"];
 	db -> orm [headclip = false, arrowhead = none, class="fragment data-fragment-index_2"];
