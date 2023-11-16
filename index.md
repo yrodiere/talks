@@ -16,3 +16,5 @@
 
 ## [2022-05-hibernate-search-with-quarkus](2022-05-hibernate-search-with-quarkus)
 
+## [2023-11-quarkus-insights-whats-new-hibernate-search](2023-11-quarkus-insights-whats-new-hibernate-search)
+

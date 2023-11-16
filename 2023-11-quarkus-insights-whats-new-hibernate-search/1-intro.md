@@ -1,18 +1,18 @@
 <!-- .slide: data-state="focus" -->
-# Hibernate Search 6
+# What's new in Hibernate Search
 
-Combiner base de données relationnelle et Elasticsearch
+Quarkus Insights, 2023-11-20
 
 Yoann Rodière
 
 `yoann@hibernate.org`
 
-<img data-src="../image/logo/redhat-rgb-color.svg" class="logo" />
+<img data-src="../image/logo/quarkus_vertical_rgb_default.svg" class="logo" />
 <img data-src="../image/logo/hibernate_monochrome.svg" class="logo" />
 
 @Notes:
 
 * Yoann Rodière
-* Red Hat Middleware  
+* Red Hat  
 * Hibernate team
 * Hibernate Search project lead
