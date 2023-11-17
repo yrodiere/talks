@@ -10,6 +10,66 @@ ORM. Elasticsearch. Integrated.
 
 -
 
+<!-- .element: class="grid" -->
+## De-normalization
+
+<div class="column">
+Entities
+<div class="viz">
+digraph {
+	node [margin = 0.2, shape = record, style = rounded];
+	rankdir = TB;
+
+	containing1 [label = "Book 1"];
+	contained1 [label = "Author 1"];
+	contained2 [label = "Author 2"];
+	containing2 [label = "Book 2"];
+
+	containing1 -> contained1;
+	containing2 -> contained1;
+	containing2 -> contained2;
+}
+</div>
+</div>
+
+<div class="column" style="font-size: 3em;">
+&rarr;
+</div>
+
+<div class="column">
+Documents
+<div class="viz">
+digraph {
+	node [margin = 0.2, shape = record, style = rounded];
+	rankdir = TB;
+
+    # Note the "cluster" prefix is necessary to have the subgraph drawn.
+    subgraph clusterBook1 {
+      label = "Book 1";
+      style = rounded;
+      book1_contained1 [label = "Author 1"];
+    }
+
+    # Note the "cluster" prefix is necessary to have the subgraph drawn.
+    subgraph clusterBook2 {
+      label = "Book 2";
+      style = rounded;
+      book2_contained2 [label = "Author 2"];
+      book2_contained1 [label = "Author 1"];
+    }
+}
+</div>
+
+</div>
+
+@Notes:
+
+1. Limited support for joins in Elasticsearch, and generally not recommended (performs badly)
+2. In practice, no need for joins: we de-normalize data
+3. This is, in part, what makes Elasticsearch so fast
+
+-
+
 <!-- .element: class="nested-fragments-highlight-current" -->
 ### Listener-triggered indexing
 
@@ -71,45 +131,6 @@ digraph {
 	hsearch -> elasticsearch [label = "POST /_bulk/"];
 }
 </div>
-
--
-
-<!-- .element: class="grid" -->
-## De-normalization
-<div class="column">
-<div class="viz">
-digraph {
-	node [margin = 0.2, shape = record, style = rounded];
-	rankdir = TB;
-
-	entity1 [label = "Book"];
-	entity2 [label = "Author 1"];
-	entity3 [label = "Author 2"];
-	entity1 -> entity2;
-	entity1 -> entity3;
-}
-</div>
-</div>
-
-<div class="column" style="font-size: 3em;">
-&rarr;
-</div>
-
-<div class="column">
-<div class="viz">
-digraph {
-	node [margin = 0.6, shape = note];
-
-	document [label = "Single document"];
-}
-</div>
-</div>
-
-@Notes:
-
-1. Limited support for joins in Elasticsearch, and generally not recommended (performs badly)
-2. In practice, no need for joins: we de-normalize data
-3. This is, in part, what makes Elasticsearch so fast
 
 -
 

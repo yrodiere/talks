@@ -12,7 +12,7 @@ Application with...
 
 -
 
-### Naive solution: `LIKE`/`ILIKE`
+### `LIKE`/`ILIKE` for "full-text" search
 
 ```sql
 SELECT * FROM entity
@@ -29,39 +29,48 @@ WHERE lower(entity.textcontent) LIKE lower('%car%');
 ### `LIKE`/`ILIKE`: downsides
 
 * <!-- .element: class="fragment" -->
-  False positives: "car" &rArr; "pre***car***ious"
+  False positives: "car" &rArr; "pi***car***d"
 * <!-- .element: class="fragment" -->
-  False negatives: "cars" &nrArr; "car"
+  False negatives: "biking" &nrArr; "bike"
 * <!-- .element: class="fragment" -->
-  No relevance sort
+  Feature-poor
 * <!-- .element: class="fragment" -->
   Limited performance
 
-In short: this solution reaches its limits very quickly.
-<!-- .element: class="fragment" -->
+@Notes:
+
+* Feature-poor: no relevance sort, ...
+* Limited performance: can't put an index on the column for wildcards before AND after the term
 
 -
 
 ## Full-text inside the database ?
 
 * <!-- .element: class="fragment" -->
-  Strong RGBD coupling
+  DB vendor coupling
 * <!-- .element: class="fragment" -->
-  No integration in JPA (annotations, JPQL, ...),
-  limited in Hibernate ORM.
+  Limited JPA integration
 * <!-- .element: class="fragment" -->
-  Generic solutions,
-  features are limited or have little flexibility.
+  Features
 
 @Notes:
 
-* Each DB has its own SQL syntax for full-text search
-* Entity mapping: no JPA annotations;
-  SQL queries: no Criteria bindings in JPA,
-  no dedicated JPQL functions.
+* DB vendor coupling
+  Each DB has its own SQL syntax for full-text search
+* JPA integration
+  Entity mapping: no JPA annotations;
+  SQL queries: no Criteria bindings in JPA, no dedicated JPQL functions.
   (though Hibernate ORM is better in that area)
-* Example of limitation: list of "stop-words" (ignored words) is global or per session in MariaDB,
-  not per index/column.
+* Features
+  Some are really powerful, like Postgres.
+  But most are generic solutions,
+  and even for the most advanced, compared to Elasticsearch,
+  features are limited or have little flexibility.
+  
+  Examples of limitation:
+  * Elasticsearch can "suggest" relevant words to add to a query. Can Postgresql?
+  * list of "stop-words" (ignored words) is global or per session in MariaDB,
+    not per index/column.
 
 ---
 
@@ -77,6 +86,27 @@ In short: this solution reaches its limits very quickly.
 * Lucene: Apache Foundation
 * Elasticsearch implemented on top of Lucene, so concepts are similar
 * Other full-text engines exist, concepts and word may differ
+
+-
+
+### Inverted index
+
+Token | IDs
+:---|:---
+... | ...
+car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
+careless | Doc. 5 (pos. : 2)
+carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
+... | ...
+
+(doc. = document, pos. = position)
+
+@Notes:
+* Goal: being able, from a given token, to quickly determine all matching documents
+* "inverted" index because token => IDs (value => key) instead of ID => tokens (key => value)
+* Very simplified view. More complex in practice:
+  * Optimizations (trees, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
+  * Additional data (scoring, "stored fields", ...)
 
 -
 
@@ -146,7 +176,7 @@ digraph {
 
 -
 
-### Principle
+### Putting it all together
 <div class="viz">
 digraph {
 	rankdir = LR;
@@ -155,23 +185,44 @@ digraph {
 	subgraph {
 		node [shape = record, style = rounded, margin = 0.2];
 		query [label = "Raw text query"];
+		analyzedQuery [label = "Tokens"];
+
 		document [label = "Document ID\n+ raw text"];
 		analyzedDocument [label = "Document ID\n+ tokens"];
-		analyzedQuery [label = "Tokens"];
+
 		results [label = "Matching\ndocument IDs"];
-		index [label = "Inverted index\n(token &rArr; ID)"];
 	}
 
+    index [label = "Inverted index\n(token &rArr; IDs)", shape = cylinder, margin = 0.2];
+
 	subgraph {
-		rank = same;
 		queryAnalysis [label = "Analysis"];
 		documentAnalysis [label = "Analysis"];
+		search [label = "Search"];
+    }
+
+	subgraph {
+		rank = same;
+		query;
+		document;
 	}
 
 	subgraph {
 		rank = same;
-		queryExecution [label = "Execution"];
-		index;
+		queryAnalysis;
+		documentAnalysis;
+	}
+
+	subgraph {
+		rank = same;
+		analyzedQuery;
+		analyzedDocument;
+	}
+
+	subgraph {
+		rank = same;
+        index;
+		search;
 	}
 
 	query -> queryAnalysis;
@@ -179,9 +230,9 @@ digraph {
 	document -> documentAnalysis;
 	documentAnalysis -> analyzedDocument;
 	analyzedDocument -> index;
-	index -> queryExecution;
-	analyzedQuery -> queryExecution;
-	queryExecution -> results;
+	index -> search;
+	analyzedQuery -> search;
+	search -> results;
 }
 </div>
 
@@ -190,26 +241,3 @@ digraph {
 * Analysis = extraction and "cleaning" of tokens
 * Storing tokens in an inverted index gives fast read access
 * Queries are analyzed just as indexed text => we can do exact matches
-
--
-
-<!-- .element data-visibility="hidden" -->
-
-### Inverted index
-
-Token | Emplacement
-:---|:---
-... | ...
-car | Doc. 1 (pos. : 1, 42), Doc. 10 (pos. : 3, 5, 24)
-careless | Doc. 5 (pos. : 2)
-carl | Doc. 23 (pos. : 55, 57), Doc. 45 (pos. : 15)
-... | ...
-
-(doc. = document, pos. = position)
-
-@Notes:
-* Goal: being able, from a given token, to quickly determine all matching documents
-* "inverted" index because token => ID (value => key) instead of ID => token (key => value) 
-* Very simplified view. More complex in practice:
-  * Optimizations (trees, segments, ...) (cf. <https://emmanuelbernard.com/presentations/inverted-index/>)
-  * Additional data (scoring, "stored fields", ...)

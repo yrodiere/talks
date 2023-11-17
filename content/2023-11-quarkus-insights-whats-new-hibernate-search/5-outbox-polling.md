@@ -199,7 +199,7 @@ digraph {
 </div>
 </div>
 
-DB conflict != Index conflict
+DB conflict &ne; Index conflict
 
 @Notes:
 
