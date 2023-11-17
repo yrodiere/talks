@@ -7,7 +7,7 @@ Yoann Rodière
 
 `yoann@hibernate.org`
 
-<img data-src="../image/logo/quarkus_vertical_rgb_default.svg" class="logo" />
+<img data-src="../image/logo/quarkus_horizontal_rgb_default.svg" class="logo" />
 <img data-src="../image/logo/hibernate_monochrome.svg" class="logo" />
 
 @Notes:

@@ -10,8 +10,8 @@
 * [*Getting started*](https://quarkus.io/guides/hibernate-search-orm-elasticsearch)
 * [Reference documentation](https://hibernate.org/search/documentation)
 
-* [Demo 1 (search)](https://github.com/hibernate/hibernate-demos/tree/main/hibernate-search/hsearch-outbox-polling)
-* [Demo 2 (outbox polling)](https://github.com/hibernate/hibernate-demos/tree/main/hibernate-search/hsearch-feature-examples/search-advanced)
+* [Demo 1 (search)](https://github.com/hibernate/hibernate-demos/tree/main/hibernate-search/hsearch-feature-examples/search-advanced)
+* [Demo 2 (outbox polling)](https://github.com/hibernate/hibernate-demos/tree/main/hibernate-search/hsearch-outbox-polling)
 
 -
 
