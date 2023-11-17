@@ -5,12 +5,12 @@ Quarkus & Hibernate Search
 @Notes:
 
 1. Switch to `hsearch-feature-examples/search-advanced`
-2. Show what's needed for outbox-polling
+2. Show what's needed for Hibernate Search
    1. Dependency: see POM, `hibernate-search-orm-elasticsearch`
    2. Config: see `application.properties`, `quarkus.hibernate-search-orm.elasticsearch.version=8`
 3. Analyse: `AnalysisConfigurer.java`
    1. DSL
-   2. `@SearchExtension`
+   2. `@SearchExtension`: that's new!
    3. available types: see Elasticsearch docs
 4. Mapping
    1. `@Entity` Hibernate ORM entity
@@ -23,7 +23,8 @@ Quarkus & Hibernate Search
       1. Définition d'annotations, de binders, ...
 5. Mass indexing
    1. DevUI: http://localhost:8080/q/dev-ui
-   2. Click Hibernate Search, reindex a few entites
+   2. Click Hibernate Search, reindex a few entity types
+   3. New and improved compared to last time!
 6. Show CRUD quickly
    1. http://localhost:8080/q/swagger-ui/
    2. Mention there's no code specific to Hibernate Search, indexing happens transparently 
@@ -54,3 +55,5 @@ Quarkus & Hibernate Search
     2. Config: see `application.properties`, `quarkus.hibernate-search-orm.elasticsearch.version=8`
     3. `opensearch:2`
     4. `quarkus dev`
+11. Switch to search.quarkus.io
+    1. Custom index mapping/settings

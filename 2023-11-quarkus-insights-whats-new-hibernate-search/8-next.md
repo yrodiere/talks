@@ -4,8 +4,14 @@
 * Hibernate Search standalone!
 * Debezium integration?
   
+  <div class="grid">
+  <div class="column">
   <img data-src="../image/logo/debezium_black.svg" class="logo" />
+  </div>
+  <div class="column">
   <img data-src="../image/logo/kafka.svg" class="logo" />
+  </div>
+  </div>
 
 @Notes:
 
