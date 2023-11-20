@@ -24,6 +24,17 @@ SELECT * FROM entity
 WHERE lower(entity.textcontent) LIKE lower('%car%');
 ```
 
+@Notes:
+
+1. Switch to `hsearch-feature-examples/search-advanced`
+2. ```shell script
+   while read TEXT; do curl -s -XGET -H 'Content-Type: application/json' 'localhost:8080/tshirt/search?brief=true' -G --data-urlencode "q=$TEXT" | jq ; done
+   # Then type whatever you want, followed by <ENTER>
+   car
+   bike
+   biking
+   ```
+
 -
 
 ### `LIKE`/`ILIKE`: downsides
