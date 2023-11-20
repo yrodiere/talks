@@ -133,9 +133,7 @@ digraph {
 
 -
 
-<!-- .element data-visibility="hidden" -->
-
-## Conflicts
+## No conflicts
 
 <div class="grid">
 <div class="column">
@@ -213,7 +211,7 @@ DB conflict &ne; Index conflict
 
 <!-- .element data-visibility="hidden" -->
 
-## Résoudre à l'aide d'une version ?
+## Resolving with a version?
 
 ```java
 @Entity
