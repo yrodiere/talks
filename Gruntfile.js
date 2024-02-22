@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 		},
 
 		exec: {
-			generate_index: 'find content -name index.html -printf "%P\\0" | xargs -0 -n 1 dirname | sort -r | grep -v '^template$' | xargs -I {} printf "## [%s](%s)\n\n" {} {} > dist/index.md'
+			generate_index: 'find content -name index.html -printf "%P\\0" | xargs -0 -n 1 dirname | sort -r | grep -v "^template$" | xargs -I {} printf "## [%s](%s)\n\n" {} {} > dist/index.md'
 		},
 
 		connect: {
