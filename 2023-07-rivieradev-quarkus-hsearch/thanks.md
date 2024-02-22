@@ -3,7 +3,7 @@
 <!-- .element: class="grid" -->
 ## Merci !
 
-* Cette presentation : <https://yrodiere.github.io/presentation/2023-07-rivieradev-quarkus-hsearch>
+* Cette presentation : <https://yrodiere.github.io/talks/2023-07-rivieradev-quarkus-hsearch>
 <img data-src="../image/qr/2023-07-rivieradev-quarkus-hsearch.png" class="qr" />
 
 * [*Getting started*](https://quarkus.io/guides/hibernate-search-orm-elasticsearch)

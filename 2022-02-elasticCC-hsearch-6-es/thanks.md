@@ -7,7 +7,7 @@
 * Autres tutoriels : <https://hibernate.org/search/articles/>
 
 * Blog de l'équipe Hibernate : <https://in.relation.to>
-* Cette presentation : <https://yrodiere.github.io/presentation/2022-02-elasticCC-hsearch-6-es/>
+* Cette presentation : <https://yrodiere.github.io/talks/2022-02-elasticCC-hsearch-6-es/>
 * Démo : <https://github.com/hibernate/hibernate-demos/tree/main/hibernate-search/hsearch-feature-examples>
 * <a href="?print-pdf">Exporter ces slides en PDF</a> <small>(nécessite Chrome)</small>
 

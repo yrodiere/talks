@@ -3,7 +3,7 @@
 <!-- .element: class="grid" -->
 ## Thanks!
 
-* These slides : <https://yrodiere.github.io/presentation/2023-11-quarkus-insights-whats-new-hibernate-search>
+* These slides : <https://yrodiere.github.io/talks/2023-11-quarkus-insights-whats-new-hibernate-search>
 <img data-src="../image/qr/2023-11-quarkus-insights-whats-new-hibernate-search.png" class="qr" />
 <a href="?print-pdf">Export these slides to PDF</a> <small>(requires Chrome)</small>
 
