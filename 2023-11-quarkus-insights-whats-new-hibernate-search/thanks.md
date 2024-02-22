@@ -23,4 +23,4 @@ Logos in this presentation are trademarks or registered trademarks of their resp
 
 The rest of this presentation is distributed under CC-BY-SA-4.0. See https://creativecommons.org/licenses/by-sa/4.0/ for details.
 
-The source code for this presentation is available at https://github.com/yrodiere/presentation.
+The source code for this presentation is available at https://github.com/yrodiere/talks.
