@@ -11,10 +11,10 @@ Conferences:
 
 * RivieraDEV 2023: Recherche plein-texte distribuée avec Quarkus, Hibernate ORM, Hibernate Search et Elasticsearch.
   https://2023.rivieradev.fr/session/1140
-  Slides : https://yrodiere.github.io/talks/2023-07-rivieradev-quarkus-hsearch/#/
+  Slides : https://yrodiere.github.io/talks/2023-07-rivieradev-quarkus-hsearch/
 * RivieraDEV 2023: Automatisation GitHub avec Quarkus (co-presenté avec Guillaume Smet).
   https://2023.rivieradev.fr/session/1102
-  Slides : https://talks.smet.org/2023-07-automatisation-github-quarkus-riviera-dev/#/
+  Slides : https://talks.smet.org/2023-07-automatisation-github-quarkus-riviera-dev/
 * JNation 2022: GitHub Automation with Quarkus (co-presented with Guillaume Smet).
   Recording: https://www.youtube.com/watch?v=39fl9Lusazo
   Slides: https://talks.smet.org/2022-06-github-automation-quarkus-jnation/
@@ -23,7 +23,7 @@ Conferences:
   Slides: https://yrodiere.github.io/talks/2022-02-elasticCC-hsearch-6-es
 * FOSDEM 2019: From table to index (and back) with Hibernate Search 6.
   Recording: https://www.youtube.com/watch?v=Q4PMC3QgYBw
-  Slides: https://yrodiere.github.io/talks/hsearch-fosdem-2019
+  Slides: https://yrodiere.github.io/talks/2019-02-fosdem-hsearch
 
 JUGs and others:
 
@@ -43,4 +43,4 @@ JUGs and others:
 * ElsassJUG, 2017: Elasticsearch dans votre ORM avec Hibernate Search.
   https://www.meetup.com/fr-FR/elsassjug/events/239294514/
   Not recorded.
-  Slides: https://yrodiere.github.io/talks/hsearch-es-jug-strasbourg/
+  Slides: https://yrodiere.github.io/talks/2017-04-jug-strasbourg-hsearch-es/

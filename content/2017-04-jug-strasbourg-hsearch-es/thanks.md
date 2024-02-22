@@ -5,7 +5,7 @@
 * Blog de l'équipe : <http://in.relation.to>
 * Documentation Elasticsearch : <https://www.elastic.co/guide/>
 * Documentation Hibernate Search : <http://hibernate.org/search/documentation/>
-* Cette présentation : <https://yrodiere.github.io/presentation/hsearch-es-jug-strasbourg/>
+* Cette présentation : <https://yrodiere.github.io/presentation/2017-04-jug-strasbourg-hsearch-es/>
 * Démo : <https://github.com/hibernate/hibernate-demos/tree/master/hibernate-search/hsearch-elasticsearch-wikipedia>
 * <a href="?print-pdf">Exporter en PDF</a> <small>(nécessite Chrome)</small>
 
