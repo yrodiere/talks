@@ -27,6 +27,8 @@ Conférences :
 
 JUGs et autres :
 
+* Quarkus Insights, 2024: Using Hibernate to improve search on Quarkus.io (co-presenté avec Marko Bekhta).
+  Recording: https://www.youtube.com/watch?v=cZCIQFJVv_Q
 * Quarkus Insights, 2023: What's new in Hibernate Search.
   Vidéo : https://www.youtube.com/watch?v=0-e4wkRwTIo
   Slides : https://yrodiere.github.io/talks/2023-11-quarkus-insights-whats-new-hibernate-search/

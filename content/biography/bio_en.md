@@ -12,7 +12,7 @@ Conferences:
 * RivieraDEV 2023: Recherche plein-texte distribuée avec Quarkus, Hibernate ORM, Hibernate Search et Elasticsearch.
   https://2023.rivieradev.fr/session/1140
   Slides : https://yrodiere.github.io/talks/2023-07-rivieradev-quarkus-hsearch/
-* RivieraDEV 2023: Automatisation GitHub avec Quarkus (co-presenté avec Guillaume Smet).
+* RivieraDEV 2023: Automatisation GitHub avec Quarkus (co-presented with Guillaume Smet).
   https://2023.rivieradev.fr/session/1102
   Slides : https://talks.smet.org/2023-07-automatisation-github-quarkus-riviera-dev/
 * JNation 2022: GitHub Automation with Quarkus (co-presented with Guillaume Smet).
@@ -27,6 +27,8 @@ Conferences:
 
 JUGs and others:
 
+* Quarkus Insights, 2024: Using Hibernate to improve search on Quarkus.io (co-presented with Marko Bekhta).
+  Recording: https://www.youtube.com/watch?v=cZCIQFJVv_Q
 * Quarkus Insights, 2023: What's new in Hibernate Search.
   Recording: https://www.youtube.com/watch?v=0-e4wkRwTIo
   Slides: https://yrodiere.github.io/talks/2023-11-quarkus-insights-whats-new-hibernate-search/
