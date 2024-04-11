@@ -1,6 +1,6 @@
 ## [biography](biography)
 
-## [2024-04-devoxx-france-hsearch-7-vector-search](2024-04-devoxx-france-hsearch-7-vector-search)
+## [2024-04-devoxx-france-hsearch-7](2024-04-devoxx-france-hsearch-7)
 
 ## [2023-11-quarkus-insights-whats-new-hibernate-search](2023-11-quarkus-insights-whats-new-hibernate-search)
 

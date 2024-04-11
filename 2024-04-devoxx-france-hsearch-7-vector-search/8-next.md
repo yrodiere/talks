@@ -1,7 +1,0 @@
-## Perspectives
-
-TODO
-  
-@Notes:
-
-* TODO
