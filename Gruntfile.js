@@ -108,15 +108,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		'gh-pages': {
-			options: {
-				base: 'dist',
-			},
-			'gh-pages': {
-				src: '**/*'
-			}
-		},
-
 		watch: {
 			'default': {
 				files: [ 'Gruntfile.js' ],
@@ -153,7 +144,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-sass' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( '@lodder/grunt-postcss' );
-	grunt.loadNpmTasks( 'grunt-gh-pages' );
 	grunt.loadNpmTasks( 'grunt-exec' );
 
 	// Default task
@@ -173,9 +163,6 @@ module.exports = function(grunt) {
 
 	// Serve presentation locally
 	grunt.registerTask( 'serve', [ 'default', 'connect', 'watch' ] );
-
-	// Publish to GitHub Pages
-	grunt.registerTask( 'publish', [ 'default', 'gh-pages' ] );
 
 };
 

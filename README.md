@@ -1,4 +1,10 @@
-# How to launch this presentation
+# yrodiere's talks
+
+## Where to find published talks
+
+See https://yrodiere.github.io/talks/
+
+## How to serve talks locally
 
 1. Install [Node.js](http://nodejs.org/) and [Grunt](http://gruntjs.com/getting-started#installing-the-cli)
 
@@ -12,15 +18,15 @@
    $ npm install
    ```
 
-3. Serve the presentation (run within the git checkout):
+3. Serve the talk (run within the git checkout):
    ```sh
    $ npm start
    ```
 
-4. Open <http://localhost:8000> to view your presentation.
+4. Open <http://localhost:8000> to view your talk.
 
-The presentations can be published to the `gh-pages` branch with the following command:
-```sh
-$ grunt publish
-```
+## How to publish talks to the web
 
+The talks are published automatically to the `gh-pages` branch on push to the `main` branch.
+
+See the `.github/workflows` directory for more details.
